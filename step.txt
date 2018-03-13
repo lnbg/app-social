@@ -1,0 +1,33 @@
+1. Cài đặt package: 
+    - Laravel 
+    - LaravelFacebookSdk [https://github.com/SammyK/LaravelFacebookSdk]
+2. Migration:
+    * Table: 
+        - users: {
+            id: increments
+            social_id: integer
+            social_name: string
+            type: integer [1: facebook account, 2: twitter account, 3: instagram account]
+            access_token: string
+            exprired_date: datetime
+            timestamps: datetime
+        }
+        - facebook_analytics: {
+            id: increments
+            account_id: integer
+            account_name: string
+            account_created_date: date  
+            total_posts: integer
+            total_followers: integer
+            total_likes: integer
+            total_likes_posts: integer
+            average_posts_per_day: integer
+            average_likes_per_day: integer
+            best_of_publish_time: time
+        }
+3. Methods:
+    - Login facebook account to get data save to OwnSocialAccount
+    - Get data for facebook page account
+    - Get data for facebook profile account
+        
+    
