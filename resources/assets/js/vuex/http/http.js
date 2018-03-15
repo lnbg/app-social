@@ -1,7 +1,7 @@
 /**
  * @description defined your domain of api
  */
-export const API_DOMAIN = 'http://app-social.local'
+export const API_DOMAIN = ''
 /**
  * @description generate header when create request
  */
