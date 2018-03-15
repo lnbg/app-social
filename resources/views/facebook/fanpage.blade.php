@@ -16,7 +16,7 @@
 
 <div class="box">
     <div class="box-header with-border">
-        <h3 class="box-title">Page</h3>
+        <h3 class="box-title">Data Analytics</h3>
         <div class="box-tools">
             <!-- This will cause the box to be removed when clicked -->
             <a href="/facebook/analytics-fanpage" class="btn btn-box-tool" title="Fetching"><i class="fa fa-download"></i> Analytics</a>
@@ -24,15 +24,15 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body">
-        <?php $arrayColors = ['bg-yellow', 'bg-aqua', 'bg-green', 'bg-red']; ?>
+        <?php $arrayColors = ['bg-yellow', 'bg-aqua', 'bg-green', 'bg-red', 'bg-blue']; ?>
         @if (isset($allFacebookAnalytics))
             @foreach ($allFacebookAnalytics as $facebookAnalytics)
             <div class="col-md-4">
                 <!-- Widget: user widget style 1 -->
                 <div class="box box-widget widget-user-2">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
-                <?php $colorIndexRand = rand(0, 3) ?>
-                <div class="widget-user-header {{ $arrayColors[$colorIndexRand] }}">
+                <?php $colorIndexRand = rand(0, 4) ?>
+                <div style="min-height: 120px;" class="widget-user-header {{ $arrayColors[$colorIndexRand] }}">
                     <div class="widget-user-image">
                         <img class="img-circle" src="{{ $facebookAnalytics->account_picture }}" alt="{{ $facebookAnalytics->account_name }}">
                     </div>

@@ -161,6 +161,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider::class,
+        Yangqi\Htmldom\HtmldomServiceProvider::class,
     ],
 
     /*
@@ -210,6 +211,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Facebook' => SammyK\LaravelFacebookSdk\FacebookFacade::class,
+        'Htmldom' => Yangqi\Htmldom\Htmldom::class,
     ],
 
 ];

@@ -11,12 +11,14 @@
 |
 */
 
-Route::get('/', 'HomeController@index');
-Route::get('/facebook/fanpage', 'HomeController@facebookFanpage');
-Route::get('/facebook/profile', 'HomeController@facebookProfile');
-Route::get('/facebook/analytics-fanpage', 'FacebookAnalyticsController@analyticsFacebookFanpage');
+Route::get('/', 'AppController@index');
 
-Route::post('/facebook/add-new-page', 'FacebookAnalyticsController@addNewFacebookPage');
 
-Route::get('/setup', 'UserController@setup');
-Route::get('/facebook/callback', 'UserController@facebookCallback');
+Route::get('/facebook/get-list-facebook-page-analytics', 'FacebookAnalyticsController@getListFacebookPageAnalytics');
+
+
+Route::post('/facebook/analytics_facebook_page', 'FacebookAnalyticsController@analyticsFacebookPage');
+
+
+// Debug
+Route::get('/debug', 'FacebookAnalyticsController@debug');
