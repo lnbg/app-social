@@ -2,6 +2,10 @@
     min-height: 120px;
 }
 
+.min-height-150 {
+    min-height: 150px;
+}
+
 /* style addition for box facebook profile global/facebook/box_profile */
 .box-widget {
     .widget-loading {
@@ -32,6 +36,10 @@
                 transform: scale(1.2);
             }
         }
+    }
+
+    .widget-user-username {
+        font-size: 20px;
     }
 
     .reactions-img {

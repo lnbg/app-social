@@ -6,8 +6,8 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <input type="text" v-model="instagramLink" class="form-control" style="width: 400px; display: inline-block;" placeholder="Link to profile" />
-                <input type="button" @click="createNewProfile" style="display: inline-block; margin-top: -5px; padding-left: 10px; padding-right: 10px;" class="btn btn-primary" value="Add">
+                <input type="text" v-model="instagramProfileLink" class="form-control" style="width: 400px; display: inline-block;" placeholder="Link to instagram profile" />
+                <input type="button" @click="_createNewInstagramProfile" style="display: inline-block; margin-top: -5px; padding-left: 10px; padding-right: 10px;" class="btn btn-primary" value="Add">
             </div>
         </div>
         <div class="box">
@@ -19,47 +19,50 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                
+                <div class="col-md-4" v-for="instagramProfile in lstInstagramProfileAnalytics" :key="instagramProfile.account_id">
+                    <box-instagram-profile :profile="instagramProfile"></box-instagram-profile>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import BoxInstagramProfile from '../../global/instagram/box_profile'
 import { mapState, mapActions } from 'vuex'
-import BoxFacebookPage from '../../global/facebook/box_page'
 
 export default {
     name: 'Page_Instagram__Index',
     components: {
-        'box-facebook-page' : BoxFacebookPage
+        'box-instagram-profile': BoxInstagramProfile
     },
     data() {
         return {
-            instagramLink: String.empty,
+            instagramProfileLink: String.empty,
             orderBy: 1
         }
     },
     computed: {
-        ...mapState('facebook', [
-            'lstFacebookPageAnalytics'
+        ...mapState('instagram', [
+            'lstInstagramProfileAnalytics'
         ]),
     },
     methods: {
-        ...mapActions('facebook', [
-            'createNewFacebookPage',
-            'getListFacebookPageAnalytics'
+        ...mapActions('instagram', [
+            'createNewInstagramProfile',
+            'getListInstagramProfileAnalytics',
         ]),
-        createNewProfile() {
-            this.createNewFacebookPage(this.facebookPageLink)
+        _createNewInstagramProfile() {
+            this.createNewInstagramProfile(this.instagramProfileLink)
                 .then(response => {
-                    this.getListFacebookPageAnalytics()
+                    this.getListInstagramProfileAnalytics()
                 })
         },
+
     },
     beforeCreate() {
+        this.$store.dispatch('instagram/getListInstagramProfileAnalytics')
     },
     created() {
-        
     }
 }
 </script>

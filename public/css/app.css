@@ -2,6 +2,10 @@
   min-height: 120px;
 }
 
+.min-height-150 {
+  min-height: 150px;
+}
+
 /* style addition for box facebook profile global/facebook/box_profile */
 
 .box-widget .widget-loading {
@@ -38,6 +42,10 @@
 .box-widget .widget-user-control i:hover {
   -webkit-transform: scale(1.2);
           transform: scale(1.2);
+}
+
+.box-widget .widget-user-username {
+  font-size: 20px;
 }
 
 .box-widget .reactions-img {

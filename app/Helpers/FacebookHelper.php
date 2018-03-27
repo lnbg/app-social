@@ -19,21 +19,22 @@ class FacebookHelper {
         try {
             // make default uri posts
             $defaultURI = '/' . $facebookPageName . self::$ENDPOINT_READ_POSTS;
-            
+            // send a request as graph facebook api 
             $posts = $laravelFacebookSDK->sendRequest('GET', $defaultURI, 
                 ['limit' => 100, 'since' => $since, 
                 'fields' => 'created_time, story, message, shares.summary(true), comments.summary(true), likes.summary(true), reactions.type(LOVE).limit(0).summary(1).as(loves), 
                 reactions.type(HAHA).limit(0).summary(1).as(hahas), reactions.type(WOW).limit(0).summary(1).as(wows),
                 reactions.type(THANKFUL).limit(0).summary(1).as(thankfuls),
                 reactions.type(SAD).limit(0).summary(1).as(sads), reactions.type(ANGRY).limit(0).summary(1).as(angries)'], $accessToken);
+            // get post from above request
             $posts = $posts->getGraphEdge();
-
+           
+            // get meta data of posts
             self::getMetaDataPostOfFanpage($laravelFacebookSDK, $facebookAnalyticsID, $accessToken, $posts, $analyticsData, $postsStorage);
-
+            
             if (isset($posts->getMetaData()['paging']['next'])) {
                 $next = $posts->getMetaData()['paging']['next'];
             }
-
             while (isset($next)) {
                 $posts = $laravelFacebookSDK->next($posts);
                 if (isset($posts->getMetaData()['paging']['next'])) {

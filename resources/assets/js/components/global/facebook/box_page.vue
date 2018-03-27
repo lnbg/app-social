@@ -1,6 +1,6 @@
 <template>
     <!-- Widget: user widget style 1 -->
-    <div class="box box-widget widget-user-2">
+    <div class="box box-widget widget-user-2 box-facebook-page">
         <div class="widget-loading" v-if="boxLoading">
             <p><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></p>
         </div>
@@ -12,7 +12,7 @@
             <div class="widget-user-image">
                 <img class="img-circle" :src="page.account_picture" :alt="page.account_name">
                 <h3 class="widget-user-username">{{ page.account_name }}</h3>
-                <a style="color: white; display: block;" :href="page.account_link"><h5 class="widget-user-desc" style="word-break: break-all; font-size: 13px;">{{ page.account_link }}</h5></a>
+                <a style="color: white; display: block;" :href="page.account_link"><h5 class="widget-user-desc" style="word-break: break-all; font-size: 11px;">{{ page.account_link }}</h5></a>
             </div>
         </div>
         <div class="box-footer no-padding">

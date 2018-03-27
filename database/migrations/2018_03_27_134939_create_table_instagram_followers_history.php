@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableFacebookFans extends Migration
+class CreateTableInstagramFollowersHistory extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateTableFacebookFans extends Migration
      */
     public function up()
     {
-        Schema::create('facebook_fans', function (Blueprint $table) {
+        Schema::create('instagram_followers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('facebook_analytics_id');
-            $table->integer('facebook_fans')->nullable()->default(0);
+            $table->integer('instagram_analytics_id');
+            $table->integer('instagram_followers')->nullable()->default(0);
             $table->date('date_sync');
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ class CreateTableFacebookFans extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('facebook_fans');
+        Schema::dropIfExists('instagram_followers');
     }
 }

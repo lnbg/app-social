@@ -17141,13 +17141,16 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof="fun
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_facebook_index__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_instagram_index__ = __webpack_require__(68);
+
 
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     modules: {
-        facebook: __WEBPACK_IMPORTED_MODULE_2__modules_facebook_index__["a" /* default */]
+        facebook: __WEBPACK_IMPORTED_MODULE_2__modules_facebook_index__["a" /* default */],
+        instagram: __WEBPACK_IMPORTED_MODULE_3__modules_instagram_index__["a" /* default */]
     }
 }));
 
@@ -18362,11 +18365,16 @@ return numeral;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_page_dashboard_index_v1__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_page_facebook_page__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_page_instagram_index__ = __webpack_require__(66);
+
 
 
 var routes = [{
-        path: '/facebook/page',
-        component: __WEBPACK_IMPORTED_MODULE_1__components_page_facebook_page__["a" /* default */]
+    path: '/facebook/page',
+    component: __WEBPACK_IMPORTED_MODULE_1__components_page_facebook_page__["a" /* default */]
+}, {
+    path: '/instagram',
+    component: __WEBPACK_IMPORTED_MODULE_2__components_page_instagram_index__["a" /* default */]
 }, { path: '*', component: __WEBPACK_IMPORTED_MODULE_0__components_page_dashboard_index_v1__["a" /* default */] }];
 
 /* harmony default export */ __webpack_exports__["a"] = (routes);
@@ -20393,143 +20401,156 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "box box-widget widget-user-2" }, [
-    _vm.boxLoading
-      ? _c("div", { staticClass: "widget-loading" }, [_vm._m(0)])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "widget-user-control" }, [
-      _c("a", { attrs: { href: "javascript:void(0)" } }, [
-        _c("i", {
-          staticClass: "fa fa-download",
-          on: { click: _vm.boxAnalyticsFacebookPage }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "widget-user-header min-height-120",
-        class: _vm.getBackgroundBoxHeader
-      },
-      [
-        _c("div", { staticClass: "widget-user-image" }, [
-          _c("img", {
-            staticClass: "img-circle",
-            attrs: { src: _vm.page.account_picture, alt: _vm.page.account_name }
-          }),
-          _vm._v(" "),
-          _c("h3", { staticClass: "widget-user-username" }, [
-            _vm._v(_vm._s(_vm.page.account_name))
+  return _c(
+    "div",
+    { staticClass: "box box-widget widget-user-2 box-facebook-page" },
+    [
+      _vm.boxLoading
+        ? _c("div", { staticClass: "widget-loading" }, [_vm._m(0)])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "widget-user-control" }, [
+        _c("a", { attrs: { href: "javascript:void(0)" } }, [
+          _c("i", {
+            staticClass: "fa fa-download",
+            on: { click: _vm.boxAnalyticsFacebookPage }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "widget-user-header min-height-120",
+          class: _vm.getBackgroundBoxHeader
+        },
+        [
+          _c("div", { staticClass: "widget-user-image" }, [
+            _c("img", {
+              staticClass: "img-circle",
+              attrs: {
+                src: _vm.page.account_picture,
+                alt: _vm.page.account_name
+              }
+            }),
+            _vm._v(" "),
+            _c("h3", { staticClass: "widget-user-username" }, [
+              _vm._v(_vm._s(_vm.page.account_name))
+            ]),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticStyle: { color: "white", display: "block" },
+                attrs: { href: _vm.page.account_link }
+              },
+              [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "widget-user-desc",
+                    staticStyle: {
+                      "word-break": "break-all",
+                      "font-size": "11px"
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.page.account_link))]
+                )
+              ]
+            )
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "box-footer no-padding" }, [
+        _c("ul", { staticClass: "nav nav-stacked" }, [
+          _c("li", [
+            _c("a", { attrs: { href: "#" } }, [
+              _vm._v("Total Posts: "),
+              _c("span", { staticClass: "pull-right badge bg-blue" }, [
+                _vm._v(_vm._s(_vm._f("currency")(_vm.page.total_posts)))
+              ])
+            ])
           ]),
           _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticStyle: { color: "white", display: "block" },
-              attrs: { href: _vm.page.account_link }
-            },
-            [
-              _c(
-                "h5",
-                {
-                  staticClass: "widget-user-desc",
-                  staticStyle: {
-                    "word-break": "break-all",
-                    "font-size": "13px"
-                  }
-                },
-                [_vm._v(_vm._s(_vm.page.account_link))]
-              )
-            ]
-          )
-        ])
-      ]
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "box-footer no-padding" }, [
-      _c("ul", { staticClass: "nav nav-stacked" }, [
-        _c("li", [
-          _c("a", { attrs: { href: "#" } }, [
-            _vm._v("Total Posts: "),
-            _c("span", { staticClass: "pull-right badge bg-blue" }, [
-              _vm._v(_vm._s(_vm._f("currency")(_vm.page.total_posts)))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("a", { attrs: { href: "#" } }, [
-            _vm._v("Total Page Followers "),
-            _c("span", { staticClass: "pull-right badge bg-aqua" }, [
-              _vm._v(_vm._s(_vm._f("currency")(_vm.page.total_page_followers)))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("a", { attrs: { href: "#" } }, [
-            _vm._v("Total Fans "),
-            _c("span", { staticClass: "pull-right badge bg-aqua" }, [
-              _vm._v(_vm._s(_vm._f("currency")(_vm.page.total_page_likes)))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("a", { attrs: { href: "#" } }, [
-            _vm._v("Total Reactions "),
-            _c("span", { staticClass: "pull-right badge bg-green" }, [
-              _vm._v(_vm._s(_vm._f("currency")(_vm.reactions)))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("a", { attrs: { href: "#" } }, [
-            _vm._v("Total Interactions "),
-            _c("span", { staticClass: "pull-right badge bg-green" }, [
-              _vm._v(_vm._s(_vm._f("currency")(_vm.interactions)))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("a", { attrs: { href: "#" } }, [
-            _vm._v("Average Posts/Day "),
-            _c("span", { staticClass: "pull-right badge bg-yellow" }, [
-              _vm._v(_vm._s(_vm._f("currency")(_vm.page.average_posts_per_day)))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("a", { attrs: { href: "#" } }, [
-            _vm._v("Average Reactions/Post "),
-            _c("span", { staticClass: "pull-right badge bg-yellow" }, [
-              _vm._v(
-                _vm._s(_vm._f("currency")(_vm.page.average_reactions_per_post))
-              )
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("a", { attrs: { href: "#" } }, [
-            _vm._v("Average Interactions/Post "),
-            _c("span", { staticClass: "pull-right badge bg-yellow" }, [
-              _vm._v(
-                _vm._s(
-                  _vm._f("currency")(_vm.page.average_interactions_per_post)
+          _c("li", [
+            _c("a", { attrs: { href: "#" } }, [
+              _vm._v("Total Page Followers "),
+              _c("span", { staticClass: "pull-right badge bg-aqua" }, [
+                _vm._v(
+                  _vm._s(_vm._f("currency")(_vm.page.total_page_followers))
                 )
-              )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#" } }, [
+              _vm._v("Total Fans "),
+              _c("span", { staticClass: "pull-right badge bg-aqua" }, [
+                _vm._v(_vm._s(_vm._f("currency")(_vm.page.total_page_likes)))
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#" } }, [
+              _vm._v("Total Reactions "),
+              _c("span", { staticClass: "pull-right badge bg-green" }, [
+                _vm._v(_vm._s(_vm._f("currency")(_vm.reactions)))
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#" } }, [
+              _vm._v("Total Interactions "),
+              _c("span", { staticClass: "pull-right badge bg-green" }, [
+                _vm._v(_vm._s(_vm._f("currency")(_vm.interactions)))
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#" } }, [
+              _vm._v("Average Posts/Day "),
+              _c("span", { staticClass: "pull-right badge bg-yellow" }, [
+                _vm._v(
+                  _vm._s(_vm._f("currency")(_vm.page.average_posts_per_day))
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#" } }, [
+              _vm._v("Average Reactions/Post "),
+              _c("span", { staticClass: "pull-right badge bg-yellow" }, [
+                _vm._v(
+                  _vm._s(
+                    _vm._f("currency")(_vm.page.average_reactions_per_post)
+                  )
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#" } }, [
+              _vm._v("Average Interactions/Post "),
+              _c("span", { staticClass: "pull-right badge bg-yellow" }, [
+                _vm._v(
+                  _vm._s(
+                    _vm._f("currency")(_vm.page.average_interactions_per_post)
+                  )
+                )
+              ])
             ])
           ])
         ])
       ])
-    ])
-  ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
@@ -20782,6 +20803,642 @@ Object.defineProperties(__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype, {
         }
     }
 });
+
+/***/ }),
+/* 65 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global_instagram_box_profile__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(4);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    name: 'Page_Instagram__Index',
+    components: {
+        'box-instagram-profile': __WEBPACK_IMPORTED_MODULE_0__global_instagram_box_profile__["a" /* default */]
+    },
+    data: function data() {
+        return {
+            instagramProfileLink: String.empty,
+            orderBy: 1
+        };
+    },
+
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["c" /* mapState */])('instagram', ['lstInstagramProfileAnalytics'])),
+    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapActions */])('instagram', ['createNewInstagramProfile', 'getListInstagramProfileAnalytics']), {
+        _createNewInstagramProfile: function _createNewInstagramProfile() {
+            var _this = this;
+
+            this.createNewInstagramProfile(this.instagramProfileLink).then(function (response) {
+                _this.getListInstagramProfileAnalytics();
+            });
+        }
+    }),
+    beforeCreate: function beforeCreate() {
+        this.$store.dispatch('instagram/getListInstagramProfileAnalytics');
+    },
+    created: function created() {}
+});
+
+/***/ }),
+/* 66 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__ = __webpack_require__(65);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_ee9ff668_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_ee9ff668_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_ee9ff668_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/page/instagram/index.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ee9ff668", Component.options)
+  } else {
+    hotAPI.reload("data-v-ee9ff668", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "fanpage-wrapper" } }, [
+    _c("div", { staticClass: "box" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "box-body" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.instagramProfileLink,
+              expression: "instagramProfileLink"
+            }
+          ],
+          staticClass: "form-control",
+          staticStyle: { width: "400px", display: "inline-block" },
+          attrs: { type: "text", placeholder: "Link to instagram profile" },
+          domProps: { value: _vm.instagramProfileLink },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.instagramProfileLink = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "btn btn-primary",
+          staticStyle: {
+            display: "inline-block",
+            "margin-top": "-5px",
+            "padding-left": "10px",
+            "padding-right": "10px"
+          },
+          attrs: { type: "button", value: "Add" },
+          on: { click: _vm._createNewInstagramProfile }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "box" }, [
+      _vm._m(1),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "box-body" },
+        _vm._l(_vm.lstInstagramProfileAnalytics, function(instagramProfile) {
+          return _c(
+            "div",
+            { key: instagramProfile.account_id, staticClass: "col-md-4" },
+            [
+              _c("box-instagram-profile", {
+                attrs: { profile: instagramProfile }
+              })
+            ],
+            1
+          )
+        })
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-header with-border" }, [
+      _c("h3", { staticClass: "box-title" }, [
+        _vm._v("Add new instagram profile")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-header with-border" }, [
+      _c("h3", { staticClass: "box-title" }, [_vm._v("Data Analytics")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "box-tools" }, [
+        _c(
+          "a",
+          { staticClass: "btn btn-box-tool", attrs: { title: "Fetching" } },
+          [_c("i", { staticClass: "fa fa-download" }), _vm._v(" Analytics")]
+        )
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-ee9ff668", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
+
+/***/ }),
+/* 68 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__state__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__getters__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mutations__ = __webpack_require__(73);
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    namespaced: true,
+    state: __WEBPACK_IMPORTED_MODULE_0__state__["a" /* default */],
+    actions: __WEBPACK_IMPORTED_MODULE_1__actions__["a" /* default */],
+    getters: __WEBPACK_IMPORTED_MODULE_2__getters__["a" /* default */],
+    mutations: __WEBPACK_IMPORTED_MODULE_3__mutations__["a" /* default */]
+});
+
+/***/ }),
+/* 69 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    lstInstagramProfileAnalytics: [],
+    instagramProfile: {
+        id: 0,
+        instagram_id: 0,
+        name: String.empty,
+        user_name: String.empty,
+        picture: String.empty,
+        link: String.empty,
+        website: 0,
+        biography: String.empty,
+        followers_count: 0,
+        follows_count: 0,
+        media_counts: 0
+    }
+});
+
+/***/ }),
+/* 70 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__http_http__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__endpoint__ = __webpack_require__(71);
+
+
+
+var getListInstagramProfileAnalytics = function getListInstagramProfileAnalytics(_ref) {
+    var commit = _ref.commit,
+        state = _ref.state;
+
+    Object(__WEBPACK_IMPORTED_MODULE_0__http_http__["b" /* get */])(__WEBPACK_IMPORTED_MODULE_1__endpoint__["a" /* endPoint */].GET.GET_LIST_INSTAGRAM_PROFILE_ANALYTICS).then(function (response) {
+        commit('GET_LIST_INSTAGRAM_PROFILE_ANALYTICS', response.data);
+    });
+};
+
+var analyticsInstagramProfile = function analyticsInstagramProfile(event, instagram_analytics_id) {
+    return new Promise(function (resolve, reject) {
+        Object(__WEBPACK_IMPORTED_MODULE_0__http_http__["c" /* post */])(__WEBPACK_IMPORTED_MODULE_1__endpoint__["a" /* endPoint */].POST.ANALYTICS_INSTAGRAM_PROFILE, { id: instagram_analytics_id }).then(function (response) {
+            resolve(response.data);
+        });
+    });
+};
+
+var createNewInstagramProfile = function createNewInstagramProfile(event, instagram_link) {
+    return new Promise(function (resolve, reject) {
+        Object(__WEBPACK_IMPORTED_MODULE_0__http_http__["c" /* post */])(__WEBPACK_IMPORTED_MODULE_1__endpoint__["a" /* endPoint */].POST.CREATE_NEW_INSTAGRAM_PROFILE, { instagram_link: instagram_link }).then(function (response) {
+            resolve(response.data);
+        });
+    });
+};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    getListInstagramProfileAnalytics: getListInstagramProfileAnalytics,
+    createNewInstagramProfile: createNewInstagramProfile,
+    analyticsInstagramProfile: analyticsInstagramProfile
+});
+
+/***/ }),
+/* 71 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return endPoint; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__http_http__ = __webpack_require__(12);
+
+
+var endPoint = {
+    GET: {
+        GET_LIST_INSTAGRAM_PROFILE_ANALYTICS: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/instagram/get-list-instagram-profile-analytics'
+    },
+    POST: {
+        CREATE_NEW_INSTAGRAM_PROFILE: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/instagram/create-new-instagram-profile',
+        ANALYTICS_INSTAGRAM_PROFILE: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/instagram/analytics-instagram-profile'
+    }
+};
+
+/***/ }),
+/* 72 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var lstInstagramProfileAnalytics = function lstInstagramProfileAnalytics(state) {
+    return state.lstInstagramProfileAnalytics;
+};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    lstInstagramProfileAnalytics: lstInstagramProfileAnalytics
+});
+
+/***/ }),
+/* 73 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var GET_LIST_INSTAGRAM_PROFILE_ANALYTICS = function GET_LIST_INSTAGRAM_PROFILE_ANALYTICS(state, data) {
+    state.lstInstagramProfileAnalytics = data;
+};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    GET_LIST_INSTAGRAM_PROFILE_ANALYTICS: GET_LIST_INSTAGRAM_PROFILE_ANALYTICS
+});
+
+/***/ }),
+/* 74 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(4);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    name: 'G_BoxInstagramProfile',
+    props: {
+        profile: {
+            id: 0,
+            instagram_id: 0,
+            name: String.empty,
+            user_name: String.empty,
+            link: String.empty,
+            picture: String.empty,
+            website: 0,
+            biography: String.empty,
+            followers_count: 0,
+            follows_count: 0,
+            media_counts: 0
+        }
+    },
+    data: function data() {
+        return {
+            boxLoading: false
+        };
+    },
+
+    computed: {
+        getBackgroundBoxHeader: function getBackgroundBoxHeader() {
+            var bgColors = ['bg-blue', 'bg-aqua', 'bg-green', 'bg-yellow', 'bg-red'];
+            return bgColors[Math.floor(Math.random() * bgColors.length)];
+        }
+    },
+    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('instagram', ['analyticsInstagramProfile']), {
+        boxAnalyticsInstagramProfile: function boxAnalyticsInstagramProfile() {
+            var _this = this;
+
+            this.makeBoxLoading();
+            this.analyticsInstagramProfile(this.profile.id).then(function (response) {
+                Object.assign(_this.profile, response);
+                _this.makeBoxLoaded();
+            });
+        },
+        makeBoxLoading: function makeBoxLoading() {
+            this.boxLoading = true;
+        },
+        makeBoxLoaded: function makeBoxLoaded() {
+            this.boxLoading = false;
+        }
+    }),
+    created: function created() {}
+});
+
+/***/ }),
+/* 75 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_box_profile_vue__ = __webpack_require__(74);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_e3d75efa_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_box_profile_vue__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_box_profile_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_e3d75efa_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_box_profile_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_e3d75efa_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_box_profile_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/global/instagram/box_profile.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-e3d75efa", Component.options)
+  } else {
+    hotAPI.reload("data-v-e3d75efa", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 76 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "box box-widget widget-user-2 box-instagram" },
+    [
+      _vm.boxLoading
+        ? _c("div", { staticClass: "widget-loading" }, [_vm._m(0)])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "widget-user-control" }, [
+        _c("a", { attrs: { href: "javascript:void(0)" } }, [
+          _c("i", {
+            staticClass: "fa fa-download",
+            on: { click: _vm.boxAnalyticsInstagramProfile }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "widget-user-header min-height-150",
+          class: _vm.getBackgroundBoxHeader
+        },
+        [
+          _c("div", { staticClass: "widget-user-image" }, [
+            _c("img", {
+              staticClass: "img-circle",
+              attrs: { src: _vm.profile.picture, alt: _vm.profile.name }
+            }),
+            _vm._v(" "),
+            _c("h3", { staticClass: "widget-user-username" }, [
+              _vm._v(_vm._s(_vm.profile.name))
+            ]),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticStyle: { color: "white", display: "block" },
+                attrs: { href: _vm.profile.link }
+              },
+              [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "widget-user-desc",
+                    staticStyle: {
+                      "word-break": "break-all",
+                      "font-size": "11px"
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.profile.link))]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticStyle: { color: "white", display: "block" },
+                attrs: { href: _vm.profile.website }
+              },
+              [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "widget-user-desc",
+                    staticStyle: {
+                      "word-break": "break-all",
+                      "font-size": "11px"
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.profile.website))]
+                )
+              ]
+            )
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "box-footer no-padding" }, [
+        _c("ul", { staticClass: "nav nav-stacked" }, [
+          _c("li", [
+            _c("a", { attrs: { href: "#" } }, [
+              _vm._v("Total Media: "),
+              _c("span", { staticClass: "pull-right badge bg-blue" }, [
+                _vm._v(_vm._s(_vm._f("currency")(_vm.profile.media_counts)))
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "#" } }, [
+              _vm._v("Total Followers "),
+              _c("span", { staticClass: "pull-right badge bg-aqua" }, [
+                _vm._v(_vm._s(_vm._f("currency")(_vm.profile.followers_count)))
+              ])
+            ])
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [_c("i", { staticClass: "fa fa-cog fa-spin fa-3x fa-fw" })])
+  }
+]
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-e3d75efa", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
 
 /***/ })
 /******/ ]);

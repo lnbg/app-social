@@ -18,6 +18,10 @@ Route::get('/facebook/get-list-facebook-page-analytics', 'FacebookAnalyticsContr
 
 Route::post('/facebook/analytics-facebook-page', 'FacebookAnalyticsController@analyticsFacebookPage');
 Route::post('/facebook/create-new-facebook-page', 'FacebookAnalyticsController@createNewFacebookPage');
+
+Route::get('/instagram/get-list-instagram-profile-analytics', 'InstagramAnalyticsController@getListInstagramProfilesAnalytics');
+Route::post('/instagram/analytics-instagram-profile', 'InstagramAnalyticsController@analyticsInstagramProfile');
+Route::post('/instagram/create-new-instagram-profile', 'InstagramAnalyticsController@createNewInstagramProfile');
 // Debug
 Route::get('/debug', 'FacebookAnalyticsController@debug');
 Route::get('/instagram/debug', 'InstagramAnalyticsController@debug');

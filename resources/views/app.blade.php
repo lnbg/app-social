@@ -327,8 +327,8 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="/#/facebook/page"><i class="fa fa-circle-o"></i> Page</a></li>
-                        <li><a href="/facebook/profile"><i class="fa fa-circle-o"></i> Profile</a></li>
+                        <li class="active"><a href="/#/facebook/page"><i class="fa fa-circle-o"></i> Facebook</a></li>
+                        <li><a href="/#/instagram"><i class="fa fa-circle-o"></i> Instagram</a></li>
                     </ul>
                 </li>
             </ul>

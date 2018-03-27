@@ -64,18 +64,12 @@ class KolsFetchingFacebookPage extends Command
     public function handle()
     {
         $facebookAnalytics = FacebookAnalytics::where('account_type', '=', 1)->get();
+        $this->line("fetching facebook page data: " . date('Y-m-d'));
+        $this->line("truncate table facebook posts");
         FacebookPost::truncate();
-        $this->line("date: " . date('Y-m-d'));
         foreach ($facebookAnalytics as $page) {
             $this->line("Fetching data of page: " . $page->account_name);
             $result = $this->analyticsFacebookPage($this->laravelFacebookSDK, $page->id);
-            $times = 0;
-            while(!$result && $times < 2) {
-                $this->line("page: " . $page->account_name . " error: " . $times + 1);
-                FacebookPost::where('facebook_analytics_id', '=', $page->id)->delete();
-                $result =  $this->analyticsFacebookPage($this->laravelFacebookSDK, $page->id);
-                $times++;
-            }
             $this->line("page: " . $page->account_name . " done!");
         }
     }
@@ -88,12 +82,14 @@ class KolsFetchingFacebookPage extends Command
         // Meta data
         $facebookAnalytics = FacebookAnalytics::find($id);
         $now = date('Y-m-d');
-        $effectiveDate = date('Y-m-d', strtotime($now . "-3 months"));
+        // get data facebook from one day ago.
+        $effectiveDate = date('Y-m-d', strtotime($now . '-3 months'));
         //retrive yesterday's date in the format 9999-99-99
         $facebookFanpageLink = explode('/', $facebookAnalytics->account_link);
         $facebookPageName = $facebookFanpageLink[3];
+        // store all post from one day ago
         $postsStorage = [];
-        $accountActivedDate = date('Y-m-d');
+        // init analytics data need get
         $analyticsData = [
             'total_posts' => 0,
             'total_page_likes' => 0,
@@ -108,17 +104,19 @@ class KolsFetchingFacebookPage extends Command
             'total_posts_comments' => 0,
             'total_posts_thankfuls' => 0
         ];            
-        // get followers
+        // get facebook page followers
         $client = new Client();
         $crawler = $client->request('GET', 'https://www.facebook.com/' . $facebookPageName);
         $nodeFollowers = $crawler->filter('div._4bl9')->eq(2)->extract(array('_text', 'class', 'href'));
         $analyticsData['total_page_followers'] = intval(preg_replace( '/[^0-9]/', '', $nodeFollowers[0][0]));
-
+        
+        // get all posts of page from one day ago.
         $now = date('Y-m-d');
         $dteNow = new DateTime($now);
         $dteEffective = new DateTime($effectiveDate);
+        // diffdays = 1 for commands
         $diffDays = $dteNow->diff($dteEffective)->days;
-
+        // get all posts from one day ago
         $this->facebookHelper->facebookFanpageGetPostByURI($laravelFacebookSDK, $facebookAnalytics->id, 
             $user->access_token, $facebookPageName, $analyticsData, $postsStorage, $effectiveDate);
             
@@ -163,9 +161,7 @@ class KolsFetchingFacebookPage extends Command
         $facebookAnalytics->average_reactions_per_post = round($reactions / $facebookAnalytics->total_days, 2);
         $facebookAnalytics->average_interactions_per_post = round($interactions / $facebookAnalytics->total_days, 2);
         $facebookAnalytics->save();
-        
         FacebookPost::insert($postsStorage);
-
         return true;
         
     }
