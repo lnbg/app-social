@@ -5,6 +5,7 @@ export const endPoint = {
         LIST_FACEBOOK_PAGE_ANALYTICS: `${API_DOMAIN}/facebook/get-list-facebook-page-analytics`
     },
     POST: {
-        ANALYTICS_FACEBOOK_PAGE: `${API_DOMAIN}/facebook/analytics_facebook_page`
+        CREATE_NEW_FACEBOOK_PAGE: `${API_DOMAIN}/facebook/create-new-facebook-page`,
+        ANALYTICS_FACEBOOK_PAGE: `${API_DOMAIN}/facebook/analytics-facebook-page`
     }
 }

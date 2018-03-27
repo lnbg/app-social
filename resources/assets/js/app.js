@@ -5,6 +5,7 @@ import VueAxios from 'vue-axios'
 import store from './vuex/store.js'
 import Numeral from 'numeral'
 import VueMixins from './mixins/mixins'
+import { EventBus } from './global/event-bus'
 // router setup
 import routes from './routes/routes'
 // library imports
@@ -41,4 +42,5 @@ new Vue({
     el: '#app',
     render: h => h(App),
     router,
+    EventBus,
 })

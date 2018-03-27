@@ -16,9 +16,8 @@ Route::get('/', 'AppController@index');
 
 Route::get('/facebook/get-list-facebook-page-analytics', 'FacebookAnalyticsController@getListFacebookPageAnalytics');
 
-
-Route::post('/facebook/analytics_facebook_page', 'FacebookAnalyticsController@analyticsFacebookPage');
-
-
+Route::post('/facebook/analytics-facebook-page', 'FacebookAnalyticsController@analyticsFacebookPage');
+Route::post('/facebook/create-new-facebook-page', 'FacebookAnalyticsController@createNewFacebookPage');
 // Debug
 Route::get('/debug', 'FacebookAnalyticsController@debug');
+Route::get('/instagram/debug', 'InstagramAnalyticsController@debug');

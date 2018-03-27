@@ -5,13 +5,29 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\FacebookAnalytics;
+use App\Models\FacebookPost;
+use App\Models\FacebookFan;
 use DateTime;
 use SammyK\LaravelFacebookSdk\LaravelFacebookSdk as LaravelFacebookSDK;
 use Goutte\Client;
 use GuzzleHttp\Client as Client2;
+use App\Helpers\FacebookHelper;
 
 class FacebookAnalyticsController extends Controller
 {
+
+    /**
+     * Facebook Helpers
+     *
+     * @var FacebookHelper
+     */
+    protected $facebookHelper;
+    
+    public function __construct(FacebookHelper $facebookHelper) 
+    {
+        $this->facebookHelper = $facebookHelper;
+    }
+
     /**
      * get all records of table facebook_analytics
      */
@@ -21,7 +37,7 @@ class FacebookAnalyticsController extends Controller
         return response()->json($listFacebookPageAnalytics, 200);
     }
     
-    public function addNewFacebookPage(LaravelFacebookSDK $laravelFacebookSDK, Request $request)
+    public function createNewFacebookPage(LaravelFacebookSDK $laravelFacebookSDK, Request $request)
     {
         try {
             $accessToken = $user = User::first()->access_token;
@@ -31,13 +47,13 @@ class FacebookAnalyticsController extends Controller
             $defaultURI = '/' . $facebookFanpageName;
             $posts = $laravelFacebookSDK->sendRequest('GET', $defaultURI, ['fields' => 'name,picture'], $accessToken);
             $posts = $posts->getDecodedBody();
-            FacebookAnalytics::create([
+            $new = FacebookAnalytics::create([
                 'account_id' => $posts['id'],
                 'account_name' => $posts['name'],
                 'account_link' => $request->page_link,
                 'account_picture' => $posts['picture']['data']['url']
             ]);
-            return redirect('/facebook/fanpage');
+            return response()->json($new, 200);
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
@@ -46,161 +62,105 @@ class FacebookAnalyticsController extends Controller
 
     public function analyticsFacebookPage(LaravelFacebookSDK $laravelFacebookSDK, Request $request)
     {
-        try {
+        // try {
             // get request data
             $user = User::first(); // get user to get access token
             $id = $request->id;
             // Meta data
             $facebookAnalytics = FacebookAnalytics::find($id);
             $now = date('Y-m-d');
-            $effectiveDate = date('Y-m-d', strtotime($now . "-3 months") );
+            $effectiveDate = date('Y-m-d', strtotime($now . "-3 months"));
             //retrive yesterday's date in the format 9999-99-99
             $facebookFanpageLink = explode('/', $facebookAnalytics->account_link);
             $facebookPageName = $facebookFanpageLink[3];
-            $posts = [];
-            $totalPosts = 0;
+            $postsStorage = [];
             $accountActivedDate = date('Y-m-d');
-            $totalPostsLikes = 0;
-            $totalPostsComments = 0;
-            $totalPageFollowers = 0;
-            $totalPageLikes = 0;
+            $analyticsData = [
+                'total_posts' => 0,
+                'total_page_likes' => 0,
+                'total_page_followers' => 0,
+                'total_posts_likes' => 0,
+                'total_posts_loves' => 0,
+                'total_posts_hahas' => 0,
+                'total_posts_wows' => 0,
+                'total_posts_sads' => 0,
+                'total_posts_angries' => 0,
+                'total_posts_shares' => 0,
+                'total_posts_comments' => 0,
+                'total_posts_thankfuls' => 0
+            ];            
             // get followers
-            $totalPageFollowers = 0;
             $client = new Client();
             $crawler = $client->request('GET', 'https://www.facebook.com/' . $facebookPageName);
             $nodeFollowers = $crawler->filter('div._4bl9')->eq(2)->extract(array('_text', 'class', 'href'));
-            $totalPageFollowers = intval(preg_replace( '/[^0-9]/', '', $nodeFollowers[0][0]));
-            $now = date('Y-m-d');
-            $dteStart = new DateTime($now);
-            self::facebookFanpageGetPostByURI($laravelFacebookSDK, $user->access_token, $facebookPageName, $posts, 
-                null, $totalPosts, $totalPostsLikes, $totalPostsComments, $effectiveDate);
-            $allKeyOfData = array_keys($posts);
-            $accountActivedDate = end($allKeyOfData);
-            $dteEnd = new DateTime($accountActivedDate);
-            $diffDays = $dteStart->diff($dteEnd)->days;
-            // get page likes
-            $totalPageLikes = self::getPageLikes($laravelFacebookSDK, $user->access_token, $facebookPageName);
-            $response = [
-                'name' => $facebookPageName,
-                'accountActivedDate' => $accountActivedDate,
-                'totalPageLikes' => $totalPageLikes,
-                'totalFollowers' => $totalPageFollowers,
-                'totalPosts' => $totalPosts,
-                'totalDays' => $diffDays,
-                'totalPostsLikes' => $totalPostsLikes,
-                'totalPostsComments' => $totalPostsComments,
-                'averagePostsPerDay' => $totalPosts / $diffDays,
-                'averageLikesPerPost' => intval($totalPostsLikes / $diffDays),
-                'averageCommentsPerPost' => intval($totalPostsComments / $diffDays)
-            ];
-            $facebookAnalytics->account_created_date = $accountActivedDate;
-            $facebookAnalytics->total_likes = $totalPageLikes;
-            $facebookAnalytics->total_posts = $totalPosts;
-            $facebookAnalytics->total_followers = $totalPageFollowers;
-            $facebookAnalytics->total_days = $diffDays;
-            $facebookAnalytics->total_likes_posts = $totalPostsLikes;
-            $facebookAnalytics->average_posts_per_day = round($totalPosts / $diffDays, 2);
-            $facebookAnalytics->average_likes_per_post = round($totalPostsLikes / $diffDays, 2);
-            $facebookAnalytics->average_comments_per_post = round($totalPostsComments / $diffDays, 2);
-            $facebookAnalytics->save();
-            return response()->json($facebookAnalytics, 200);
-        } catch (\Exception $e) {
-            return response()->json($facebookAnalytics, 500);
-        }
-    }
+            $analyticsData['total_page_followers'] = intval(preg_replace( '/[^0-9]/', '', $nodeFollowers[0][0]));
 
+            $now = date('Y-m-d');
+            $dteNow = new DateTime($now);
+            $dteEffective = new DateTime($effectiveDate);
+            $diffDays = $dteNow->diff($dteEffective)->days;
+
+            $this->facebookHelper->facebookFanpageGetPostByURI($laravelFacebookSDK, $facebookAnalytics->id, 
+                $user->access_token, $facebookPageName, $analyticsData, $postsStorage, $effectiveDate);
+                
+            // get page likes
+            $analyticsData['total_page_likes'] = $this->facebookHelper->getPageLikes($laravelFacebookSDK, $user->access_token, $facebookPageName);
+            
+            $facebookFan = FacebookFan::where(
+                [
+                    ['facebook_analytics_id', '=', $facebookAnalytics->id],
+                    ['date_sync', '=', $now]
+                ])->first();
+            if (empty($facebookFan)) {
+                FacebookFan::create([
+                    'facebook_analytics_id' => $facebookAnalytics->id,
+                    'facebook_fans' => $analyticsData['total_page_likes'],
+                    'date_sync' => $now,
+                ]);
+            } else {
+                $facebookFan->facebook_fans = $analyticsData['total_page_likes'];
+                $facebookFan->save();
+            }
+
+            $facebookAnalytics->total_posts = $analyticsData['total_posts'];
+            $facebookAnalytics->total_page_likes = $analyticsData['total_page_likes'];
+            $facebookAnalytics->total_page_followers = $analyticsData['total_page_followers'];
+            $facebookAnalytics->total_days = $diffDays;
+            $facebookAnalytics->total_posts_likes = $analyticsData['total_posts_likes'];
+            $facebookAnalytics->total_posts_shares = $analyticsData['total_posts_shares'];
+            $facebookAnalytics->total_posts_comments = $analyticsData['total_posts_comments'];
+            $facebookAnalytics->total_posts_hahas = $analyticsData['total_posts_hahas'];
+            $facebookAnalytics->total_posts_wows = $analyticsData['total_posts_wows'];
+            $facebookAnalytics->total_posts_loves = $analyticsData['total_posts_loves'];
+            $facebookAnalytics->total_posts_sads = $analyticsData['total_posts_sads'];
+            $facebookAnalytics->total_posts_thankfuls = $analyticsData['total_posts_thankfuls'];
+            $facebookAnalytics->total_posts_angries = $analyticsData['total_posts_angries'];
+            $facebookAnalytics->average_posts_per_day = round($facebookAnalytics->total_posts / $facebookAnalytics->total_days, 2);
+            $reactions = $facebookAnalytics->total_posts_likes + $facebookAnalytics->total_posts_hahas + 
+                         $facebookAnalytics->total_posts_wows + $facebookAnalytics->total_posts_loves + 
+                         $facebookAnalytics->total_posts_sads + $facebookAnalytics->total_posts_angries;
+                         
+            $interactions = $reactions + $facebookAnalytics->total_posts_shares + $facebookAnalytics->total_posts_comments + $facebookAnalytics->total_posts_thankfuls;
+            $facebookAnalytics->average_reactions_per_post = round($reactions / $facebookAnalytics->total_days, 2);
+            $facebookAnalytics->average_interactions_per_post = round($interactions / $facebookAnalytics->total_days, 2);
+            $facebookAnalytics->save();
+            
+            FacebookPost::where('facebook_analytics_id', '=', $facebookAnalytics->id)->delete();
+            FacebookPost::insert($postsStorage);
+            
+            return response()->json($facebookAnalytics, 200);
+            
+        // } catch (\Exception $e) {
+        //     return response()->json($ex, 500);
+        // }
+    }
+    
     public function debug(LaravelFacebookSDK $laravelFacebookSDK, Request $request)
     {
-        // $client = new Client2(['base_uri' => 'https://www.facebook.com/']);
-        // $response = $client->request('GET', 'mytamsinger1981');
-        // $body = $response->getBody();
-        // $stringBody = (string) $body;
-        // dd($stringBody);
-        //https://graph.facebook.com/v2.6/pagename/insights/page_fans_country/lifetime?&since=yyy-mm-dd&until=yyyy-mm-dd&access_token=xxx
-        // make default uri posts
         $user = User::first();
         $defaultURI = '/1124060737634509/insights';
         $posts = $laravelFacebookSDK->sendRequest('GET', $defaultURI, 
         ['limit' => 100, 'since' => '2018-02-12', 'until' => '2018-03-12'], $user->access_token);
         dd($posts);
-    }
-
-    private static function facebookFanpageGetPostByURI(LaravelFacebookSDK $laravelFacebookSDK, 
-        $accessToken, $facebookPageName, &$data, $currentKey, 
-        &$totalPosts, &$totalPostsLikes, &$totalPostsComments, $since)
-    {
-        try {
-            // make default uri posts
-            $defaultURI = '/' . $facebookPageName . '/posts';
-            
-            $posts = $laravelFacebookSDK->sendRequest('GET', $defaultURI, 
-                ['limit' => 100, 'since' => $since, 
-                'fields' => 'created_time, comments.summary(true),likes.summary(true)'], $accessToken);
-            $posts = $posts->getGraphEdge();
-
-            self::getMetaDataPostOfFanpage($laravelFacebookSDK, $accessToken, $posts, $data,
-                $currentKey, $totalPosts, $totalPostsLikes, $totalPostsComments);
-
-            if (isset($posts->getMetaData()['paging']['next'])) {
-                $next = $posts->getMetaData()['paging']['next'];
-            }
-
-            while (isset($next)) {
-                $posts = $laravelFacebookSDK->next($posts);
-                if (isset($posts->getMetaData()['paging']['next'])) {
-                    $next = $posts->getMetaData()['paging']['next'];
-                } else {
-                    $next = null;
-                }
-                if (isset($posts) && count($posts) > 0) {
-                    $fetchStatus = self::getMetaDataPostOfFanpage($laravelFacebookSDK, $accessToken, $posts, $data,
-                        $currentKey, $totalPosts, $totalPostsLikes, $totalPostsComments);
-                    if ($fetchStatus == -1) {
-                        $next = null;
-                    }
-                }
-            }
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            dd($e->getMessage());
-        }
-    }
-
-    private static function getMetaDataPostOfFanpage(LaravelFacebookSDK $laravelFacebookSDK, $accessToken, $posts, 
-        &$data, &$currentKey, &$totalPosts, &$totalPostsLikes, &$totalPostsComments) 
-    {
-        try {
-            foreach ($posts as $item) {
-                $totalPosts++;
-                $likes = $item['likes'];
-                $totalPostsLikes += $likes->getMetaData()['summary']['total_count'];
-
-                $comments = $item['comments'];
-                $totalPostsComments += $comments->getMetaData()['summary']['total_count'];
-
-                $date = json_decode(json_encode($item['created_time']))->date;
-                if (isset($currentKey)) {
-                    $newKey = date("Y-m-d", strtotime($date));
-                    if ($newKey != $currentKey) {
-                        $data[$newKey] = 1;
-                        $currentKey = $newKey;
-                    } else {
-                        $data[$currentKey]++;
-                    }
-                } else {
-                    $newKey = date("Y-m-d", strtotime($date));
-                    $data[$newKey] = 1;
-                    $currentKey = $newKey;
-                }
-            }
-        } catch(Facebook\Exceptions\FacebookSDKException $e) {
-            return -1;
-        }
-    }
-
-    private static function getPageLikes(LaravelFacebookSDK $laravelFacebookSDK, $accessToken, $facebookPageName)
-    {
-        $defaultURIpageLikeFacebookAPI = '/' . $facebookPageName . '?fields=fan_count';
-        $likes = $laravelFacebookSDK->get($defaultURIpageLikeFacebookAPI, $accessToken);
-        return $likes->getDecodedBody()['fan_count'];
     }
 }

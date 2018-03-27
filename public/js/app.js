@@ -13087,7 +13087,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
 
 
 
@@ -13098,11 +13097,32 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         'box-facebook-page': __WEBPACK_IMPORTED_MODULE_1__global_facebook_box_page__["a" /* default */]
     },
     data: function data() {
-        return {};
+        return {
+            facebookPageLink: String.empty,
+            orderBy: 1
+        };
     },
 
     computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('facebook', ['lstFacebookPageAnalytics'])),
-    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('facebook', [])),
+    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('facebook', ['createNewFacebookPage', 'getListFacebookPageAnalytics']), {
+        createNewPage: function createNewPage() {
+            var _this = this;
+
+            this.createNewFacebookPage(this.facebookPageLink).then(function (response) {
+                _this.getListFacebookPageAnalytics();
+            });
+        },
+        analyticsAll: function analyticsAll() {
+            this.$bus.$emit('analyticsAll');
+        },
+        orderByFollowers: function orderByFollowers() {
+            var vue = this;
+            this.orderBy = this.orderBy * -1;
+            this.lstFacebookPageAnalytics.sort(function (obj1, obj2) {
+                return vue.orderBy * (obj2.total_page_followers - obj1.total_page_followers);
+            });
+        }
+    }),
     beforeCreate: function beforeCreate() {
         this.$store.dispatch('facebook/getListFacebookPageAnalytics');
     },
@@ -13145,6 +13165,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -13158,10 +13191,20 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             account_picture: String.empty,
             account_link: String.empty,
             total_posts: 0,
-            total_followers: 0,
-            total_likes: 0,
+            total_page_followers: 0,
+            total_page_likes: 0,
+            total_posts_likes: 0,
+            total_posts_loves: 0,
+            total_posts_wows: 0,
+            total_posts_sads: 0,
+            total_posts_hahas: 0,
+            total_posts_angries: 0,
+            total_posts_shares: 0,
+            total_posts_comments: 0,
+            total_posts_thankfuls: 0,
             average_posts_per_day: 0,
-            average_likes_per_post: 0
+            average_reactions_per_post: 0,
+            average_intereactions_per_post: 0
         }
     },
     data: function data() {
@@ -13174,6 +13217,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         getBackgroundBoxHeader: function getBackgroundBoxHeader() {
             var bgColors = ['bg-blue', 'bg-aqua', 'bg-green', 'bg-yellow', 'bg-red'];
             return bgColors[Math.floor(Math.random() * bgColors.length)];
+        },
+        reactions: function reactions() {
+            return this.page.total_posts_likes + this.page.total_posts_loves + this.page.total_posts_wows + this.page.total_posts_sads + this.page.total_posts_hahas + this.page.total_posts_angries;
+        },
+        interactions: function interactions() {
+            return this.reactions + this.page.total_posts_shares + this.page.total_posts_comments + this.page.total_posts_thankfuls;
         }
     },
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('facebook', ['analyticsFacebookPage']), {
@@ -13182,7 +13231,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             this.makeBoxLoading();
             this.analyticsFacebookPage(this.page.id).then(function (response) {
-                Object.assign(_this.page, response.data);
+                Object.assign(_this.page, response);
                 _this.makeBoxLoaded();
             });
         },
@@ -13192,7 +13241,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         makeBoxLoaded: function makeBoxLoaded() {
             this.boxLoading = false;
         }
-    })
+    }),
+    created: function created() {
+        var _this2 = this;
+
+        this.$bus.$on('analyticsAll', function () {
+            _this2.boxAnalyticsFacebookPage();
+        });
+    }
 });
 
 /***/ }),
@@ -13238,8 +13294,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_numeral__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_numeral___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_numeral__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mixins_mixins__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__routes_routes__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__App_vue__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__global_event_bus__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__routes_routes__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__App_vue__ = __webpack_require__(57);
+
 
 
 
@@ -13267,7 +13325,7 @@ __WEBPACK_IMPORTED_MODULE_2_axios___default.a.interceptors.response.use(function
 });
 // configure router
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
-    routes: __WEBPACK_IMPORTED_MODULE_7__routes_routes__["a" /* default */] // short for routes: routes
+    routes: __WEBPACK_IMPORTED_MODULE_8__routes_routes__["a" /* default */] // short for routes: routes
 });
 router.beforeEach(function (to, from, next) {
     next();
@@ -13282,9 +13340,10 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     store: __WEBPACK_IMPORTED_MODULE_4__vuex_store_js__["a" /* default */],
     el: '#app',
     render: function render(h) {
-        return h(__WEBPACK_IMPORTED_MODULE_8__App_vue__["a" /* default */]);
+        return h(__WEBPACK_IMPORTED_MODULE_9__App_vue__["a" /* default */]);
     },
-    router: router
+    router: router,
+    EventBus: __WEBPACK_IMPORTED_MODULE_7__global_event_bus__["a" /* EventBus */]
 });
 
 /***/ }),
@@ -17128,10 +17187,20 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
         account_picture: String.empty,
         account_link: String.empty,
         total_posts: 0,
-        total_followers: 0,
-        total_likes: 0,
+        total_page_followers: 0,
+        total_page_likes: 0,
+        total_posts_likes: 0,
+        total_posts_loves: 0,
+        total_posts_wows: 0,
+        total_posts_sads: 0,
+        total_posts_hahas: 0,
+        total_posts_angries: 0,
+        total_posts_shares: 0,
+        total_posts_comments: 0,
+        total_posts_thankfuls: 0,
         average_posts_per_day: 0,
-        average_likes_per_post: 0
+        average_reactions_per_post: 0,
+        average_intereactions_per_post: 0
     }
 });
 
@@ -17153,6 +17222,15 @@ var getListFacebookPageAnalytics = function getListFacebookPageAnalytics(_ref) {
         commit('GET_LIST_FACEBOOK_PAGE_ANALYTICS', response.data);
     });
 };
+
+var createNewFacebookPage = function createNewFacebookPage(event, facebook_link) {
+    return new Promise(function (resolve, reject) {
+        Object(__WEBPACK_IMPORTED_MODULE_0__http_http__["c" /* post */])(__WEBPACK_IMPORTED_MODULE_1__endpoint__["a" /* endPoint */].POST.CREATE_NEW_FACEBOOK_PAGE, { page_link: facebook_link }).then(function (response) {
+            resolve(response.data);
+        });
+    });
+};
+
 var analyticsFacebookPage = function analyticsFacebookPage(event, id) {
     return new Promise(function (resolve, reject) {
         Object(__WEBPACK_IMPORTED_MODULE_0__http_http__["c" /* post */])(__WEBPACK_IMPORTED_MODULE_1__endpoint__["a" /* endPoint */].POST.ANALYTICS_FACEBOOK_PAGE, { id: id }).then(function (response) {
@@ -17163,6 +17241,7 @@ var analyticsFacebookPage = function analyticsFacebookPage(event, id) {
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     getListFacebookPageAnalytics: getListFacebookPageAnalytics,
+    createNewFacebookPage: createNewFacebookPage,
     analyticsFacebookPage: analyticsFacebookPage
 });
 
@@ -17180,7 +17259,8 @@ var endPoint = {
         LIST_FACEBOOK_PAGE_ANALYTICS: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/facebook/get-list-facebook-page-analytics'
     },
     POST: {
-        ANALYTICS_FACEBOOK_PAGE: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/facebook/analytics_facebook_page'
+        CREATE_NEW_FACEBOOK_PAGE: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/facebook/create-new-facebook-page',
+        ANALYTICS_FACEBOOK_PAGE: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/facebook/analytics-facebook-page'
     }
 };
 
@@ -20381,18 +20461,36 @@ var render = function() {
         _vm._v(" "),
         _c("li", [
           _c("a", { attrs: { href: "#" } }, [
-            _vm._v("Total Followers "),
+            _vm._v("Total Page Followers "),
             _c("span", { staticClass: "pull-right badge bg-aqua" }, [
-              _vm._v(_vm._s(_vm._f("currency")(_vm.page.total_followers)))
+              _vm._v(_vm._s(_vm._f("currency")(_vm.page.total_page_followers)))
             ])
           ])
         ]),
         _vm._v(" "),
         _c("li", [
           _c("a", { attrs: { href: "#" } }, [
-            _vm._v("Total Likes "),
+            _vm._v("Total Fans "),
+            _c("span", { staticClass: "pull-right badge bg-aqua" }, [
+              _vm._v(_vm._s(_vm._f("currency")(_vm.page.total_page_likes)))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("a", { attrs: { href: "#" } }, [
+            _vm._v("Total Reactions "),
             _c("span", { staticClass: "pull-right badge bg-green" }, [
-              _vm._v(_vm._s(_vm._f("currency")(_vm.page.total_likes)))
+              _vm._v(_vm._s(_vm._f("currency")(_vm.reactions)))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("a", { attrs: { href: "#" } }, [
+            _vm._v("Total Interactions "),
+            _c("span", { staticClass: "pull-right badge bg-green" }, [
+              _vm._v(_vm._s(_vm._f("currency")(_vm.interactions)))
             ])
           ])
         ]),
@@ -20400,7 +20498,7 @@ var render = function() {
         _c("li", [
           _c("a", { attrs: { href: "#" } }, [
             _vm._v("Average Posts/Day "),
-            _c("span", { staticClass: "pull-right badge bg-red" }, [
+            _c("span", { staticClass: "pull-right badge bg-yellow" }, [
               _vm._v(_vm._s(_vm._f("currency")(_vm.page.average_posts_per_day)))
             ])
           ])
@@ -20408,10 +20506,23 @@ var render = function() {
         _vm._v(" "),
         _c("li", [
           _c("a", { attrs: { href: "#" } }, [
-            _vm._v("Average Likes/Post "),
+            _vm._v("Average Reactions/Post "),
             _c("span", { staticClass: "pull-right badge bg-yellow" }, [
               _vm._v(
-                _vm._s(_vm._f("currency")(_vm.page.average_likes_per_post))
+                _vm._s(_vm._f("currency")(_vm.page.average_reactions_per_post))
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("a", { attrs: { href: "#" } }, [
+            _vm._v("Average Interactions/Post "),
+            _c("span", { staticClass: "pull-right badge bg-yellow" }, [
+              _vm._v(
+                _vm._s(
+                  _vm._f("currency")(_vm.page.average_interactions_per_post)
+                )
               )
             ])
           ])
@@ -20449,10 +20560,76 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "fanpage-wrapper" } }, [
-    _vm._m(0),
+    _c("div", { staticClass: "box" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "box-body" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.facebookPageLink,
+              expression: "facebookPageLink"
+            }
+          ],
+          staticClass: "form-control",
+          staticStyle: { width: "400px", display: "inline-block" },
+          attrs: { type: "text", placeholder: "Link to page" },
+          domProps: { value: _vm.facebookPageLink },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.facebookPageLink = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "btn btn-primary",
+          staticStyle: {
+            display: "inline-block",
+            "margin-top": "-5px",
+            "padding-left": "10px",
+            "padding-right": "10px"
+          },
+          attrs: { type: "button", value: "Add" },
+          on: { click: _vm.createNewPage }
+        })
+      ])
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "box" }, [
-      _vm._m(1),
+      _c("div", { staticClass: "box-header with-border" }, [
+        _c("h3", { staticClass: "box-title" }, [_vm._v("Data Analytics")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "box-tools" }, [
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-box-tool",
+              attrs: { title: "Fetching" },
+              on: { click: _vm.analyticsAll }
+            },
+            [_c("i", { staticClass: "fa fa-download" }), _vm._v(" Analytics")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-box-tool",
+              attrs: { title: "Order by followers" },
+              on: { click: _vm.orderByFollowers }
+            },
+            [
+              _c("i", { staticClass: "fa fa-sort" }),
+              _vm._v(" Order by Followers")
+            ]
+          )
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "div",
@@ -20474,56 +20651,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "box" }, [
-      _c("div", { staticClass: "box-header with-border" }, [
-        _c("h3", { staticClass: "box-title" }, [_vm._v("Add new Page")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "box-body" }, [
-        _c(
-          "form",
-          { attrs: { action: "/facebook/add-new-page", method: "POST" } },
-          [
-            _c("input", {
-              staticClass: "form-control",
-              staticStyle: { width: "400px", display: "inline-block" },
-              attrs: {
-                type: "text",
-                name: "page_link",
-                id: "page_link",
-                placeholder: "Link to page"
-              }
-            }),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "btn btn-primary",
-              staticStyle: {
-                display: "inline-block",
-                "margin-top": "-5px",
-                "padding-left": "10px",
-                "padding-right": "10px"
-              },
-              attrs: { type: "submit", value: "Add" }
-            })
-          ]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "box-header with-border" }, [
-      _c("h3", { staticClass: "box-title" }, [_vm._v("Data Analytics")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "box-tools" }, [
-        _c(
-          "a",
-          { staticClass: "btn btn-box-tool", attrs: { title: "Fetching" } },
-          [_c("i", { staticClass: "fa fa-download" }), _vm._v(" Analytics")]
-        )
-      ])
+      _c("h3", { staticClass: "box-title" }, [_vm._v("Add new Page")])
     ])
   }
 ]
@@ -20630,6 +20759,29 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EventBus; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+
+var EventBus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
+
+Object.defineProperties(__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype, {
+    $bus: {
+        get: function get() {
+            return EventBus;
+        }
+    }
+});
 
 /***/ })
 /******/ ]);

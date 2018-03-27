@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7e0b88f7b1c3b5fdef4e77e02ca4394",
+    "content-hash": "958c8759ed22f6624fae0fb08821224a",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1676,6 +1676,55 @@
                 "sdk"
             ],
             "time": "2017-07-23T00:05:48+00:00"
+        },
+        {
+            "name": "smochin/instagram-php-crawler",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smochin/instagram-php-crawler.git",
+                "reference": "19fc12bc6162a9212a241c54973552cdbcef3de9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smochin/instagram-php-crawler/zipball/19fc12bc6162a9212a241c54973552cdbcef3de9",
+                "reference": "19fc12bc6162a9212a241c54973552cdbcef3de9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^6.2",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Smochin\\Instagram\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Jamerson Silva",
+                    "email": "jamersonweb@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple PHP Crawler for Instagram",
+            "homepage": "https://github.com/smochin/instagram-php-crawler",
+            "keywords": [
+                "crawler",
+                "http",
+                "instagram",
+                "php"
+            ],
+            "time": "2018-03-14T18:34:30+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

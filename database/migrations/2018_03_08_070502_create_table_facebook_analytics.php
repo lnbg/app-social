@@ -25,20 +25,28 @@ class CreateTableFacebookAnalytics extends Migration
     public function up()
     {
         Schema::create('facebook_analytics', function (Blueprint $table) {
-            /*
-            */
             $table->increments('id');
             $table->bigInteger('account_id');
             $table->string('account_name');
             $table->string('account_picture')->nullable();
             $table->string('account_link')->nullable();
+            $table->integer('account_type')->nullable()->default(1);
             $table->datetime('account_created_date')->nullable();
-            $table->integer('total_posts')->nullable()->default(0);
-            $table->integer('total_followers')->nullable()->default(0);
-            $table->integer('total_likes')->nullable()->default(0);
-            $table->integer('total_likes_posts')->nullable()->default(0);
+            $table->integer('total_page_posts')->nullable()->default(0);
+            $table->integer('total_page_followers')->nullable()->default(0);
+            $table->integer('total_page_likes')->nullable()->default(0);
+            $table->integer('total_posts_likes')->nullable()->default(0);
+            $table->integer('total_posts_shares')->nullable()->default(0);
+            $table->integer('total_posts_comments')->nullable()->default(0);
+            $table->integer('total_posts_hahas')->nullable()->default(0);
+            $table->integer('total_posts_wows')->nullable()->default(0);
+            $table->integer('total_posts_loves')->nullable()->default(0);
+            $table->integer('total_posts_sads')->nullable()->default(0);
+            $table->integer('total_posts_thankfuls')->nullable()->default(0);
+            $table->integer('total_posts_angries')->nullable()->default(0);
             $table->float('average_posts_per_day')->nullable()->default(0);
-            $table->float('average_likes_per_post')->nullable()->default(0);
+            $table->float('average_reactions_per_post')->nullable()->default(0);
+            $table->float('average_interactions_per_post')->nullable()->default(0);
             $table->time('best_of_publish_time')->nullable();
             $table->datetime('date_of_last_post')->nullable();
             $table->timestamps();

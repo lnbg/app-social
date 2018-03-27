@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\KolsFetchingFacebookPage::class
     ];
 
     /**
@@ -26,6 +26,11 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $file = 'storage/logs/kols_fetching_page.txt';
+        $schedule->command('kols:facebook_page')
+                ->timezone('Asia/Saigon')
+                ->dailyAt('03:00:00')
+                ->sendOutputTo($file);
     }
 
     /**
