@@ -62,7 +62,7 @@ class FacebookAnalyticsController extends Controller
 
     public function analyticsFacebookPage(LaravelFacebookSDK $laravelFacebookSDK, Request $request)
     {
-        // try {
+        try {
             // get request data
             $user = User::first(); // get user to get access token
             $id = $request->id;
@@ -150,9 +150,9 @@ class FacebookAnalyticsController extends Controller
             
             return response()->json($facebookAnalytics, 200);
             
-        // } catch (\Exception $e) {
-        //     return response()->json($ex, 500);
-        // }
+        } catch (\Exception $e) {
+            return response()->json($ex, 500);
+        }
     }
     
     public function debug(LaravelFacebookSDK $laravelFacebookSDK, Request $request)

@@ -71,6 +71,8 @@ class KolsFetchingFacebookPage extends Command
             $result = $this->analyticsFacebookPage($this->laravelFacebookSDK, $page->id);
             $times = 0;
             while(!$result && $times < 2) {
+                $this->line("page: " . $page->account_name . " error: " . $times + 1);
+                FacebookPost::where('facebook_analytics_id', '=', $page->id)->delete();
                 $result =  $this->analyticsFacebookPage($this->laravelFacebookSDK, $page->id);
                 $times++;
             }
