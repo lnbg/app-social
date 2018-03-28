@@ -2,7 +2,7 @@
     <div id="fanpage-wrapper">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Add new Page</h3>
+                <h3 class="box-title">Add new facebook page</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -12,7 +12,7 @@
         </div>
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Data Analytics</h3>
+                <h3 class="box-title">Analytics data on facebook platform: we only analytics facebook for last 3 months</h3>
                 <div class="box-tools">
                     <a class="btn btn-box-tool" @click="analyticsAll" title="Fetching"><i class="fa fa-download"></i> Analytics</a>
                     <a class="btn btn-box-tool" @click="orderByFollowers" title="Order by followers"><i class="fa fa-sort"></i> Order by Followers</a>
