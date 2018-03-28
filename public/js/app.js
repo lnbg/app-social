@@ -21203,6 +21203,27 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -21322,7 +21343,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "box box-widget widget-user-2 box-instagram" },
+    { staticClass: "box box-widget widget-user box-instagram" },
     [
       _vm.boxLoading
         ? _c("div", { staticClass: "widget-loading" }, [_vm._m(0)])
@@ -21340,81 +21361,55 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "widget-user-header min-height-150",
+          staticClass: "widget-user-header",
           class: _vm.getBackgroundBoxHeader
         },
         [
-          _c("div", { staticClass: "widget-user-image" }, [
-            _c("img", {
-              staticClass: "img-circle",
-              attrs: { src: _vm.profile.picture, alt: _vm.profile.name }
-            }),
-            _vm._v(" "),
-            _c("h3", { staticClass: "widget-user-username" }, [
-              _vm._v(_vm._s(_vm.profile.name))
-            ]),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticStyle: { color: "white", display: "block" },
-                attrs: { href: _vm.profile.link }
-              },
-              [
-                _c(
-                  "h5",
-                  {
-                    staticClass: "widget-user-desc",
-                    staticStyle: {
-                      "word-break": "break-all",
-                      "font-size": "11px"
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm.profile.link))]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticStyle: { color: "white", display: "block" },
-                attrs: { href: _vm.profile.website }
-              },
-              [
-                _c(
-                  "h5",
-                  {
-                    staticClass: "widget-user-desc",
-                    staticStyle: {
-                      "word-break": "break-all",
-                      "font-size": "11px"
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm.profile.website))]
-                )
-              ]
-            )
+          _c("h3", { staticClass: "widget-user-username" }, [
+            _vm._v(_vm._s(_vm.profile.name))
           ])
         ]
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "box-footer no-padding" }, [
-        _c("ul", { staticClass: "nav nav-stacked" }, [
-          _c("li", [
-            _c("a", { attrs: { href: "#" } }, [
-              _vm._v("Total Media: "),
-              _c("span", { staticClass: "pull-right badge bg-blue" }, [
+      _c("div", { staticClass: "widget-user-image" }, [
+        _c("img", {
+          staticClass: "img-circle",
+          attrs: { src: _vm.profile.picture, alt: "User Avatar" }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "box-footer" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-sm-4 border-right" }, [
+            _c("div", { staticClass: "description-block" }, [
+              _c("h5", { staticClass: "description-header" }, [
                 _vm._v(_vm._s(_vm._f("currency")(_vm.profile.media_counts)))
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "description-text" }, [_vm._v("MEDIA")])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-4 border-right" }, [
+            _c("div", { staticClass: "description-block" }, [
+              _c("h5", { staticClass: "description-header" }, [
+                _vm._v(_vm._s(_vm._f("currency")(_vm.profile.followers_count)))
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "description-text" }, [
+                _vm._v("FOLLOWERS")
               ])
             ])
           ]),
           _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#" } }, [
-              _vm._v("Total Followers "),
-              _c("span", { staticClass: "pull-right badge bg-aqua" }, [
-                _vm._v(_vm._s(_vm._f("currency")(_vm.profile.followers_count)))
+          _c("div", { staticClass: "col-sm-4" }, [
+            _c("div", { staticClass: "description-block" }, [
+              _c("h5", { staticClass: "description-header" }, [
+                _vm._v(_vm._s(_vm._f("currency")(_vm.profile.follows_count)))
+              ]),
+              _vm._v(" "),
+              _c("span", { staticClass: "description-text" }, [
+                _vm._v("FOLLOWS")
               ])
             ])
           ])

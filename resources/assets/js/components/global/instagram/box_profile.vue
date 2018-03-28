@@ -1,6 +1,6 @@
 <template>
     <!-- Widget: user widget style 1 -->
-    <div class="box box-widget widget-user-2 box-instagram">
+    <div class="box box-widget widget-user box-instagram">
         <div class="widget-loading" v-if="boxLoading">
             <p><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></p>
         </div>
@@ -8,19 +8,40 @@
             <a href="javascript:void(0)"><i class="fa fa-download" @click="boxAnalyticsInstagramProfile"></i></a>
         </div>
         <!-- Add the bg color to the header using any of the bg-* classes -->
-        <div class="widget-user-header min-height-150" :class="getBackgroundBoxHeader">
-            <div class="widget-user-image">
-                <img class="img-circle" :src="profile.picture" :alt="profile.name">
-                <h3 class="widget-user-username">{{ profile.name }}</h3>
-                <a style="color: white; display: block;" :href="profile.link"><h5 class="widget-user-desc" style="word-break: break-all; font-size: 11px;">{{ profile.link }}</h5></a>
-                <a style="color: white; display: block;" :href="profile.website"><h5 class="widget-user-desc" style="word-break: break-all; font-size: 11px;">{{ profile.website }}</h5></a>
-            </div>
+        <div class="widget-user-header" :class="getBackgroundBoxHeader">
+            <h3 class="widget-user-username">{{ profile.name }}</h3>
         </div>
-        <div class="box-footer no-padding">
-            <ul class="nav nav-stacked">
-                <li><a href="#">Total Media: <span class="pull-right badge bg-blue">{{ profile.media_counts | currency }}</span></a></li>
-                <li><a href="#">Total Followers <span class="pull-right badge bg-aqua">{{ profile.followers_count | currency }}</span></a></li>
-            </ul>
+        <div class="widget-user-image">
+            <img class="img-circle" :src="profile.picture" alt="User Avatar">
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-sm-4 border-right">
+                    <div class="description-block">
+                        <h5 class="description-header">{{ profile.media_counts | currency }}</h5>
+                        <span class="description-text">MEDIA</span>
+                    </div>
+                    <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 border-right">
+                    <div class="description-block">
+                    <h5 class="description-header">{{ profile.followers_count | currency }}</h5>
+                    <span class="description-text">FOLLOWERS</span>
+                    </div>
+                    <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4">
+                    <div class="description-block">
+                    <h5 class="description-header">{{ profile.follows_count | currency }}</h5>
+                    <span class="description-text">FOLLOWS</span>
+                    </div>
+                    <!-- /.description-block -->
+                </div>
+            <!-- /.col -->
+            </div>
+            <!-- /.row -->
         </div>
     </div>
 </template>

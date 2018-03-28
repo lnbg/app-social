@@ -151,7 +151,7 @@ class FacebookAnalyticsController extends Controller
             return response()->json($facebookAnalytics, 200);
             
         } catch (\Exception $e) {
-            return response()->json($ex, 500);
+            return response()->json($e, 500);
         }
     }
     

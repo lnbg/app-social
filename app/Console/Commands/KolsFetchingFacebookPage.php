@@ -63,14 +63,20 @@ class KolsFetchingFacebookPage extends Command
      */
     public function handle()
     {
-        $facebookAnalytics = FacebookAnalytics::where('account_type', '=', 1)->get();
-        $this->line("fetching facebook page data: " . date('Y-m-d'));
-        $this->line("truncate table facebook posts");
-        FacebookPost::truncate();
-        foreach ($facebookAnalytics as $page) {
-            $this->line("Fetching data of page: " . $page->account_name);
-            $result = $this->analyticsFacebookPage($this->laravelFacebookSDK, $page->id);
-            $this->line("page: " . $page->account_name . " done!");
+        $truncate = FacebookPost::truncate();
+        if ($truncate) {
+            $facebookAnalytics = FacebookAnalytics::where('account_type', '=', 1)->get();
+            $this->line("fetching facebook page data: " . date('Y-m-d'));
+            $this->line("truncate table facebook posts");
+            foreach ($facebookAnalytics as $page) {
+                $this->line("Fetching data of page: " . $page->account_name);
+                try {
+                    $result = $this->analyticsFacebookPage($this->laravelFacebookSDK, $page->id);
+                    $this->line("page: " . $page->account_name . " done!");
+                } catch (\Exception $ex) {
+                    $this->line("page: " . $page->account_name . " error!");
+                }
+            }
         }
     }
 
@@ -161,6 +167,7 @@ class KolsFetchingFacebookPage extends Command
         $facebookAnalytics->average_reactions_per_post = round($reactions / $facebookAnalytics->total_days, 2);
         $facebookAnalytics->average_interactions_per_post = round($interactions / $facebookAnalytics->total_days, 2);
         $facebookAnalytics->save();
+
         FacebookPost::insert($postsStorage);
         return true;
         
