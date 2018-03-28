@@ -14,8 +14,14 @@
                         <div class="box-footer">
                             <ul class="nav nav-stacked">
                                 <li style="text-align: center"><a :href="facebookAnalytics.account_link"><span class="badge bg-yellow">{{ facebookAnalytics.account_link }}</span></a></li>
-                                <li><a href="#">Followers <span class="pull-right badge bg-aqua">{{ facebookAnalytics.total_page_followers | currency }}</span></a></li>
-                                <li><a href="#">Fans <span class="pull-right badge bg-aqua">{{ facebookAnalytics.total_page_likes | currency }}</span></a></li>
+                                <li><a href="#">Total Posts: <span class="pull-right badge bg-blue">{{ facebookAnalytics.total_posts | currency }}</span></a></li>
+                                <li><a href="#">Total Page Followers <span class="pull-right badge bg-aqua">{{ facebookAnalytics.total_page_followers | currency }}</span></a></li>
+                                <li><a href="#">Total Fans <span class="pull-right badge bg-aqua">{{ facebookAnalytics.total_page_likes | currency }}</span></a></li>
+                                <li><a href="#">Total Reactions <span class="pull-right badge bg-green">{{ reactions | currency }}</span></a></li>
+                                <li><a href="#">Total Interactions <span class="pull-right badge bg-green">{{ interactions | currency }}</span></a></li>
+                                <li><a href="#">Average Posts/Day <span class="pull-right badge bg-yellow">{{ facebookAnalytics.average_posts_per_day | currency }}</span></a></li>
+                                <li><a href="#">Average Reactions/Post <span class="pull-right badge bg-yellow">{{ facebookAnalytics.average_reactions_per_post | currency }}</span></a></li>
+                                <li><a href="#">Average Interactions/Post <span class="pull-right badge bg-yellow">{{ facebookAnalytics.average_interactions_per_post | currency }}</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -87,6 +93,13 @@ export default {
             'facebookEvolutionOfInteractions',
             'facebookBestPost'
         ]),
+        reactions() {
+            return this.facebookAnalytics.total_posts_likes + this.facebookAnalytics.total_posts_loves + this.facebookAnalytics.total_posts_wows
+            + this.facebookAnalytics.total_posts_sads + this.facebookAnalytics.total_posts_hahas + this.facebookAnalytics.total_posts_angries;
+        },
+        interactions() {
+            return this.reactions + this.facebookAnalytics.total_posts_shares + this.facebookAnalytics.total_posts_comments + this.facebookAnalytics.total_posts_thankfuls;
+        },
         getBackgroundBoxHeader() {
             let bgColors =  ['bg-blue', 'bg-aqua', 'bg-green', 'bg-yellow', 'bg-red']
             return bgColors[Math.floor(Math.random() * bgColors.length)];

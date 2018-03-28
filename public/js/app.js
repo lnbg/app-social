@@ -21634,7 +21634,26 @@ var render = function() {
                     _vm._v(" "),
                     _c("li", [
                       _c("a", { attrs: { href: "#" } }, [
-                        _vm._v("Followers "),
+                        _vm._v("Total Posts: "),
+                        _c(
+                          "span",
+                          { staticClass: "pull-right badge bg-blue" },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("currency")(
+                                  _vm.facebookAnalytics.total_posts
+                                )
+                              )
+                            )
+                          ]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [
+                        _vm._v("Total Page Followers "),
                         _c(
                           "span",
                           { staticClass: "pull-right badge bg-aqua" },
@@ -21653,7 +21672,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("li", [
                       _c("a", { attrs: { href: "#" } }, [
-                        _vm._v("Fans "),
+                        _vm._v("Total Fans "),
                         _c(
                           "span",
                           { staticClass: "pull-right badge bg-aqua" },
@@ -21662,6 +21681,87 @@ var render = function() {
                               _vm._s(
                                 _vm._f("currency")(
                                   _vm.facebookAnalytics.total_page_likes
+                                )
+                              )
+                            )
+                          ]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [
+                        _vm._v("Total Reactions "),
+                        _c(
+                          "span",
+                          { staticClass: "pull-right badge bg-green" },
+                          [_vm._v(_vm._s(_vm._f("currency")(_vm.reactions)))]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [
+                        _vm._v("Total Interactions "),
+                        _c(
+                          "span",
+                          { staticClass: "pull-right badge bg-green" },
+                          [_vm._v(_vm._s(_vm._f("currency")(_vm.interactions)))]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [
+                        _vm._v("Average Posts/Day "),
+                        _c(
+                          "span",
+                          { staticClass: "pull-right badge bg-yellow" },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("currency")(
+                                  _vm.facebookAnalytics.average_posts_per_day
+                                )
+                              )
+                            )
+                          ]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [
+                        _vm._v("Average Reactions/Post "),
+                        _c(
+                          "span",
+                          { staticClass: "pull-right badge bg-yellow" },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("currency")(
+                                  _vm.facebookAnalytics
+                                    .average_reactions_per_post
+                                )
+                              )
+                            )
+                          ]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [
+                        _vm._v("Average Interactions/Post "),
+                        _c(
+                          "span",
+                          { staticClass: "pull-right badge bg-yellow" },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("currency")(
+                                  _vm.facebookAnalytics
+                                    .average_interactions_per_post
                                 )
                               )
                             )
@@ -21922,6 +22022,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -21942,6 +22048,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     },
 
     computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('facebook', ['facebookAnalytics', 'facebookGrowthFans', 'facebookEvolutionOfInteractions', 'facebookBestPost']), {
+        reactions: function reactions() {
+            return this.facebookAnalytics.total_posts_likes + this.facebookAnalytics.total_posts_loves + this.facebookAnalytics.total_posts_wows + this.facebookAnalytics.total_posts_sads + this.facebookAnalytics.total_posts_hahas + this.facebookAnalytics.total_posts_angries;
+        },
+        interactions: function interactions() {
+            return this.reactions + this.facebookAnalytics.total_posts_shares + this.facebookAnalytics.total_posts_comments + this.facebookAnalytics.total_posts_thankfuls;
+        },
         getBackgroundBoxHeader: function getBackgroundBoxHeader() {
             var bgColors = ['bg-blue', 'bg-aqua', 'bg-green', 'bg-yellow', 'bg-red'];
             return bgColors[Math.floor(Math.random() * bgColors.length)];
