@@ -5,14 +5,17 @@
             <p><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></p>
         </div>
         <div class="widget-user-control">
+            <router-link :to="overviewLink">
+                <i class="fa fa-eye"></i>
+            </router-link>&nbsp;&nbsp;
             <a href="javascript:void(0)"><i class="fa fa-download" @click="boxAnalyticsFacebookPage"></i></a>
         </div>
         <!-- Add the bg color to the header using any of the bg-* classes -->
         <div class="widget-user-header min-height-120" :class="getBackgroundBoxHeader">
             <div class="widget-user-image">
                 <img class="img-circle" :src="page.account_picture" :alt="page.account_name">
-                <h3 class="widget-user-username">{{ page.account_name }}</h3>
-                <a style="color: white; display: block;" :href="page.account_link"><h5 class="widget-user-desc" style="word-break: break-all; font-size: 11px;">{{ page.account_link }}</h5></a>
+                <h3 class="widget-user-username widget-user-username-f20">{{ page.account_name }}</h3>
+                <h5 class="widget-user-username widget-user-username-f14">{{ page.account_username }}</h5>
             </div>
         </div>
         <div class="box-footer no-padding">
@@ -49,6 +52,7 @@ export default {
             id: 0,
             account_id: 0,
             account_name: String.empty,
+            account_username: String.empty,
             account_picture: String.empty,
             account_link: String.empty,
             total_posts: 0,
@@ -84,6 +88,9 @@ export default {
         },
         interactions() {
             return this.reactions + this.page.total_posts_shares + this.page.total_posts_comments + this.page.total_posts_thankfuls;
+        },
+        overviewLink() {
+            return '/facebook/overview/' + this.page.account_username
         }
     },
     methods: {

@@ -28,6 +28,7 @@ class CreateTableFacebookAnalytics extends Migration
             $table->increments('id');
             $table->bigInteger('account_id');
             $table->string('account_name');
+            $table->string('account_username');
             $table->string('account_picture')->nullable();
             $table->string('account_link')->nullable();
             $table->integer('account_type')->nullable()->default(1);

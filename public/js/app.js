@@ -12983,7 +12983,7 @@ module.exports = Cancel;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return API_DOMAIN; });
 /* harmony export (immutable) */ __webpack_exports__["c"] = post;
 /* harmony export (immutable) */ __webpack_exports__["b"] = get;
-/* unused harmony export queryString */
+/* harmony export (immutable) */ __webpack_exports__["d"] = queryString;
 /**
  * @description defined your domain of api
  */
@@ -13178,6 +13178,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
 
 
 
@@ -13188,6 +13191,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             id: 0,
             account_id: 0,
             account_name: String.empty,
+            account_username: String.empty,
             account_picture: String.empty,
             account_link: String.empty,
             total_posts: 0,
@@ -13223,6 +13227,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         interactions: function interactions() {
             return this.reactions + this.page.total_posts_shares + this.page.total_posts_comments + this.page.total_posts_thankfuls;
+        },
+        overviewLink: function overviewLink() {
+            return '/facebook/overview/' + this.page.account_username;
         }
     },
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('facebook', ['analyticsFacebookPage']), {
@@ -13305,6 +13312,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 // router setup
 
 // library imports
@@ -13334,6 +13342,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.mixin(__WEBPACK_IMPORTED_MODULE_6__m
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.filter("currency", function (value) {
     return __WEBPACK_IMPORTED_MODULE_5_numeral___default()(value).format("0,0[.]00");
 });
+
+window.NumberFormatter = function (num) {
+    return num.replace(/./g, function (c, i, a) {
+        return i && c !== "." && (a.length - i) % 3 === 0 ? ',' + c : c;
+    });
+};
+
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.config.productionTip = false;
 /* eslint-disable no-new */
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
@@ -17187,6 +17202,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
         id: 0,
         account_id: 0,
         account_name: String.empty,
+        account_username: String.empty,
         account_picture: String.empty,
         account_link: String.empty,
         total_posts: 0,
@@ -17204,6 +17220,38 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
         average_posts_per_day: 0,
         average_reactions_per_post: 0,
         average_intereactions_per_post: 0
+    },
+    facebookGrowthFans: [],
+    facebookEvolutionOfInteractions: [],
+    post: {
+        facebook_post_id: 0,
+        facebook_analytics_id: 0,
+        messages: String.empty,
+        story: String.empty,
+        reaction_like: 0,
+        reaction_haha: 0,
+        reaction_love: 0,
+        reaction_wow: 0,
+        reaction_sad: 0,
+        reaction_angry: 0,
+        shares: 0,
+        comments: 0,
+        facebook_created_at: String.empty
+    },
+    facebookBestPost: {
+        facebook_post_id: 0,
+        facebook_analytics_id: 0,
+        messages: String.empty,
+        story: String.empty,
+        reaction_like: 0,
+        reaction_haha: 0,
+        reaction_love: 0,
+        reaction_wow: 0,
+        reaction_sad: 0,
+        reaction_angry: 0,
+        shares: 0,
+        comments: 0,
+        facebook_created_at: String.empty
     }
 });
 
@@ -17226,6 +17274,15 @@ var getListFacebookPageAnalytics = function getListFacebookPageAnalytics(_ref) {
     });
 };
 
+var getFacebookPageAnalytics = function getFacebookPageAnalytics(_ref2, username) {
+    var commit = _ref2.commit,
+        state = _ref2.state;
+
+    Object(__WEBPACK_IMPORTED_MODULE_0__http_http__["d" /* queryString */])(__WEBPACK_IMPORTED_MODULE_1__endpoint__["a" /* endPoint */].GET.FACEBOOK_PAGE_ANALYTICS + '?username=' + username).then(function (response) {
+        commit('GET_FACEBOOK_PAGE_ANALYTICS', response.data);
+    });
+};
+
 var createNewFacebookPage = function createNewFacebookPage(event, facebook_link) {
     return new Promise(function (resolve, reject) {
         Object(__WEBPACK_IMPORTED_MODULE_0__http_http__["c" /* post */])(__WEBPACK_IMPORTED_MODULE_1__endpoint__["a" /* endPoint */].POST.CREATE_NEW_FACEBOOK_PAGE, { page_link: facebook_link }).then(function (response) {
@@ -17243,6 +17300,7 @@ var analyticsFacebookPage = function analyticsFacebookPage(event, id) {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = ({
+    getFacebookPageAnalytics: getFacebookPageAnalytics,
     getListFacebookPageAnalytics: getListFacebookPageAnalytics,
     createNewFacebookPage: createNewFacebookPage,
     analyticsFacebookPage: analyticsFacebookPage
@@ -17259,7 +17317,8 @@ var analyticsFacebookPage = function analyticsFacebookPage(event, id) {
 
 var endPoint = {
     GET: {
-        LIST_FACEBOOK_PAGE_ANALYTICS: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/facebook/get-list-facebook-page-analytics'
+        LIST_FACEBOOK_PAGE_ANALYTICS: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/facebook/get-list-facebook-page-analytics',
+        FACEBOOK_PAGE_ANALYTICS: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/facebook/get-facebook-page-analytics'
     },
     POST: {
         CREATE_NEW_FACEBOOK_PAGE: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/facebook/create-new-facebook-page',
@@ -17275,9 +17334,25 @@ var endPoint = {
 var lstFacebookPageAnalytics = function lstFacebookPageAnalytics(state) {
     return state.lstFacebookPageAnalytics;
 };
+var facebookPageAnalytics = function facebookPageAnalytics(state) {
+    return state.facebookPageAnalytics;
+};
+var facebookGrowthFans = function facebookGrowthFans(state) {
+    return state.facebookGrowthFans;
+};
+var facebookEvolutionOfInteractions = function facebookEvolutionOfInteractions(state) {
+    return state.facebookEvolutionOfInteractions;
+};
+var facebookBestPost = function facebookBestPost(state) {
+    return state.facebookBestPost;
+};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    lstFacebookPageAnalytics: lstFacebookPageAnalytics
+    lstFacebookPageAnalytics: lstFacebookPageAnalytics,
+    facebookPageAnalytics: facebookPageAnalytics,
+    facebookBestPost: facebookBestPost,
+    facebookGrowthFans: facebookGrowthFans,
+    facebookEvolutionOfInteractions: facebookEvolutionOfInteractions
 });
 
 /***/ }),
@@ -17289,8 +17364,16 @@ var GET_LIST_FACEBOOK_PAGE_ANALYTICS = function GET_LIST_FACEBOOK_PAGE_ANALYTICS
     state.lstFacebookPageAnalytics = data;
 };
 
+var GET_FACEBOOK_PAGE_ANALYTICS = function GET_FACEBOOK_PAGE_ANALYTICS(state, data) {
+    Object.assign(state.facebookAnalytics, data.page);
+    Object.assign(state.facebookBestPost, data.analytics.bestPost);
+    state.facebookGrowthFans = data.analytics.growthFans;
+    state.facebookEvolutionOfInteractions = data.analytics.evolutionOfInteractions;
+};
+
 /* harmony default export */ __webpack_exports__["a"] = ({
-    GET_LIST_FACEBOOK_PAGE_ANALYTICS: GET_LIST_FACEBOOK_PAGE_ANALYTICS
+    GET_LIST_FACEBOOK_PAGE_ANALYTICS: GET_LIST_FACEBOOK_PAGE_ANALYTICS,
+    GET_FACEBOOK_PAGE_ANALYTICS: GET_FACEBOOK_PAGE_ANALYTICS
 });
 
 /***/ }),
@@ -18365,7 +18448,9 @@ return numeral;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_page_dashboard_index_v1__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_page_facebook_page__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_page_instagram_index__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_page_facebook_overview__ = __webpack_require__(77);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_page_instagram_index__ = __webpack_require__(66);
+
 
 
 
@@ -18373,8 +18458,11 @@ var routes = [{
     path: '/facebook/page',
     component: __WEBPACK_IMPORTED_MODULE_1__components_page_facebook_page__["a" /* default */]
 }, {
+    path: '/facebook/overview/:username',
+    component: __WEBPACK_IMPORTED_MODULE_2__components_page_facebook_overview__["a" /* default */]
+}, {
     path: '/instagram',
-    component: __WEBPACK_IMPORTED_MODULE_2__components_page_instagram_index__["a" /* default */]
+    component: __WEBPACK_IMPORTED_MODULE_3__components_page_instagram_index__["a" /* default */]
 }, { path: '*', component: __WEBPACK_IMPORTED_MODULE_0__components_page_dashboard_index_v1__["a" /* default */] }];
 
 /* harmony default export */ __webpack_exports__["a"] = (routes);
@@ -20409,14 +20497,23 @@ var render = function() {
         ? _c("div", { staticClass: "widget-loading" }, [_vm._m(0)])
         : _vm._e(),
       _vm._v(" "),
-      _c("div", { staticClass: "widget-user-control" }, [
-        _c("a", { attrs: { href: "javascript:void(0)" } }, [
-          _c("i", {
-            staticClass: "fa fa-download",
-            on: { click: _vm.boxAnalyticsFacebookPage }
-          })
-        ])
-      ]),
+      _c(
+        "div",
+        { staticClass: "widget-user-control" },
+        [
+          _c("router-link", { attrs: { to: _vm.overviewLink } }, [
+            _c("i", { staticClass: "fa fa-eye" })
+          ]),
+          _vm._v("  \n        "),
+          _c("a", { attrs: { href: "javascript:void(0)" } }, [
+            _c("i", {
+              staticClass: "fa fa-download",
+              on: { click: _vm.boxAnalyticsFacebookPage }
+            })
+          ])
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -20434,29 +20531,16 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("h3", { staticClass: "widget-user-username" }, [
-              _vm._v(_vm._s(_vm.page.account_name))
-            ]),
+            _c(
+              "h3",
+              { staticClass: "widget-user-username widget-user-username-f20" },
+              [_vm._v(_vm._s(_vm.page.account_name))]
+            ),
             _vm._v(" "),
             _c(
-              "a",
-              {
-                staticStyle: { color: "white", display: "block" },
-                attrs: { href: _vm.page.account_link }
-              },
-              [
-                _c(
-                  "h5",
-                  {
-                    staticClass: "widget-user-desc",
-                    staticStyle: {
-                      "word-break": "break-all",
-                      "font-size": "11px"
-                    }
-                  },
-                  [_vm._v(_vm._s(_vm.page.account_link))]
-                )
-              ]
+              "h5",
+              { staticClass: "widget-user-username widget-user-username-f14" },
+              [_vm._v(_vm._s(_vm.page.account_username))]
             )
           ])
         ]
@@ -21432,6 +21516,1557 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-e3d75efa", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
+
+/***/ }),
+/* 77 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_overview_vue__ = __webpack_require__(79);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_5e906cf9_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_overview_vue__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_overview_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_5e906cf9_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_overview_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_5e906cf9_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_overview_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/page/facebook/overview.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5e906cf9", Component.options)
+  } else {
+    hotAPI.reload("data-v-5e906cf9", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 78 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "page-overview", attrs: { id: "facebook-overview" } },
+    [
+      _c("div", { staticClass: "page-overview-wrapper" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "overview-panel-left col-md-4" }, [
+            _c(
+              "div",
+              { staticClass: "box box-widget widget-user overview-box-widget" },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass: "widget-user-header",
+                    class: _vm.getBackgroundBoxHeader
+                  },
+                  [
+                    _c("h3", { staticClass: "widget-user-username" }, [
+                      _vm._v(_vm._s(_vm.facebookAnalytics.account_name))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "widget-user-image" }, [
+                  _c("img", {
+                    staticClass: "img-circle",
+                    attrs: {
+                      src: _vm.facebookAnalytics.account_picture,
+                      alt: "User Avatar"
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "box-footer" }, [
+                  _c("ul", { staticClass: "nav nav-stacked" }, [
+                    _c("li", { staticStyle: { "text-align": "center" } }, [
+                      _c(
+                        "a",
+                        { attrs: { href: _vm.facebookAnalytics.account_link } },
+                        [
+                          _c("span", { staticClass: "badge bg-yellow" }, [
+                            _vm._v(_vm._s(_vm.facebookAnalytics.account_link))
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [
+                        _vm._v("Followers "),
+                        _c(
+                          "span",
+                          { staticClass: "pull-right badge bg-aqua" },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("currency")(
+                                  _vm.facebookAnalytics.total_page_followers
+                                )
+                              )
+                            )
+                          ]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#" } }, [
+                        _vm._v("Fans "),
+                        _c(
+                          "span",
+                          { staticClass: "pull-right badge bg-aqua" },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm._f("currency")(
+                                  _vm.facebookAnalytics.total_page_likes
+                                )
+                              )
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "section",
+              { attrs: { id: "facebook-most-intereactions-post" } },
+              [
+                _vm.chartLoadSuccess
+                  ? _c("facebook-post", {
+                      attrs: {
+                        facebookAnalytics: _vm.facebookAnalytics,
+                        post: _vm.facebookBestPost
+                      }
+                    })
+                  : _vm._e()
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "overview-panel-right col-md-8" }, [
+            _c("section", { attrs: { id: "facebook-posts-analytics" } }, [
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "analytics-reactions col-md-2 col-sm-4" },
+                  [
+                    _c("reactions-box", {
+                      attrs: {
+                        id: "likes",
+                        color: "bg-aqua",
+                        title: "Like",
+                        icon: "/imgs/reactions/like.gif",
+                        value: _vm.facebookAnalytics.total_posts_likes
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "analytics-reactions col-md-2 col-sm-4" },
+                  [
+                    _c("reactions-box", {
+                      attrs: {
+                        id: "loves",
+                        color: "bg-red",
+                        title: "Love",
+                        icon: "/imgs/reactions/love.gif",
+                        value: _vm.facebookAnalytics.total_posts_loves
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "analytics-reactions col-md-2 col-sm-4" },
+                  [
+                    _c("reactions-box", {
+                      attrs: {
+                        id: "haha",
+                        color: "bg-blue",
+                        title: "Haha",
+                        icon: "/imgs/reactions/haha.gif",
+                        value: _vm.facebookAnalytics.total_posts_hahas
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "analytics-reactions col-md-2 col-sm-4" },
+                  [
+                    _c("reactions-box", {
+                      attrs: {
+                        id: "wow",
+                        color: "bg-yellow",
+                        title: "Wow",
+                        icon: "/imgs/reactions/wow.gif",
+                        value: _vm.facebookAnalytics.total_posts_wows
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "analytics-reactions col-md-2 col-sm-4" },
+                  [
+                    _c("reactions-box", {
+                      attrs: {
+                        id: "sad",
+                        color: "bg-green",
+                        title: "Sad",
+                        icon: "/imgs/reactions/sad.gif",
+                        value: _vm.facebookAnalytics.total_posts_sads
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "analytics-reactions col-md-2 col-sm-4" },
+                  [
+                    _c("reactions-box", {
+                      attrs: {
+                        id: "angry",
+                        color: "bg-red",
+                        title: "Angry",
+                        icon: "/imgs/reactions/angry.gif",
+                        value: _vm.facebookAnalytics.total_posts_angries
+                      }
+                    })
+                  ],
+                  1
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("section", { attrs: { id: "facebook-growth-fans-chart" } }, [
+              _c(
+                "div",
+                { staticClass: "row" },
+                [
+                  _vm.chartLoadSuccess
+                    ? _c("growth-fans-chart", {
+                        attrs: { source: _vm.growthFans }
+                      })
+                    : _vm._e()
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "section",
+              { attrs: { id: "facebook-evolution-of-interactions-chart" } },
+              [
+                _c(
+                  "div",
+                  { staticClass: "row" },
+                  [
+                    _vm.chartLoadSuccess
+                      ? _c("evolution-of-interactions-chart", {
+                          attrs: { source: _vm.evolutionOfInteractions }
+                        })
+                      : _vm._e()
+                  ],
+                  1
+                )
+              ]
+            )
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5e906cf9", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
+
+/***/ }),
+/* 79 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__global_facebook_reactions_box__ = __webpack_require__(279);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__global_facebook_growth_fans_chart__ = __webpack_require__(272);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global_facebook_evolution_of_interactions_chart__ = __webpack_require__(283);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_facebook_facebook_post__ = __webpack_require__(286);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    name: 'Page_Facebook__Overview',
+    components: {
+        'reactions-box': __WEBPACK_IMPORTED_MODULE_1__global_facebook_reactions_box__["a" /* default */],
+        'growth-fans-chart': __WEBPACK_IMPORTED_MODULE_2__global_facebook_growth_fans_chart__["a" /* default */],
+        'evolution-of-interactions-chart': __WEBPACK_IMPORTED_MODULE_3__global_facebook_evolution_of_interactions_chart__["a" /* default */],
+        'facebook-post': __WEBPACK_IMPORTED_MODULE_4__global_facebook_facebook_post__["a" /* default */]
+    },
+    data: function data() {
+        return {};
+    },
+
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('facebook', ['facebookAnalytics', 'facebookGrowthFans', 'facebookEvolutionOfInteractions', 'facebookBestPost']), {
+        getBackgroundBoxHeader: function getBackgroundBoxHeader() {
+            var bgColors = ['bg-blue', 'bg-aqua', 'bg-green', 'bg-yellow', 'bg-red'];
+            return bgColors[Math.floor(Math.random() * bgColors.length)];
+        },
+        growthFans: function growthFans() {
+            var data = {
+                labels: this.growthFansLabels,
+                datasets: [{
+                    label: 'Growth Of Fans',
+                    backgroundColor: 'rgb(3, 192, 239, 0.75)',
+                    pointColor: 'rgb(243, 156, 18)',
+                    pointStrokeColor: 'rgb(243, 156, 18)',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
+                    data: this.growthFansValues
+                }]
+            };
+            return data;
+        },
+        growthFansLabels: function growthFansLabels() {
+            return this.facebookGrowthFans.map(function (item) {
+                return item.date_sync;
+            });
+        },
+        growthFansValues: function growthFansValues() {
+            return this.facebookGrowthFans.map(function (item) {
+                return item.facebook_fans;
+            });
+        },
+        evolutionOfInteractions: function evolutionOfInteractions() {
+            var data = {
+                labels: this.evolutionOfInteractionsLabels,
+                datasets: [{
+                    type: 'bar',
+                    label: 'Reactions',
+                    backgroundColor: 'rgb(240, 82, 103)',
+                    data: this.evolutionOfInteractionsReactionsValues
+                }, {
+                    type: 'bar',
+                    label: 'Comments',
+                    backgroundColor: 'rgb(0, 166, 90)',
+                    data: this.evolutionOfInteractionsCommentsValues
+                }, {
+                    type: 'bar',
+                    label: 'Shares',
+                    backgroundColor: 'rgb(243, 156, 18)',
+                    data: this.evolutionOfInteractionsSharesValues
+                }]
+            };
+            return data;
+        },
+        evolutionOfInteractionsLabels: function evolutionOfInteractionsLabels() {
+            return this.facebookEvolutionOfInteractions.map(function (item) {
+                return item.date;
+            });
+        },
+        evolutionOfInteractionsReactionsValues: function evolutionOfInteractionsReactionsValues() {
+            return this.facebookEvolutionOfInteractions.map(function (item) {
+                return item.reactions;
+            });
+        },
+        evolutionOfInteractionsCommentsValues: function evolutionOfInteractionsCommentsValues() {
+            return this.facebookEvolutionOfInteractions.map(function (item) {
+                return item.comments;
+            });
+        },
+        evolutionOfInteractionsSharesValues: function evolutionOfInteractionsSharesValues() {
+            return this.facebookEvolutionOfInteractions.map(function (item) {
+                return item.shares;
+            });
+        },
+        chartLoadSuccess: function chartLoadSuccess() {
+            return this.growthFans.labels.length > 0;
+        }
+    }),
+    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('facebook', [])),
+    beforeCreate: function beforeCreate() {
+        this.$store.dispatch('facebook/getFacebookPageAnalytics', this.$route.params.username);
+    },
+    created: function created() {}
+});
+
+/***/ }),
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */,
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */,
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    props: {
+        source: Object
+    },
+    mounted: function mounted() {
+        var _vue = this;
+        var chartOptions = {
+            //Boolean - If we should show the scale at all
+            showScale: true,
+            //Boolean - Whether grid lines are shown across the chart
+            scaleShowGridLines: false,
+            //String - Colour of the grid lines
+            scaleGridLineColor: 'rgba(0,0,0,.05)',
+            //Number - Width of the grid lines
+            scaleGridLineWidth: 1,
+            //Boolean - Whether to show horizontal lines (except X axis)
+            scaleShowHorizontalLines: true,
+            //Boolean - Whether to show vertical lines (except Y axis)
+            scaleShowVerticalLines: true,
+            //Boolean - Whether the line is curved between points
+            bezierCurve: true,
+            //Number - Tension of the bezier curve between points
+            bezierCurveTension: 0.3,
+            //Boolean - Whether to show a dot for each point
+            pointDot: true,
+            //Number - Radius of each point dot in pixels
+            pointDotRadius: 4,
+            //Number - Pixel width of point dot stroke
+            pointDotStrokeWidth: 2,
+            //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+            pointHitDetectionRadius: 20,
+            //Boolean - Whether to show a stroke for datasets
+            datasetStroke: true,
+            //Number - Pixel width of dataset stroke
+            datasetStrokeWidth: 2,
+            //Boolean - Whether to fill the dataset with a color
+            datasetFill: true,
+            //String - A legend template
+            legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].lineColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+            //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+            maintainAspectRatio: true,
+            //Boolean - whether to make the chart responsive to window resizing
+            responsive: true,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback: function callback(value, index, values) {
+                            return numeral(value).format('0,0');
+                        }
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function label(tooltipItem, chart) {
+                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                        return numeral(tooltipItem.yLabel).format('0,0');
+                    }
+                }
+            }
+            //-------------
+            //- LINE CHART -
+            //--------------
+        };var lineChartCanvas = $('#lineChart').get(0).getContext('2d');
+        new Chart(lineChartCanvas, {
+            type: "line",
+            data: _vue.source,
+            options: chartOptions
+        });
+    }
+});
+
+/***/ }),
+/* 272 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_growth_fans_chart_vue__ = __webpack_require__(271);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_8029221a_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_growth_fans_chart_vue__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_growth_fans_chart_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_8029221a_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_growth_fans_chart_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_8029221a_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_growth_fans_chart_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/global/facebook/growth_fans_chart.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8029221a", Component.options)
+  } else {
+    hotAPI.reload("data-v-8029221a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    props: { box_color: String, icon: String, title: String, value: Number }
+});
+
+/***/ }),
+/* 279 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_reactions_box_vue__ = __webpack_require__(278);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_75c7d8d2_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_reactions_box_vue__ = __webpack_require__(280);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_reactions_box_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_75c7d8d2_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_reactions_box_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_75c7d8d2_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_reactions_box_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/global/facebook/reactions_box.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-75c7d8d2", Component.options)
+  } else {
+    hotAPI.reload("data-v-75c7d8d2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 280 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "info-box widget-info-box" }, [
+    _c("span", { staticClass: "info-box-icon", class: _vm.box_color }, [
+      _c("img", { attrs: { src: _vm.icon } })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "info-box-content" }, [
+      _c("span", { staticClass: "info-box-text" }, [_vm._v(_vm._s(_vm.title))]),
+      _vm._v(" "),
+      _c("span", { staticClass: "info-box-number" }, [
+        _vm._v(_vm._s(_vm._f("currency")(_vm.value)))
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-75c7d8d2", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
+
+/***/ }),
+/* 281 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticStyle: { "padding-left": "5px", "padding-right": "5px" },
+      attrs: { id: "growth-fans-chart" }
+    },
+    [
+      _c("div", { staticClass: "box box-info" }, [
+        _c("div", { staticClass: "box-header with-border" }, [
+          _c("h3", { staticClass: "box-title" }, [_vm._v("Growth of fans")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "box-tools pull-right" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            false
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-box-tool",
+                    attrs: { type: "button", "data-widget": "remove" }
+                  },
+                  [_c("i", { staticClass: "fa fa-times" })]
+                )
+              : _vm._e()
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(1)
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-box-tool",
+        attrs: { type: "button", "data-widget": "collapse" }
+      },
+      [_c("i", { staticClass: "fa fa-minus" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-body" }, [
+      _c("div", { staticClass: "chart" }, [
+        _c("canvas", {
+          staticStyle: { height: "250px" },
+          attrs: { id: "lineChart" }
+        })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8029221a", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
+
+/***/ }),
+/* 282 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    props: {
+        source: Object
+    },
+    mounted: function mounted() {
+        var _vue = this;
+        var barChartCanvas = $('#barChart').get(0).getContext('2d');
+        var barChartOptions = {
+            scales: {
+                xAxes: [{
+                    stacked: true
+                }],
+                yAxes: [{
+                    stacked: true,
+                    ticks: {
+                        callback: function callback(value, index, values) {
+                            return numeral(value).format('0,0');
+                        }
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function label(tooltipItem, chart) {
+                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                        return numeral(tooltipItem.yLabel).format('0,0');
+                    }
+                }
+            }
+        };
+
+        new Chart(barChartCanvas, {
+            type: "bar",
+            data: _vue.source,
+            options: barChartOptions
+        });
+    }
+});
+
+/***/ }),
+/* 283 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_evolution_of_interactions_chart_vue__ = __webpack_require__(282);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_78106480_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_evolution_of_interactions_chart_vue__ = __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_evolution_of_interactions_chart_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_78106480_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_evolution_of_interactions_chart_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_78106480_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_evolution_of_interactions_chart_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/global/facebook/evolution_of_interactions_chart.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-78106480", Component.options)
+  } else {
+    hotAPI.reload("data-v-78106480", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 284 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticStyle: { "padding-left": "5px", "padding-right": "5px" },
+      attrs: { id: "evolution-of-interactions" }
+    },
+    [
+      _c("div", { staticClass: "box box-info" }, [
+        _c("div", { staticClass: "box-header with-border" }, [
+          _c("h3", { staticClass: "box-title" }, [
+            _vm._v("Evolution of Interactions")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "box-tools pull-right" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            false
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-box-tool",
+                    attrs: { type: "button", "data-widget": "remove" }
+                  },
+                  [_c("i", { staticClass: "fa fa-times" })]
+                )
+              : _vm._e()
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(1)
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-box-tool",
+        attrs: { type: "button", "data-widget": "collapse" }
+      },
+      [_c("i", { staticClass: "fa fa-minus" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-body" }, [
+      _c("div", { staticClass: "chart" }, [
+        _c("canvas", {
+          staticStyle: { height: "250px" },
+          attrs: { id: "barChart" }
+        })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-78106480", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
+
+/***/ }),
+/* 285 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    props: {
+        post: {
+            facebook_post_id: 0,
+            facebook_analytics_id: 0,
+            messages: String.empty,
+            picture: String.empty,
+            story: String.empty,
+            reaction_like: 0,
+            reaction_haha: 0,
+            reaction_love: 0,
+            reaction_wow: 0,
+            reaction_sad: 0,
+            reaction_angry: 0,
+            shares: 0,
+            comments: 0,
+            facebook_created_at: String.empty
+        },
+        facebookAnalytics: {
+            id: 0,
+            account_id: 0,
+            account_name: String.empty,
+            account_username: String.empty,
+            account_picture: String.empty,
+            account_link: String.empty,
+            total_posts: 0,
+            total_page_followers: 0,
+            total_page_likes: 0,
+            total_posts_likes: 0,
+            total_posts_loves: 0,
+            total_posts_wows: 0,
+            total_posts_sads: 0,
+            total_posts_hahas: 0,
+            total_posts_angries: 0,
+            total_posts_shares: 0,
+            total_posts_comments: 0,
+            total_posts_thankfuls: 0,
+            average_posts_per_day: 0,
+            average_reactions_per_post: 0,
+            average_intereactions_per_post: 0
+        }
+    },
+    computed: {
+        postInstance: function postInstance() {
+            console.log(this.post);
+            return this.post;
+        }
+    }
+});
+
+/***/ }),
+/* 286 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_facebook_post_vue__ = __webpack_require__(285);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_31face55_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_facebook_post_vue__ = __webpack_require__(287);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_facebook_post_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_31face55_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_facebook_post_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_31face55_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_facebook_post_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/global/facebook/facebook_post.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-31face55", Component.options)
+  } else {
+    hotAPI.reload("data-v-31face55", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 287 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "facebook-post" } }, [
+    _c("div", { staticClass: "box box-widget" }, [
+      _c("div", { staticClass: "box-header with-border" }, [
+        _c("div", { staticClass: "user-block" }, [
+          _c("img", {
+            staticClass: "img-circle",
+            attrs: {
+              src: _vm.facebookAnalytics.account_picture,
+              alt: "User Image"
+            }
+          }),
+          _vm._v(" "),
+          _c("span", { staticClass: "username" }, [
+            _c("a", { attrs: { href: "#" } }, [
+              _vm._v(_vm._s(_vm.facebookAnalytics.account_name))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "description" }, [
+            _vm._v(
+              "Shared publicly - " +
+                _vm._s(_vm.postInstance.facebook_created_at)
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(0)
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "box-body" }, [
+        _c("p", { domProps: { innerHTML: _vm._s(_vm.postInstance.messages) } }),
+        _vm._v(" "),
+        _c("p", { staticClass: "post-image" }, [
+          _c("img", { attrs: { src: _vm.postInstance.picture } })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "box-footer" }, [
+        _c("span", { staticClass: "pull-right text-muted" }, [
+          _c("span", [
+            _c("img", {
+              staticClass: "reactions-img",
+              staticStyle: { "margin-left": "0" },
+              attrs: { src: "/imgs/reactions/like.gif", height: "16px" }
+            }),
+            _vm._v(_vm._s(_vm._f("currency")(_vm.postInstance.reaction_like)))
+          ]),
+          _vm._v(" "),
+          _c("span", [
+            _c("img", {
+              staticClass: "reactions-img",
+              attrs: { src: "/imgs/reactions/love.gif", height: "16px" }
+            }),
+            _vm._v(
+              " " + _vm._s(_vm._f("currency")(_vm.postInstance.reaction_love))
+            )
+          ]),
+          _vm._v(" "),
+          _c("span", [
+            _c("img", {
+              staticClass: "reactions-img",
+              attrs: { src: "/imgs/reactions/wow.gif", height: "16px" }
+            }),
+            _vm._v(
+              " " + _vm._s(_vm._f("currency")(_vm.postInstance.reaction_wow))
+            )
+          ]),
+          _vm._v(" "),
+          _c("span", [
+            _c("img", {
+              staticClass: "reactions-img",
+              attrs: { src: "/imgs/reactions/sad.gif", height: "16px" }
+            }),
+            _vm._v(
+              " " + _vm._s(_vm._f("currency")(_vm.postInstance.reaction_sad))
+            )
+          ]),
+          _vm._v(" "),
+          _c("span", [
+            _c("img", {
+              staticClass: "reactions-img",
+              attrs: { src: "/imgs/reactions/haha.gif", height: "16px" }
+            }),
+            _vm._v(
+              " " + _vm._s(_vm._f("currency")(_vm.postInstance.reaction_hah))
+            )
+          ]),
+          _vm._v(" "),
+          _c("span", [
+            _c("img", {
+              staticClass: "reactions-img",
+              attrs: { src: "/imgs/reactions/angry.gif", height: "16px" }
+            }),
+            _vm._v(
+              " " + _vm._s(_vm._f("currency")(_vm.postInstance.reaction_angry))
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-tools" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-box-tool",
+          attrs: {
+            type: "button",
+            "data-toggle": "tooltip",
+            title: "",
+            "data-original-title": "Mark as read"
+          }
+        },
+        [_c("i", { staticClass: "fa fa-circle-o" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-box-tool",
+          attrs: { type: "button", "data-widget": "collapse" }
+        },
+        [_c("i", { staticClass: "fa fa-minus" })]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-31face55", { render: render, staticRenderFns: staticRenderFns })
   }
 }
 

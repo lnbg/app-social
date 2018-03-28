@@ -8,6 +8,13 @@ const getListFacebookPageAnalytics = ({commit, state}) => {
         })
 }
 
+const getFacebookPageAnalytics = ({commit, state}, username) => {
+    queryString(`${endPoint.GET.FACEBOOK_PAGE_ANALYTICS}?username=${username}`)
+        .then(response => {
+            commit('GET_FACEBOOK_PAGE_ANALYTICS', response.data);
+        })
+}
+
 const createNewFacebookPage = (event, facebook_link) => {
     return new Promise((resolve, reject) => {
         post(endPoint.POST.CREATE_NEW_FACEBOOK_PAGE, {page_link: facebook_link})
@@ -27,7 +34,8 @@ const analyticsFacebookPage = (event, id) => {
 }
 
 export default {
+    getFacebookPageAnalytics,
     getListFacebookPageAnalytics,
     createNewFacebookPage,
-    analyticsFacebookPage
+    analyticsFacebookPage,
 };

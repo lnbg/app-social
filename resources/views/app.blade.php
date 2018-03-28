@@ -22,8 +22,7 @@
         <!-- AdminLTE Skins. Choose a skin from the css/skins
             folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
-        <link rel="stylesheet" href="/css/app.css">
-        
+        <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
@@ -337,15 +336,6 @@
         </aside>
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <section class="content-header">
-                <h1>Page Analytics</h1>
-                <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li class="active">Dashboard</li>
-                </ol>
-            </section>
-        
             <!-- Main content -->
             <section class="content">
                 {{--  @yield('app')  --}}
@@ -558,6 +548,7 @@
         <script src="/bower_components/jquery/dist/jquery.min.js"></script>
         <!-- Bootstrap 3.3.7 -->
         <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
         <!-- FastClick -->
         <script src="/bower_components/fastclick/lib/fastclick.js"></script>
         <!-- AdminLTE App -->
@@ -570,10 +561,10 @@
         <!-- SlimScroll -->
         <script src="/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
         <!-- ChartJS -->
-        <script src="/bower_components/chart.js/Chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
         {{--  <script src="/dist/js/pages/dashboard2.js"></script>  --}}
         <!-- Admin by VueJS -->
-        <script src="/js/app.js"></script>
+        <script src="{{ mix('/js/app.js') }}"></script>
     </body>
 </html>

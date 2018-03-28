@@ -17,6 +17,7 @@ class CreateTableFacebookPosts extends Migration
             $table->integer('facebook_analytics_id');
             $table->string('facebook_post_id');
             $table->text('messages')->nullable();
+            $table->string('picture')->nullable();
             $table->text('story')->nullable();
             $table->integer('reaction_like')->nullable()->default(0);
             $table->integer('reaction_haha')->nullable()->default(0);

@@ -6,6 +6,7 @@ import store from './vuex/store.js'
 import Numeral from 'numeral'
 import VueMixins from './mixins/mixins'
 import { EventBus } from './global/event-bus'
+
 // router setup
 import routes from './routes/routes'
 // library imports
@@ -35,6 +36,13 @@ Vue.mixin(VueMixins)
 Vue.filter("currency", function (value) {
     return Numeral(value).format("0,0[.]00");
 });
+
+window.NumberFormatter = function(num) {
+    return num.replace(/./g, function(c, i, a) {
+        return i && c !== "." && ((a.length - i) % 3 === 0) ? ',' + c : c;
+    });
+}
+
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({

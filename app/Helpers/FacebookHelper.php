@@ -95,10 +95,19 @@ class FacebookHelper {
                 $totalPostAngries = $angries->getMetaData()['summary']['total_count'];
                 $analyticsData['total_posts_angries'] += $totalPostAngries;
 
+                $picture = $laravelFacebookSDK->sendRequest('GET', '/' . $item['id'],['fields' => 'full_picture'], $accessToken);
+                $picture = $picture->getDecodedBody();
+                if (isset($picture['full_picture'])) {
+                    $picture = $picture['full_picture'];
+                } else {
+                    $picture = '';
+                }
+
                 $dbItem = [
                     'facebook_analytics_id' => $facebookAnalyticsID,
                     'facebook_post_id' => $item['id'],
                     'messages' => isset($item['message']) ? $item['message'] : '',
+                    'picture' => $picture,
                     'story' => isset($item['story']) ? $item['story'] : '',
                     'comments' => $totalPostComments,
                     'shares' => $totalPostShares,
