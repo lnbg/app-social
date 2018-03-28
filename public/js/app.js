@@ -22812,6 +22812,10 @@ if (false) {
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     props: {
@@ -22966,6 +22970,18 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "box-footer" }, [
+        _c("span", { staticClass: "pull-left text-muted" }, [
+          _c("span", [
+            _c("i", { staticClass: "fa fa-comment" }),
+            _vm._v(" " + _vm._s(_vm._f("currency")(_vm.postInstance.comments)))
+          ]),
+          _vm._v(" \n                "),
+          _c("span", [
+            _c("i", { staticClass: "fa fa-share" }),
+            _vm._v(" " + _vm._s(_vm._f("currency")(_vm.postInstance.share)))
+          ])
+        ]),
+        _vm._v(" "),
         _c("span", { staticClass: "pull-right text-muted" }, [
           _c("span", [
             _c("img", {

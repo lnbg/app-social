@@ -26,6 +26,10 @@
             <!-- /.box-body -->
             <!-- /.box-footer -->
             <div class="box-footer">
+                <span class="pull-left text-muted">
+                    <span><i class="fa fa-comment"></i> {{ postInstance.comments | currency }}</span>&nbsp;
+                    <span><i class="fa fa-share"></i> {{ postInstance.share | currency }}</span>
+                </span>
                 <span class="pull-right text-muted">
                     <span><img class="reactions-img" src="/imgs/reactions/like.gif" height="16px" style="margin-left: 0;" />{{ postInstance.reaction_like | currency }}</span>
                     <span><img class="reactions-img"  src="/imgs/reactions/love.gif" height="16px" /> {{ postInstance.reaction_love | currency }}</span>
