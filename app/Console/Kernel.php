@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel
                 
         $schedule->command('kols:facebook_page')
                 ->timezone('Asia/Saigon')
-                ->dailyAt('03:00')
+                ->dailyAt('02:00')
                 ->sendOutputTo($file);
     }
 

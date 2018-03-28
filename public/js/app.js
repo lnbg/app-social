@@ -22923,11 +22923,6 @@ if (false) {
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     props: {
@@ -23164,28 +23159,10 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "box-tools" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-box-tool",
-          attrs: {
-            type: "button",
-            "data-toggle": "tooltip",
-            title: "",
-            "data-original-title": "Mark as read"
-          }
-        },
-        [_c("i", { staticClass: "fa fa-circle-o" })]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-box-tool",
-          attrs: { type: "button", "data-widget": "collapse" }
-        },
-        [_c("i", { staticClass: "fa fa-minus" })]
-      )
+      _c("img", {
+        staticClass: "img-circle",
+        attrs: { src: "/imgs/best.jpeg", width: "48px", height: "48px" }
+      })
     ])
   }
 ]

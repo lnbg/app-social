@@ -9,12 +9,7 @@
                 </div>
                 <!-- /.user-block -->
                 <div class="box-tools">
-                    <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="" data-original-title="Mark as read">
-                        <i class="fa fa-circle-o"></i>
-                    </button>
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
+                    <img class="img-circle" src="/imgs/best.jpeg" width="48px" height="48px" />
                 </div>
               <!-- /.box-tools -->
             </div>
