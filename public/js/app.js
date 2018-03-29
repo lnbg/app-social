@@ -13193,6 +13193,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             account_name: String.empty,
             account_username: String.empty,
             account_picture: String.empty,
+            account_picture_cover: String.empty,
             account_link: String.empty,
             total_posts: 0,
             total_page_followers: 0,
@@ -13230,6 +13231,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         overviewLink: function overviewLink() {
             return '/facebook/overview/' + this.page.account_username;
+        },
+        styleForCoverPicture: function styleForCoverPicture() {
+            return 'background: url(\'' + this.page.account_picture_cover + '\'); background-size: cover;';
         }
     },
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('facebook', ['analyticsFacebookPage']), {
@@ -17204,6 +17208,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
         account_name: String.empty,
         account_username: String.empty,
         account_picture: String.empty,
+        account_picture_cover: String.empty,
         account_link: String.empty,
         total_posts: 0,
         total_page_followers: 0,
@@ -20518,8 +20523,8 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "widget-user-header min-height-120",
-          class: _vm.getBackgroundBoxHeader
+          staticClass: "widget-user-header bg-black min-height-120 bg-image",
+          style: _vm.styleForCoverPicture
         },
         [
           _c("div", { staticClass: "widget-user-image" }, [
@@ -20533,13 +20538,19 @@ var render = function() {
             _vm._v(" "),
             _c(
               "h3",
-              { staticClass: "widget-user-username widget-user-username-f20" },
+              {
+                staticClass:
+                  "widget-user-username widget-user-username-f20 widget-text-shadown"
+              },
               [_vm._v(_vm._s(_vm.page.account_name))]
             ),
             _vm._v(" "),
             _c(
               "h5",
-              { staticClass: "widget-user-username widget-user-username-f14" },
+              {
+                staticClass:
+                  "widget-user-username widget-user-username-f14 widget-text-shadown"
+              },
               [_vm._v(_vm._s(_vm.page.account_username))]
             )
           ])
@@ -21604,25 +21615,22 @@ var render = function() {
                 _c(
                   "div",
                   {
-                    staticClass: "widget-user-header",
-                    class: _vm.getBackgroundBoxHeader
+                    staticClass:
+                      "widget-user-header bg-black min-height-120 bg-image",
+                    style: _vm.styleForCoverPicture
                   },
                   [
-                    _c("h3", { staticClass: "widget-user-username" }, [
-                      _vm._v(_vm._s(_vm.facebookAnalytics.account_name))
+                    _c("div", { staticClass: "widget-user-image" }, [
+                      _c("img", {
+                        staticClass: "img-circle",
+                        attrs: {
+                          src: _vm.facebookAnalytics.account_picture,
+                          alt: _vm.facebookAnalytics.account_name
+                        }
+                      })
                     ])
                   ]
                 ),
-                _vm._v(" "),
-                _c("div", { staticClass: "widget-user-image" }, [
-                  _c("img", {
-                    staticClass: "img-circle",
-                    attrs: {
-                      src: _vm.facebookAnalytics.account_picture,
-                      alt: "User Avatar"
-                    }
-                  })
-                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "box-footer" }, [
                   _c("ul", { staticClass: "nav nav-stacked" }, [
@@ -22054,6 +22062,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     },
 
     computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('facebook', ['facebookAnalytics', 'facebookGrowthFans', 'facebookEvolutionOfInteractions', 'facebookBestPost']), {
+        styleForCoverPicture: function styleForCoverPicture() {
+            return 'background: url(\'' + this.facebookAnalytics.account_picture_cover + '\'); background-size: cover;';
+        },
         reactions: function reactions() {
             return this.facebookAnalytics.total_posts_likes + this.facebookAnalytics.total_posts_loves + this.facebookAnalytics.total_posts_wows + this.facebookAnalytics.total_posts_sads + this.facebookAnalytics.total_posts_hahas + this.facebookAnalytics.total_posts_angries;
         },
@@ -23075,7 +23086,10 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "box-body" }, [
-        _c("p", { domProps: { innerHTML: _vm._s(_vm.postInstance.messages) } }),
+        _c("p", {
+          staticClass: "post-content",
+          domProps: { innerHTML: _vm._s(_vm.postInstance.messages) }
+        }),
         _vm._v(" "),
         _c("p", { staticClass: "post-image" }, [
           _c("img", { attrs: { src: _vm.postInstance.picture } })

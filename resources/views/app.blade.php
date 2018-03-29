@@ -318,12 +318,8 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">MAIN NAVIGATION</li>
-                <li>
-                    <a href="/#/facebook/page"><i class="fa fa-circle-o"></i> Facebook</a>
-                </li>
-                <li>
-                    <a href="/#/instagram"><i class="fa fa-circle-o"></i> Instagram</a>
-                </li>
+                <li><a href="/#/facebook/page"><i class="fa fa-facebook text-red"></i> <span>Facebook</span></a></li>
+                <li><a href="/#/instagram"><i class="fa fa-instagram text-yellow"></i> <span>Instagram</span></a></li>
             </ul>
             </section>
             <!-- /.sidebar -->

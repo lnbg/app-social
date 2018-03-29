@@ -45,16 +45,17 @@ class FacebookAnalyticsController extends Controller
             $facebookFanpageLink = explode('/', $facebookFanpageLink);
             $facebookFanpageUserName = $facebookFanpageLink[3];
             $defaultURI = '/' . $facebookFanpageUserName;
-            $posts = $laravelFacebookSDK->sendRequest('GET', $defaultURI, ['fields' => 'name,picture'], $accessToken);
+            $posts = $laravelFacebookSDK->sendRequest('GET', $defaultURI, ['fields' => 'name,cover, picture.width(800).height(800)'], $accessToken);
             $posts = $posts->getDecodedBody();
             $new = FacebookAnalytics::create([
                 'account_id' => $posts['id'],
                 'account_name' => $posts['name'],
                 'account_username' => $facebookFanpageUserName,
                 'account_link' => $request->page_link,
-                'account_picture' => $posts['picture']['data']['url']
+                'account_picture' => $posts['picture']['data']['url'],
+                'account_picture_cover' => $posts['cover']['source']
             ]);
-            return response()->json($new, 200);
+            return response()->json($all, 200);
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
@@ -121,6 +122,15 @@ class FacebookAnalyticsController extends Controller
             } else {
                 $facebookFan->facebook_fans = $analyticsData['total_page_likes'];
                 $facebookFan->save();
+            }
+
+            $picture = $laravelFacebookSDK->sendRequest('GET', $defaultURI, ['fields' => 'cover,picture.width(800).height(800)'], $user->access_token);
+            $picture = $picture->getDecodedBody();
+            if (isset($picture['picture']['data']['url'])) {
+                $facebookAnalytics->account_picture = $picture['picture']['data']['url'];
+            }
+            if (isset($picture['cover']['source'])) {
+                $facebookAnalytics->account_picture_cover = $picture['cover']['source'];
             }
 
             $facebookAnalytics->total_posts = $analyticsData['total_posts'];

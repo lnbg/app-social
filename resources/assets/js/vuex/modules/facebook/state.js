@@ -6,6 +6,7 @@ export default {
         account_name: String.empty,
         account_username: String.empty,
         account_picture: String.empty,
+        account_picture_cover: String.empty,
         account_link: String.empty,
         total_posts: 0,
         total_page_followers: 0,

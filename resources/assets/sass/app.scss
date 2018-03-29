@@ -37,7 +37,7 @@
             }
         }
     }
-
+    
     .widget-user-username-f20 {
         font-size: 20px;
     }
@@ -46,6 +46,15 @@
         font-size: 14px;
     }
 
+    .widget-text-shadown {
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        font-weight: bolder;
+    }
+
+    .widget-user-image > img {
+        border: 2px solid rgb(255, 255, 255);
+    }
+    
     .reactions-img {
         margin-left: 5px;
         margin-right: 5px;
@@ -55,6 +64,7 @@
 .overview-box-widget {
     .widget-user-header {
         text-align: center;
+        background-size: cover !important;
     }
 }
 
@@ -88,6 +98,11 @@
         margin: 0 auto;
         text-align: center;
     }
+}
+
+.post-content {
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .post-image {

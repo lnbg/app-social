@@ -5,11 +5,11 @@
                 <div class="overview-panel-left col-md-4">
                     <div class="box box-widget widget-user overview-box-widget">
                         <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header" :class="getBackgroundBoxHeader">
-                            <h3 class="widget-user-username">{{ facebookAnalytics.account_name }}</h3>
-                        </div>
-                        <div class="widget-user-image">
-                            <img class="img-circle" :src="facebookAnalytics.account_picture" alt="User Avatar">
+                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                        <div class="widget-user-header bg-black min-height-120 bg-image" :style="styleForCoverPicture">
+                            <div class="widget-user-image">
+                                <img class="img-circle" :src="facebookAnalytics.account_picture" :alt="facebookAnalytics.account_name">
+                            </div>
                         </div>
                         <div class="box-footer">
                             <ul class="nav nav-stacked">
@@ -93,6 +93,9 @@ export default {
             'facebookEvolutionOfInteractions',
             'facebookBestPost'
         ]),
+        styleForCoverPicture() {
+            return `background: url('${this.facebookAnalytics.account_picture_cover}'); background-size: cover;`;
+        },
         reactions() {
             return this.facebookAnalytics.total_posts_likes + this.facebookAnalytics.total_posts_loves + this.facebookAnalytics.total_posts_wows
             + this.facebookAnalytics.total_posts_sads + this.facebookAnalytics.total_posts_hahas + this.facebookAnalytics.total_posts_angries;

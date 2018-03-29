@@ -11,11 +11,11 @@
             <a href="javascript:void(0)"><i class="fa fa-download" @click="boxAnalyticsFacebookPage"></i></a>
         </div>
         <!-- Add the bg color to the header using any of the bg-* classes -->
-        <div class="widget-user-header min-height-120" :class="getBackgroundBoxHeader">
+        <div class="widget-user-header bg-black min-height-120 bg-image" :style="styleForCoverPicture">
             <div class="widget-user-image">
                 <img class="img-circle" :src="page.account_picture" :alt="page.account_name">
-                <h3 class="widget-user-username widget-user-username-f20">{{ page.account_name }}</h3>
-                <h5 class="widget-user-username widget-user-username-f14">{{ page.account_username }}</h5>
+                <h3 class="widget-user-username widget-user-username-f20 widget-text-shadown">{{ page.account_name }}</h3>
+                <h5 class="widget-user-username widget-user-username-f14 widget-text-shadown">{{ page.account_username }}</h5>
             </div>
         </div>
         <div class="box-footer no-padding">
@@ -54,6 +54,7 @@ export default {
             account_name: String.empty,
             account_username: String.empty,
             account_picture: String.empty,
+            account_picture_cover: String.empty,
             account_link: String.empty,
             total_posts: 0,
             total_page_followers: 0,
@@ -91,6 +92,9 @@ export default {
         },
         overviewLink() {
             return '/facebook/overview/' + this.page.account_username
+        },
+        styleForCoverPicture() {
+            return `background: url('${this.page.account_picture_cover}'); background-size: cover;`;
         }
     },
     methods: {

@@ -52,6 +52,15 @@
   font-size: 14px;
 }
 
+.box-widget .widget-text-shadown {
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-weight: bolder;
+}
+
+.box-widget .widget-user-image > img {
+  border: 2px solid white;
+}
+
 .box-widget .reactions-img {
   margin-left: 5px;
   margin-right: 5px;
@@ -59,6 +68,7 @@
 
 .overview-box-widget .widget-user-header {
   text-align: center;
+  background-size: cover !important;
 }
 
 .page-overview-wrapper .row {
@@ -90,6 +100,11 @@
 .widget-info-box .info-box-content {
   margin: 0 auto;
   text-align: center;
+}
+
+.post-content {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .post-image img {

@@ -15,7 +15,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <p v-html="postInstance.messages"></p>
+                <p class="post-content" v-html="postInstance.messages"></p>
                 <p class="post-image"><img :src="postInstance.picture" /></p>
             </div>
             <!-- /.box-body -->

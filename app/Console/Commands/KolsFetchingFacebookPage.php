@@ -145,6 +145,15 @@ class KolsFetchingFacebookPage extends Command
             $facebookFan->save();
         }
 
+        $picture = $laravelFacebookSDK->sendRequest('GET', $defaultURI, ['fields' => 'cover, picture.width(800).height(800)'], $user->access_token);
+        $picture = $picture->getDecodedBody();
+        if (isset($picture['picture']['data']['url'])) {
+            $facebookAnalytics->account_picture = $picture['picture']['data']['url'];
+        }
+        if (isset($picture['cover']['source'])) {
+            $facebookAnalytics->account_picture_cover = $picture['cover']['source'];
+        }
+        
         $facebookAnalytics->total_posts = $analyticsData['total_posts'];
         $facebookAnalytics->total_page_likes = $analyticsData['total_page_likes'];
         $facebookAnalytics->total_page_followers = $analyticsData['total_page_followers'];

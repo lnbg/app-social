@@ -30,6 +30,7 @@ class CreateTableFacebookAnalytics extends Migration
             $table->string('account_name');
             $table->string('account_username');
             $table->string('account_picture')->nullable();
+            $table->string('account_picture_cover')->nullable();
             $table->string('account_link')->nullable();
             $table->integer('account_type')->nullable()->default(1);
             $table->datetime('account_created_date')->nullable();
