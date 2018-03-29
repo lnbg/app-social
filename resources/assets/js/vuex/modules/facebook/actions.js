@@ -33,9 +33,19 @@ const analyticsFacebookPage = (event, id) => {
     })
 }
 
+const resetGrowthFans = ({commit, state}) => {
+    commit('RESET_GROWTH_FANS');
+}
+
+const resetEvolutionOfInteractions = ({commit, state}) => {
+    commit('RESET_EVOLUTION_OF_INTERACTIONS');
+}
+
 export default {
     getFacebookPageAnalytics,
     getListFacebookPageAnalytics,
     createNewFacebookPage,
     analyticsFacebookPage,
+    resetGrowthFans,
+    resetEvolutionOfInteractions
 };

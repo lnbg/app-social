@@ -5,7 +5,6 @@
                 <div class="overview-panel-left col-md-4">
                     <div class="box box-widget widget-user overview-box-widget">
                         <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
                         <div class="widget-user-header bg-black min-height-120 bg-image" :style="styleForCoverPicture">
                             <div class="widget-user-image">
                                 <img class="img-circle" :src="facebookAnalytics.account_picture" :alt="facebookAnalytics.account_name">
@@ -187,13 +186,18 @@ export default {
     },
     methods: {
         ...mapActions('facebook', [
-            
+            'resetGrowthFans',
+            'resetEvolutionOfInteractions'
         ]),
     },
     beforeCreate() {
         this.$store.dispatch('facebook/getFacebookPageAnalytics', this.$route.params.username);
     },
     created() {
+    },
+    beforeDestroy() {
+        this.resetGrowthFans()
+        this.resetEvolutionOfInteractions()
     }
 }
 </script>

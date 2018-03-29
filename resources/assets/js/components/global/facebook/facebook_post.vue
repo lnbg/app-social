@@ -83,7 +83,6 @@ export default {
     },
     computed: {
         postInstance() {
-            console.log(this.post);
             return this.post;
         }
     }

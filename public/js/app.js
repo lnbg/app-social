@@ -17304,11 +17304,27 @@ var analyticsFacebookPage = function analyticsFacebookPage(event, id) {
     });
 };
 
+var resetGrowthFans = function resetGrowthFans(_ref3) {
+    var commit = _ref3.commit,
+        state = _ref3.state;
+
+    commit('RESET_GROWTH_FANS');
+};
+
+var resetEvolutionOfInteractions = function resetEvolutionOfInteractions(_ref4) {
+    var commit = _ref4.commit,
+        state = _ref4.state;
+
+    commit('RESET_EVOLUTION_OF_INTERACTIONS');
+};
+
 /* harmony default export */ __webpack_exports__["a"] = ({
     getFacebookPageAnalytics: getFacebookPageAnalytics,
     getListFacebookPageAnalytics: getListFacebookPageAnalytics,
     createNewFacebookPage: createNewFacebookPage,
-    analyticsFacebookPage: analyticsFacebookPage
+    analyticsFacebookPage: analyticsFacebookPage,
+    resetGrowthFans: resetGrowthFans,
+    resetEvolutionOfInteractions: resetEvolutionOfInteractions
 });
 
 /***/ }),
@@ -17376,9 +17392,19 @@ var GET_FACEBOOK_PAGE_ANALYTICS = function GET_FACEBOOK_PAGE_ANALYTICS(state, da
     state.facebookEvolutionOfInteractions = data.analytics.evolutionOfInteractions;
 };
 
+var RESET_GROWTH_FANS = function RESET_GROWTH_FANS(state) {
+    state.facebookGrowthFans = [];
+};
+
+var RESET_EVOLUTION_OF_INTERACTIONS = function RESET_EVOLUTION_OF_INTERACTIONS(state) {
+    state.facebookEvolutionOfInteractions = [];
+};
+
 /* harmony default export */ __webpack_exports__["a"] = ({
     GET_LIST_FACEBOOK_PAGE_ANALYTICS: GET_LIST_FACEBOOK_PAGE_ANALYTICS,
-    GET_FACEBOOK_PAGE_ANALYTICS: GET_FACEBOOK_PAGE_ANALYTICS
+    GET_FACEBOOK_PAGE_ANALYTICS: GET_FACEBOOK_PAGE_ANALYTICS,
+    RESET_GROWTH_FANS: RESET_GROWTH_FANS,
+    RESET_EVOLUTION_OF_INTERACTIONS: RESET_EVOLUTION_OF_INTERACTIONS
 });
 
 /***/ }),
@@ -22041,7 +22067,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
 
 
 
@@ -22146,11 +22171,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.growthFans.labels.length > 0;
         }
     }),
-    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('facebook', [])),
+    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('facebook', ['resetGrowthFans', 'resetEvolutionOfInteractions'])),
     beforeCreate: function beforeCreate() {
         this.$store.dispatch('facebook/getFacebookPageAnalytics', this.$route.params.username);
     },
-    created: function created() {}
+    created: function created() {},
+    beforeDestroy: function beforeDestroy() {
+        this.resetGrowthFans();
+        this.resetEvolutionOfInteractions();
+    }
 });
 
 /***/ }),
@@ -22985,7 +23014,6 @@ if (false) {
     },
     computed: {
         postInstance: function postInstance() {
-            console.log(this.post);
             return this.post;
         }
     }

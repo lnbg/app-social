@@ -8,8 +8,18 @@ const GET_FACEBOOK_PAGE_ANALYTICS = (state, data) => {
     state.facebookGrowthFans = data.analytics.growthFans
     state.facebookEvolutionOfInteractions = data.analytics.evolutionOfInteractions
 }
+
+const RESET_GROWTH_FANS = (state) => {
+    state.facebookGrowthFans = []
+}
+
+const RESET_EVOLUTION_OF_INTERACTIONS = (state) => {
+    state.facebookEvolutionOfInteractions = []
+}
   
 export default {
     GET_LIST_FACEBOOK_PAGE_ANALYTICS,
-    GET_FACEBOOK_PAGE_ANALYTICS
+    GET_FACEBOOK_PAGE_ANALYTICS,
+    RESET_GROWTH_FANS,
+    RESET_EVOLUTION_OF_INTERACTIONS
 };
