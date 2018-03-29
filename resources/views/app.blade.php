@@ -30,9 +30,9 @@
                 <!-- Logo -->
                 <a href="index2.html" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
-                    <span class="logo-mini"><b>A</b>LT</span>
+                    <span class="logo-mini"><b>Kols</b></span>
                     <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg"><b>Admin</b>LTE</span>
+                    <span class="logo-lg"><b>Kols</b>.imediavn</span>
                 </a>
                 <!-- Header Navbar: style can be found in header.less -->
                 <nav class="navbar navbar-static-top">
@@ -339,7 +339,7 @@
             <div class="pull-right hidden-xs">
             <b>Version</b> 2.4.0
             </div>
-            <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+            <strong>Copyright &copy; 2014-2016 <a href="https://bestadset.com">imediavn</a>.</strong> All rights
             reserved.
         </footer>
         
