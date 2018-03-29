@@ -19,6 +19,9 @@
                             <div class="user-block">
                                 <img class="img-circle" :src="facebookAnalytics.account_picture" alt="User Image">
                                 <span class="username"><a href="#">{{ facebookAnalytics.account_name }}</a></span>
+                                <span class="username" style="font-size: 12px">
+                                    <a href="#"><i class="fa fa-facebook-square"></i> / {{ facebookAnalytics.account_username }}</a>
+                                </span>
                             </div>
                         <!-- /.box-tools -->
                         </div>

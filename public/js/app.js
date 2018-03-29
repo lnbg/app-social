@@ -23311,6 +23311,9 @@ if (false) {
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     props: { source: Array, facebookAnalytics: Object }
@@ -23424,7 +23427,24 @@ var render = function() {
                         _c("a", { attrs: { href: "#" } }, [
                           _vm._v(_vm._s(_vm.facebookAnalytics.account_name))
                         ])
-                      ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          staticClass: "username",
+                          staticStyle: { "font-size": "12px" }
+                        },
+                        [
+                          _c("a", { attrs: { href: "#" } }, [
+                            _c("i", { staticClass: "fa fa-facebook-square" }),
+                            _vm._v(
+                              " / " +
+                                _vm._s(_vm.facebookAnalytics.account_username)
+                            )
+                          ])
+                        ]
+                      )
                     ])
                   ]),
                   _vm._v(" "),
