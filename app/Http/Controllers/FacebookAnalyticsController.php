@@ -178,8 +178,37 @@ class FacebookAnalyticsController extends Controller
         ->where(\DB::raw("reaction_like + reaction_wow + reaction_angry + reaction_haha + reaction_wow + reaction_sad + comments + shares"), '=',
         \DB::raw("(SELECT MAX(reaction_like + reaction_wow + reaction_angry + reaction_haha + reaction_wow + reaction_sad + comments + shares) FROM facebook_posts where facebook_analytics_id = " . $pageOverview->id . ")"))
         ->first();
-        
 
+        $lastPosts = FacebookPost::where(
+            'facebook_analytics_id','=', $pageOverview->id)
+        ->orderBy('facebook_created_at', 'desc')->limit(5)->get();
+
+        $lastPostsResults = [];
+        $lastPostsResultsKey = 0;
+        $lastPostsResultDay = '';
+        
+        foreach ($lastPosts as $post) {
+            $currentDay = date('Y-m-d', strtotime($post['facebook_created_at']));
+            if ($lastPostsResultDay == '') {
+                $lastPostsResultDay = $currentDay;
+                $lastPostsResults[$lastPostsResultsKey] = [
+                    'date' => $lastPostsResultDay,
+                    'posts' => [$post]
+                ];
+            } else {
+                // truong hop 1 khi last post = current post
+                if ($lastPostsResultDay != $currentDay) {
+                    $lastPostsResultsKey++;
+                    $lastPostsResultDay = $currentDay;
+                    $lastPostsResults[$lastPostsResultsKey] = [
+                        'date' => $lastPostsResultDay,
+                        'posts' => []
+                    ];
+                }
+                $lastPostsResults[$lastPostsResultsKey]['posts'][] = $post;
+            }
+        }
+        
         $evolutionOfInteractions = FacebookPost::where(
             'facebook_analytics_id','=', $pageOverview->id)
         ->where(
@@ -192,7 +221,8 @@ class FacebookAnalyticsController extends Controller
             'analytics' => [
                 'growthFans' => $growthFans,
                 'evolutionOfInteractions' => $evolutionOfInteractions,
-                'bestPost' => $bestPost
+                'bestPost' => $bestPost,
+                'facebookLastPosts' => $lastPostsResults
             ]
         ];
         return response()->json($result, 200);

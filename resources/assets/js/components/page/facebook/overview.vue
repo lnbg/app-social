@@ -61,17 +61,23 @@
                             <evolution-of-interactions-chart v-if="chartLoadSuccess" :source="evolutionOfInteractions"></evolution-of-interactions-chart>
                         </div>
                     </section>
+                    <section id="facebook-posts-timeline">
+                        <div class="row">
+                            <posts-timeline v-if="chartLoadSuccess" :facebookAnalytics="facebookAnalytics" :source="facebookLastPosts"></posts-timeline>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import reactionsBox from '../../global/facebook/reactions_box'
 import growthFansChart from '../../global/facebook/growth_fans_chart'
 import evolutionOfInteractionsChart from '../../global/facebook/evolution_of_interactions_chart'
 import facebookPost from '../../global/facebook/facebook_post'
+import facebookPostsTimeLine from '../../global/facebook/posts_timeline'
 
 export default {
     name: 'Page_Facebook__Overview',
@@ -79,7 +85,8 @@ export default {
         'reactions-box': reactionsBox,
         'growth-fans-chart': growthFansChart,
         'evolution-of-interactions-chart': evolutionOfInteractionsChart,
-        'facebook-post': facebookPost
+        'facebook-post': facebookPost,
+        'posts-timeline': facebookPostsTimeLine
     },
     data() {
         return {    
@@ -91,6 +98,9 @@ export default {
             'facebookGrowthFans',
             'facebookEvolutionOfInteractions',
             'facebookBestPost'
+        ]),
+        ...mapGetters('facebook', [
+            'facebookLastPosts'
         ]),
         styleForCoverPicture() {
             return `background: url('${this.facebookAnalytics.account_picture_cover}'); background-size: cover;`;

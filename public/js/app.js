@@ -620,9 +620,9 @@ module.exports = defaults;
 "use strict";
 /* unused harmony export Store */
 /* unused harmony export install */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return mapState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return mapState; });
 /* unused harmony export mapMutations */
-/* unused harmony export mapGetters */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return mapGetters; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return mapActions; });
 /* unused harmony export createNamespacedHelpers */
 /**
@@ -13103,7 +13103,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
     },
 
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('facebook', ['lstFacebookPageAnalytics'])),
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["d" /* mapState */])('facebook', ['lstFacebookPageAnalytics'])),
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('facebook', ['createNewFacebookPage', 'getListFacebookPageAnalytics']), {
         createNewPage: function createNewPage() {
             var _this = this;
@@ -17257,7 +17257,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
         shares: 0,
         comments: 0,
         facebook_created_at: String.empty
-    }
+    },
+    facebookLastPosts: []
 });
 
 /***/ }),
@@ -17367,13 +17368,17 @@ var facebookEvolutionOfInteractions = function facebookEvolutionOfInteractions(s
 var facebookBestPost = function facebookBestPost(state) {
     return state.facebookBestPost;
 };
+var facebookLastPosts = function facebookLastPosts(state) {
+    return state.facebookLastPosts;
+};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     lstFacebookPageAnalytics: lstFacebookPageAnalytics,
     facebookPageAnalytics: facebookPageAnalytics,
     facebookBestPost: facebookBestPost,
     facebookGrowthFans: facebookGrowthFans,
-    facebookEvolutionOfInteractions: facebookEvolutionOfInteractions
+    facebookEvolutionOfInteractions: facebookEvolutionOfInteractions,
+    facebookLastPosts: facebookLastPosts
 });
 
 /***/ }),
@@ -17388,6 +17393,7 @@ var GET_LIST_FACEBOOK_PAGE_ANALYTICS = function GET_LIST_FACEBOOK_PAGE_ANALYTICS
 var GET_FACEBOOK_PAGE_ANALYTICS = function GET_FACEBOOK_PAGE_ANALYTICS(state, data) {
     Object.assign(state.facebookAnalytics, data.page);
     Object.assign(state.facebookBestPost, data.analytics.bestPost);
+    state.facebookLastPosts = data.analytics.facebookLastPosts;
     state.facebookGrowthFans = data.analytics.growthFans;
     state.facebookEvolutionOfInteractions = data.analytics.evolutionOfInteractions;
 };
@@ -20982,7 +20988,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
     },
 
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["c" /* mapState */])('instagram', ['lstInstagramProfileAnalytics'])),
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["d" /* mapState */])('instagram', ['lstInstagramProfileAnalytics'])),
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapActions */])('instagram', ['createNewInstagramProfile', 'getListInstagramProfileAnalytics']), {
         _createNewInstagramProfile: function _createNewInstagramProfile() {
             var _this = this;
@@ -21970,7 +21976,25 @@ var render = function() {
                   1
                 )
               ]
-            )
+            ),
+            _vm._v(" "),
+            _c("section", { attrs: { id: "facebook-posts-timeline" } }, [
+              _c(
+                "div",
+                { staticClass: "row" },
+                [
+                  _vm.chartLoadSuccess
+                    ? _c("posts-timeline", {
+                        attrs: {
+                          facebookAnalytics: _vm.facebookAnalytics,
+                          source: _vm.facebookLastPosts
+                        }
+                      })
+                    : _vm._e()
+                ],
+                1
+              )
+            ])
           ])
         ])
       ])
@@ -21997,6 +22021,7 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__global_facebook_growth_fans_chart__ = __webpack_require__(272);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global_facebook_evolution_of_interactions_chart__ = __webpack_require__(283);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_facebook_facebook_post__ = __webpack_require__(286);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_facebook_posts_timeline__ = __webpack_require__(289);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -22067,6 +22092,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 
 
@@ -22080,13 +22111,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         'reactions-box': __WEBPACK_IMPORTED_MODULE_1__global_facebook_reactions_box__["a" /* default */],
         'growth-fans-chart': __WEBPACK_IMPORTED_MODULE_2__global_facebook_growth_fans_chart__["a" /* default */],
         'evolution-of-interactions-chart': __WEBPACK_IMPORTED_MODULE_3__global_facebook_evolution_of_interactions_chart__["a" /* default */],
-        'facebook-post': __WEBPACK_IMPORTED_MODULE_4__global_facebook_facebook_post__["a" /* default */]
+        'facebook-post': __WEBPACK_IMPORTED_MODULE_4__global_facebook_facebook_post__["a" /* default */],
+        'posts-timeline': __WEBPACK_IMPORTED_MODULE_5__global_facebook_posts_timeline__["a" /* default */]
     },
     data: function data() {
         return {};
     },
 
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])('facebook', ['facebookAnalytics', 'facebookGrowthFans', 'facebookEvolutionOfInteractions', 'facebookBestPost']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["d" /* mapState */])('facebook', ['facebookAnalytics', 'facebookGrowthFans', 'facebookEvolutionOfInteractions', 'facebookBestPost']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])('facebook', ['facebookLastPosts']), {
         styleForCoverPicture: function styleForCoverPicture() {
             return 'background: url(\'' + this.facebookAnalytics.account_picture_cover + '\'); background-size: cover;';
         },
@@ -23220,6 +23252,324 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-31face55", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
+
+/***/ }),
+/* 288 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    props: { source: Array, facebookAnalytics: Object }
+});
+
+/***/ }),
+/* 289 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_posts_timeline_vue__ = __webpack_require__(288);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_42a8b601_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_posts_timeline_vue__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_posts_timeline_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_42a8b601_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_posts_timeline_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_42a8b601_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_posts_timeline_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/global/facebook/posts_timeline.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-42a8b601", Component.options)
+  } else {
+    hotAPI.reload("data-v-42a8b601", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 290 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { attrs: { id: "posts-timeline" } },
+    _vm._l(_vm.source, function(timelineItem) {
+      return _c("section", { key: timelineItem.date }, [
+        _c(
+          "ul",
+          { staticClass: "timeline" },
+          [
+            _c("li", { staticClass: "time-label" }, [
+              _c("span", { staticClass: "bg-red" }, [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(timelineItem.date) +
+                    "\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._l(timelineItem.posts, function(postInstance) {
+              return _c("li", { key: postInstance.facebook_post_id }, [
+                _c("i", { staticClass: "fa fa-comments bg-yellow" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "timeline-item" }, [
+                  _c("span", { staticClass: "time" }, [
+                    _c("i", { staticClass: "fa fa-clock-o" }),
+                    _vm._v(_vm._s(postInstance.facebook_created_at))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "box-header with-border" }, [
+                    _c("div", { staticClass: "user-block" }, [
+                      _c("img", {
+                        staticClass: "img-circle",
+                        attrs: {
+                          src: _vm.facebookAnalytics.account_picture,
+                          alt: "User Image"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "username" }, [
+                        _c("a", { attrs: { href: "#" } }, [
+                          _vm._v(_vm._s(_vm.facebookAnalytics.account_name))
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "box-body" }, [
+                    _c("p", {
+                      staticClass: "post-content",
+                      domProps: { innerHTML: _vm._s(postInstance.messages) }
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "post-image" }, [
+                      _c("img", { attrs: { src: postInstance.picture } })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "box-footer" }, [
+                    _c("span", { staticClass: "pull-left text-muted" }, [
+                      _c("span", [
+                        _c("i", { staticClass: "fa fa-comment" }),
+                        _vm._v(
+                          " " +
+                            _vm._s(_vm._f("currency")(postInstance.comments))
+                        )
+                      ]),
+                      _vm._v(" \n                            "),
+                      _c("span", [
+                        _c("i", { staticClass: "fa fa-share" }),
+                        _vm._v(
+                          " " + _vm._s(_vm._f("currency")(postInstance.share))
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "pull-right text-muted" }, [
+                      _c("span", [
+                        _c("img", {
+                          staticClass: "reactions-img",
+                          staticStyle: { "margin-left": "0" },
+                          attrs: {
+                            src: "/imgs/reactions/like.gif",
+                            height: "16px"
+                          }
+                        }),
+                        _vm._v(
+                          _vm._s(_vm._f("currency")(postInstance.reaction_like))
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [
+                        _c("img", {
+                          staticClass: "reactions-img",
+                          attrs: {
+                            src: "/imgs/reactions/love.gif",
+                            height: "16px"
+                          }
+                        }),
+                        _vm._v(
+                          " " +
+                            _vm._s(
+                              _vm._f("currency")(postInstance.reaction_love)
+                            )
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [
+                        _c("img", {
+                          staticClass: "reactions-img",
+                          attrs: {
+                            src: "/imgs/reactions/wow.gif",
+                            height: "16px"
+                          }
+                        }),
+                        _vm._v(
+                          " " +
+                            _vm._s(
+                              _vm._f("currency")(postInstance.reaction_wow)
+                            )
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [
+                        _c("img", {
+                          staticClass: "reactions-img",
+                          attrs: {
+                            src: "/imgs/reactions/sad.gif",
+                            height: "16px"
+                          }
+                        }),
+                        _vm._v(
+                          " " +
+                            _vm._s(
+                              _vm._f("currency")(postInstance.reaction_sad)
+                            )
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [
+                        _c("img", {
+                          staticClass: "reactions-img",
+                          attrs: {
+                            src: "/imgs/reactions/haha.gif",
+                            height: "16px"
+                          }
+                        }),
+                        _vm._v(
+                          " " +
+                            _vm._s(
+                              _vm._f("currency")(postInstance.reaction_hah)
+                            )
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [
+                        _c("img", {
+                          staticClass: "reactions-img",
+                          attrs: {
+                            src: "/imgs/reactions/angry.gif",
+                            height: "16px"
+                          }
+                        }),
+                        _vm._v(
+                          " " +
+                            _vm._s(
+                              _vm._f("currency")(postInstance.reaction_angry)
+                            )
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            })
+          ],
+          2
+        )
+      ])
+    })
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-42a8b601", { render: render, staticRenderFns: staticRenderFns })
   }
 }
 

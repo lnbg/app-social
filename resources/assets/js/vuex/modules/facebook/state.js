@@ -55,5 +55,6 @@ export default {
         shares: 0,
         comments: 0,
         facebook_created_at: String.empty
-    }
+    },
+    facebookLastPosts: []
 }
