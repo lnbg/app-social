@@ -74,7 +74,7 @@ class FacebookAnalyticsController extends Controller
             $effectiveDate = date('Y-m-d', strtotime($now . "-3 months"));
             //retrive yesterday's date in the format 9999-99-99
             $facebookFanpageLink = explode('/', $facebookAnalytics->account_link);
-            $facebookPageName = $facebookFanpageLink[3];
+            $facebookPageUserName = $facebookFanpageLink[3];
             $postsStorage = [];
             $accountActivedDate = date('Y-m-d');
             $analyticsData = [
@@ -93,7 +93,7 @@ class FacebookAnalyticsController extends Controller
             ];
             // get followers
             $client = new Client();
-            $crawler = $client->request('GET', 'https://www.facebook.com/' . $facebookPageName);
+            $crawler = $client->request('GET', 'https://www.facebook.com/' . $facebookPageUserName);
             $nodeFollowers = $crawler->filter('div._4bl9')->eq(2)->extract(array('_text', 'class', 'href'));
             $analyticsData['total_page_followers'] = intval(preg_replace( '/[^0-9]/', '', $nodeFollowers[0][0]));
 
@@ -103,10 +103,10 @@ class FacebookAnalyticsController extends Controller
             $diffDays = $dteNow->diff($dteEffective)->days;
 
             $this->facebookHelper->facebookFanpageGetPostByURI($laravelFacebookSDK, $facebookAnalytics->id,
-                $user->access_token, $facebookPageName, $analyticsData, $postsStorage, $effectiveDate);
+                $user->access_token, $facebookPageUserName, $analyticsData, $postsStorage, $effectiveDate);
 
             // get page likes
-            $analyticsData['total_page_likes'] = $this->facebookHelper->getPageLikes($laravelFacebookSDK, $user->access_token, $facebookPageName);
+            $analyticsData['total_page_likes'] = $this->facebookHelper->getPageLikes($laravelFacebookSDK, $user->access_token, $facebookPageUserName);
 
             $facebookFan = FacebookFan::where(
                 [
@@ -124,7 +124,8 @@ class FacebookAnalyticsController extends Controller
                 $facebookFan->save();
             }
 
-            $picture = $laravelFacebookSDK->sendRequest('GET', $defaultURI, ['fields' => 'cover,picture.width(800).height(800)'], $user->access_token);
+            $defaultPictureGraphAPIURI = '/' . $facebookFanpageUserName;
+            $picture = $laravelFacebookSDK->sendRequest('GET', $defaultPictureGraphAPIURI, ['fields' => 'cover,picture.width(800).height(800)'], $user->access_token);
             $picture = $picture->getDecodedBody();
             if (isset($picture['picture']['data']['url'])) {
                 $facebookAnalytics->account_picture = $picture['picture']['data']['url'];
