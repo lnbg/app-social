@@ -11,6 +11,7 @@
         "guzzlehttp/guzzle": "~6.0",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
+        "raiym/instagram-php-scraper": "^0.8.17",
         "sammyk/laravel-facebook-sdk": "^3.5",
         "smochin/instagram-php-crawler": "^1.0",
         "yangqi/htmldom": "1.0.*"

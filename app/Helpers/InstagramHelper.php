@@ -7,6 +7,7 @@ use App\Models\InstagramMedia;
 use App\Models\InstagramFollower;
 use DateTime;
 use Smochin\Instagram\Crawler;
+use InstagramScraper\Instagram as InstagramScrapper;
 
 class InstagramHelper {
     
@@ -16,10 +17,13 @@ class InstagramHelper {
      * @var Smochin\Instagram\Crawler
      */
     private $instagramCrawler;
+    private $instagramScrapper;
 
-    public function __construct(Crawler $instagramCrawler)
+    public function __construct(Crawler $instagramCrawler, InstagramScrapper $instagramScrapper)
     {
         $this->instagramCrawler = $instagramCrawler;
+        $this->instagramScrapper = $instagramScrapper;
+        // $this->instagramScrapper =  InstagramScrapper::withCredentials('ltnam2804@gmail.com', 'Hoaanhdao2804!', '/Users/deveio/Projects/bot-social/storage/logs/');
     }
 
     /**
@@ -65,6 +69,7 @@ class InstagramHelper {
 
         $existInstagramFollowerInday = InstagramFollower::where('instagram_analytics_id', '=', $instagramAnalyticsID)
             ->where('date_sync', '=', date('Y-m-d'))->first();
+
         if (isset($existInstagramFollowerInday)) {
             $existInstagramFollowerInday->instagram_followers = $instagramInfo['followers_count'];
             $existInstagramFollowerInday->updated_at = date('Y-m-d H:s:i');
@@ -92,7 +97,7 @@ class InstagramHelper {
      */
     public function getPostsOfInstagramByUserName($username, $instagram_analytics_id)
     {
-        $allMedia = $this->instagramCrawler->getMediaByUser($username);
+        $allMedia = $this->instagramScrapper->getMedias($instagram->user_name, 10);
         $lastInstagramMedia = InstagramMedia::where('instagram_analytics_id', '=', $instagram_analytics_id)->orderBy('media_id', 'desc')->first();
         $lastInstagramMediaID = 0;
         if (isset($lastInstagramMedia)){
@@ -102,31 +107,34 @@ class InstagramHelper {
         foreach ($allMedia as $media) 
         {
             if ($media->getId() > $lastInstagramMediaID) {
-                $dimension = $media->getDimension();
+                $_media = $this->instagramCrawler->getMedia($media->getShortCode());
+                $dimension = $_media->getDimension();
                 $dimension = 'w:' . $dimension->getWidth() . ',h:' .$dimension->getHeight();
-                $tags = $media->getTags();
+                $tags = $_media->getTags();
                 $_tags = [];
                 foreach ($tags as $tag) {
                     $_tags[] = $tag->getName();
                 };
                 $tags = implode(",", $_tags);
-                $location = $media->getLocation();
+                $location = $_media->getLocation();
                 if (isset($location)) 
                 {
                     $location = $location->getName();
                 }
                 $item = [
                     'media_id' => $media->getId(),
-                    'instagram_analytics_id' => $instagram_analytics_id,
-                    'media_type' => str_replace('Smochin\Instagram\Model\\','', get_class($media)),
+                    'instagram_analytics_id' => $instagram->id,
+                    'media_type' => $media->getType(),
+                    'media_code' => $media->getShortCode(),
                     'caption' => $media->getCaption(),
-                    'url' => $media->getUrl(),
+                    'url' => $media->getLink(),
+                    'media_picture' => $_media->getUrl(),
                     'dimension' => $dimension,
-                    'likes' => $media->getLikesCount(),
-                    'comments' => $media->getCommentsCount(),
                     'location' => $location,
                     'tags' => $tags,
-                    'instagram_created_at' => $media->getCreated(),
+                    'likes' => $media->getLikesCount(),
+                    'comments' => $media->getCommentsCount(),
+                    'instagram_created_at' => $_media->getCreated()->format('Y-m-d H:s:i'),
                     'created_at' => date('Y-m-d H:s:i'),
                     'updated_at' => date('Y-m-d H:s:i'),
                 ];
@@ -134,5 +142,45 @@ class InstagramHelper {
             }
         }
         return $data;
+    }
+
+    public function initAnalyticsInstagramMediaByID($id) {
+        $instagram = InstagramAnalytics::find($id);
+        $allMedia = $this->instagramScrapper->getMedias($instagram->user_name, 100);
+        foreach ($allMedia as $media) {
+            $_media = $this->instagramCrawler->getMedia($media->getShortCode());
+            $dimension = $_media->getDimension();
+            $dimension = 'w:' . $dimension->getWidth() . ',h:' .$dimension->getHeight();
+            $tags = $_media->getTags();
+            $_tags = [];
+            foreach ($tags as $tag) {
+                $_tags[] = $tag->getName();
+            };
+            $tags = implode(",", $_tags);
+            $location = $_media->getLocation();
+            if (isset($location)) 
+            {
+                $location = $location->getName();
+            }
+            $item = [
+                'media_id' => $media->getId(),
+                'instagram_analytics_id' => $instagram->id,
+                'media_type' => $media->getType(),
+                'media_code' => $media->getShortCode(),
+                'caption' => $media->getCaption(),
+                'url' => $media->getLink(),
+                'media_picture' => $_media->getUrl(),
+                'dimension' => $dimension,
+                'location' => $location,
+                'tags' => $tags,
+                'likes' => $media->getLikesCount(),
+                'comments' => $media->getCommentsCount(),
+                'instagram_created_at' => $_media->getCreated()->format('Y-m-d H:s:i'),
+                'created_at' => date('Y-m-d H:s:i'),
+                'updated_at' => date('Y-m-d H:s:i'),
+            ];
+            $data[] = $item;
+        }
+        InstagramMedia::insert($data);
     }
 }

@@ -17,6 +17,7 @@ class CreateTableInstagramMedia extends Migration
             $table->bigInteger('media_id');
             $table->integer('instagram_analytics_id');
             $table->string('media_type')->nullable();
+            $table->string('media_code')->nullable();
             $table->text('caption')->nullable();
             $table->string('url')->nullable();
             $table->string('dimension')->nullable();
