@@ -74,7 +74,7 @@ class FacebookAnalyticsController extends Controller
             $effectiveDate = date('Y-m-d', strtotime($now . "-3 months"));
             //retrive yesterday's date in the format 9999-99-99
             $facebookFanpageLink = explode('/', $facebookAnalytics->account_link);
-            $facebookPageUserName = $facebookFanpageLink[3];
+            $facebookFanpageUserName = $facebookFanpageLink[3];
             $postsStorage = [];
             $accountActivedDate = date('Y-m-d');
             $analyticsData = [
@@ -93,7 +93,7 @@ class FacebookAnalyticsController extends Controller
             ];
             // get followers
             $client = new Client();
-            $crawler = $client->request('GET', 'https://www.facebook.com/' . $facebookPageUserName);
+            $crawler = $client->request('GET', 'https://www.facebook.com/' . $facebookFanpageUserName);
             $nodeFollowers = $crawler->filter('div._4bl9')->eq(2)->extract(array('_text', 'class', 'href'));
             $analyticsData['total_page_followers'] = intval(preg_replace( '/[^0-9]/', '', $nodeFollowers[0][0]));
 
@@ -103,10 +103,10 @@ class FacebookAnalyticsController extends Controller
             $diffDays = $dteNow->diff($dteEffective)->days;
 
             $this->facebookHelper->facebookFanpageGetPostByURI($laravelFacebookSDK, $facebookAnalytics->id,
-                $user->access_token, $facebookPageUserName, $analyticsData, $postsStorage, $effectiveDate);
+                $user->access_token, $facebookFanpageUserName, $analyticsData, $postsStorage, $effectiveDate);
 
             // get page likes
-            $analyticsData['total_page_likes'] = $this->facebookHelper->getPageLikes($laravelFacebookSDK, $user->access_token, $facebookPageUserName);
+            $analyticsData['total_page_likes'] = $this->facebookHelper->getPageLikes($laravelFacebookSDK, $user->access_token, $facebookFanpageUserName);
 
             $facebookFan = FacebookFan::where(
                 [
