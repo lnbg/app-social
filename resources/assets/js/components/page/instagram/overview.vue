@@ -5,15 +5,30 @@
                 <box-instagram-profile class="box-overview-instagram" :profile="instagramProfile"></box-instagram-profile>
             </div>
             <div class="instagram-analytic-content row">
-                <div class="col-md-6 col-sm-6 col-xs-12"> 
-                    <section id="facebook-growth-fans-chart">
-                        <growth-fans-chart v-if="chartLoadSuccess" :boxStyle="'box-success'" :title="'Growth of Followers'" :source="growthFans"></growth-fans-chart>
-                    </section>
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12"> 
+                        <section id="instagram-growth-fans-chart">
+                            <growth-fans-chart v-if="chartLoadSuccess" :boxStyle="'box-success'" :title="'Growth of Followers'" :source="growthFans"></growth-fans-chart>
+                        </section>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12"> 
+                        <section id="instagram-media-by-type">
+                            <media-group-type v-if="chartLoadSuccess" :boxStyle="'box-success'" :title="'Distribution Of Media Type'" :source="totalMediaGroupByType"></media-group-type>
+                        </section>
+                    </div>
                 </div>
-                <div class="col-md-6 col-sm-6 col-xs-12"> 
-                    <section id="facebook-growth-fans-chart">
+                <div class="row">
+                    <section id="instagram-post-per-day">
                         <total-posts-per-day-chart :stacked="false" :title="'Number of Profile Posts'" :boxStyle="'box-success'" v-if="chartLoadSuccess" :source="totalMediaPerDay"></total-posts-per-day-chart>
                     </section>
+                </div>
+                <div class="row masonry-grid">
+                    <masonry
+                        :cols="{default: 3, 800: 2, 400: 1}"
+                        :gutter="{default: '15px', 800: '5px'}"
+                        >
+                        <box-instagram-media v-for="media in instagramLastMedias" :key="media.instagram_created_at" :instagramMedia="media" :instagramProfile="instagramProfile"></box-instagram-media>
+                    </masonry>
                 </div>
             </div>
         </div>
@@ -22,16 +37,20 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
 import BoxInstagramProfile from '../../global/instagram/box_profile'
+import BoxInstagramMedia from '../../global/instagram/instagram_post'
 import growthFansChart from '../../global/area-chart'
 import totalPostsPerDay from '../../global/bar-chart'
+import totalMediaGroupByType from '../../global/pie-chart'
 
 
 export default {
     name: 'Page_Instagram__Overview',
     components: {
         'box-instagram-profile': BoxInstagramProfile,
+        'box-instagram-media': BoxInstagramMedia,
         'growth-fans-chart': growthFansChart,
-        'total-posts-per-day-chart': totalPostsPerDay
+        'total-posts-per-day-chart': totalPostsPerDay,
+        'media-group-type': totalMediaGroupByType
     },
     data() {
         return {    
@@ -41,7 +60,9 @@ export default {
         ...mapGetters('instagram', [
             'instagramProfile',
             'instagramGrowthFans',
-            'instagramTotalMediaPerDay'
+            'instagramTotalMediaPerDay',
+            'instagramTotalMediaGroupByType',
+            'instagramLastMedias'
         ]),
         growthFans() {
             var data = {
@@ -94,6 +115,39 @@ export default {
                 return item.value
             })
         },
+        totalMediaGroupByType() {
+            var data = {
+                labels: this.totalMediaGroupByTypeLabels,
+                datasets: [
+                    {
+                        type: 'pie',
+                        backgroundColor: [
+                            "rgb(0, 166, 90)",
+                            "rgb(243, 156, 18)",
+                            "rgb(221, 75, 57)"
+                        ],
+                        borderColor: [
+                            "rgb(0, 166, 90)",
+                            "rgb(243, 156, 18)",
+                            "rgb(221, 75, 57)"
+                        ],
+                        data: this.totalMediaGroupByTypeValues
+                    }
+                ]
+            }
+            console.log(data);
+            return data;
+        },
+        totalMediaGroupByTypeLabels() {
+            return this.instagramTotalMediaGroupByType.map(function(item) {
+                return item.media_type
+            })
+        },
+        totalMediaGroupByTypeValues() {
+            return this.instagramTotalMediaGroupByType.map(function(item) {
+                return item.value
+            })
+        },
         chartLoadSuccess() {
             return this.growthFans.labels.length > 0
         }
@@ -101,7 +155,8 @@ export default {
     methods: {
         ...mapActions('instagram', [
             'resetGrowthFans',
-            'resetTotalMediaPerDay'
+            'resetTotalMediaPerDay',
+            'resetTotalMediaGroupByType'
         ]),
     },
     beforeCreate() {

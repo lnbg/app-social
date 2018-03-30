@@ -42,11 +42,20 @@ class InstagramAnalyticsController extends Controller
         $growthFans = InstagramFollower::where('instagram_analytics_id', '=', $instagramProfile->id)->select('instagram_followers', 'date_sync')->get();
         $instagramTotalMediaPerDay = InstagramMedia::where('instagram_analytics_id', '=', $instagramProfile->id)->select(\DB::raw("date_format(instagram_created_at, '%Y-%m-%d') as date, count(media_id) as value"))
             ->groupBy(\DB::raw("date_format(instagram_created_at, '%Y-%m-%d')"))->get();
+
+        $instagramTotalMediaGroupByType = InstagramMedia::where('instagram_analytics_id', '=', $instagramProfile->id)
+            ->select(\DB::raw('media_type, count(media_id) as value'))->groupBy('media_type')->get();
+            
+        $instagramLastMedias = InstagramMedia::where(
+            'instagram_analytics_id','=', $instagramProfile->id)
+            ->orderBy('instagram_created_at', 'desc')->limit(6)->get();
         $data = [
             'profile' => $instagramProfile,
             'analytics' => [
                 'growthFans' => $growthFans,
-                'instagramTotalMediaPerDay' => $instagramTotalMediaPerDay
+                'instagramTotalMediaPerDay' => $instagramTotalMediaPerDay,
+                'instagramTotalMediaGroupByType' => $instagramTotalMediaGroupByType,
+                'instagramLastMedias' => $instagramLastMedias
             ]
         ];
         return response()->json($data, 200);

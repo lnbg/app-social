@@ -41,11 +41,16 @@ const resetTotalMediaPerDay = ({commit, state}) => {
     commit('RESET_TOTAL_MEDIA_PER_DAY');
 }
 
+const resetTotalMediaGroupByType = ({commit, state}) => {
+    commit('RESET_TOTAL_MEDIA_GROUP_BY_TYPE');
+}
+
 export default {
     getInstagramProfileAnalytics,
     getListInstagramProfileAnalytics,
     createNewInstagramProfile,
     analyticsInstagramProfile,
     resetGrowthFans,
-    resetTotalMediaPerDay
+    resetTotalMediaPerDay,
+    resetTotalMediaGroupByType
 };

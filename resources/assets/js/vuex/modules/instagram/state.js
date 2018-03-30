@@ -13,6 +13,23 @@ export default {
         follows_count: 0,
         media_counts: 0,
     },
+    instagramMedia: {
+        instagram_analytics_id: 0,
+        media_id: 0,
+        meida_type: String.empty,
+        media_code: String.empty,
+        media_picture: String.empty,
+        caption: String.empty,
+        url: String.empty,
+        dimension: String.empty,
+        likes: 0,
+        comments: 0,
+        location: String.empty,
+        tags: String.empty,
+        instagram_created_at: String.empty
+    },
     instagramGrowthFans: [],
-    instagramTotalMediaPerDay: []
+    instagramTotalMediaPerDay: [],
+    instagramTotalMediaGroupByType: [],
+    instagramLastMedias: [],
 }

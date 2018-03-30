@@ -6,6 +6,7 @@ import store from './vuex/store.js'
 import Numeral from 'numeral'
 import VueMixins from './mixins/mixins'
 import { EventBus } from './global/event-bus'
+import VueMasonry from 'vue-masonry-css';
 
 // router setup
 import routes from './routes/routes'
@@ -15,6 +16,7 @@ import App from './App.vue'
 Vue.use(VueRouter)
 Vue.use(store)
 Vue.use(VueAxios, axios)
+Vue.use(VueMasonry)
 // set axios as global
 window.axios = axios;
 axios.interceptors.response.use(function (response) {

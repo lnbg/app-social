@@ -183,7 +183,7 @@ export default {
             })
         },
         evolutionOfInteractionsSharesValues() {
-             return this.facebookEvolutionOfInteractions.map(function(item) {
+            return this.facebookEvolutionOfInteractions.map(function(item) {
                 return item.shares
             })
         },

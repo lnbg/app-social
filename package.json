@@ -17,6 +17,7 @@
         "lodash": "^4.17.4",
         "vue": "^2.5.15",
         "vue-loader": "^14.2.1",
+        "vue-masonry-css": "^1.0.1",
         "vue-template-compiler": "^2.5.15"
     },
     "dependencies": {
