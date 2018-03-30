@@ -20758,11 +20758,7 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "box" }, [
       _c("div", { staticClass: "box-header with-border" }, [
-        _c("h3", { staticClass: "box-title" }, [
-          _vm._v(
-            "Analytics data on facebook platform: we only analytics facebook for last 3 months"
-          )
-        ]),
+        _vm._m(1),
         _vm._v(" "),
         _c("div", { staticClass: "box-tools" }, [
           _c(
@@ -20812,6 +20808,17 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "box-header with-border" }, [
       _c("h3", { staticClass: "box-title" }, [_vm._v("Add new facebook page")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", { staticClass: "box-title" }, [
+      _vm._v("FACBOOK FANPAGE "),
+      _c("i", { staticStyle: { "font-size": "10px" } }, [
+        _vm._v("(analytics facebook for last 3 months)")
+      ])
     ])
   }
 ]
@@ -21156,9 +21163,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "box-header with-border" }, [
-      _c("h3", { staticClass: "box-title" }, [
-        _vm._v("Analytics data on instagram platform")
-      ]),
+      _c("h3", { staticClass: "box-title" }, [_vm._v("INSTAGRAM PROFILES")]),
       _vm._v(" "),
       _c("div", { staticClass: "box-tools" }, [
         _c(

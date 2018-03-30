@@ -126,6 +126,7 @@ class InstagramHelper {
                     'comments' => $media->getCommentsCount(),
                     'location' => $location,
                     'tags' => $tags,
+                    'instagram_created_at' => $media->getCreated(),
                     'created_at' => date('Y-m-d H:s:i'),
                     'updated_at' => date('Y-m-d H:s:i'),
                 ];

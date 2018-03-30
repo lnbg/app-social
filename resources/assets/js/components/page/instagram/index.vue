@@ -12,7 +12,7 @@
         </div>
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Analytics data on instagram platform</h3>
+                <h3 class="box-title">INSTAGRAM PROFILES</h3>
                 <div class="box-tools">
                     <a class="btn btn-box-tool" title="Fetching"><i class="fa fa-download"></i> Analytics</a>
                 </div>
