@@ -13,4 +13,6 @@ export default {
         follows_count: 0,
         media_counts: 0,
     },
+    instagramGrowthFans: [],
+    instagramTotalMediaPerDay: []
 }

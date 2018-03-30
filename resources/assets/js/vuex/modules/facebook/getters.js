@@ -1,13 +1,13 @@
 const lstFacebookPageAnalytics = (state) => state.lstFacebookPageAnalytics
-const facebookPageAnalytics = (state) => state.facebookPageAnalytics
+const facebookAnalytics = (state) => state.facebookAnalytics
 const facebookGrowthFans = (state) => state.facebookGrowthFans
 const facebookEvolutionOfInteractions = (state) => state.facebookEvolutionOfInteractions
-const facebookBestPost = (state) => state.facebookBestPost
+const facebookBestPost = (state) => state.post
 const facebookLastPosts = (state) => state.facebookLastPosts
 
 export default {
     lstFacebookPageAnalytics,
-    facebookPageAnalytics,
+    facebookAnalytics,
     facebookBestPost,
     facebookGrowthFans,
     facebookEvolutionOfInteractions,

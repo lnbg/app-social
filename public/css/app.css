@@ -44,6 +44,10 @@
           transform: scale(1.2);
 }
 
+.box-widget .widget-user-link {
+  color: white;
+}
+
 .box-widget .widget-user-username-f20 {
   font-size: 20px;
 }
@@ -109,5 +113,20 @@
 
 .post-image img {
   width: 100%;
+}
+
+.box-overview-instagram {
+  width: 400px;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.instagram-analytic-content {
+  width: 100%;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  margin-top: -145px;
+  background: white;
+  padding-top: 200px;
 }
 

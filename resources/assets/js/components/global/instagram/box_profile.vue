@@ -9,7 +9,7 @@
         </div>
         <!-- Add the bg color to the header using any of the bg-* classes -->
         <div class="widget-user-header" :class="getBackgroundBoxHeader">
-            <h3 class="widget-user-username">{{ profile.name }}</h3>
+            <router-link class="widget-user-link" :to="{name: 'instagram_overview', params: { username: profile.user_name }}"><h3 class="widget-user-username">{{ profile.name }}</h3></router-link>
         </div>
         <div class="widget-user-image">
             <img class="img-circle" :src="profile.picture" alt="User Avatar">

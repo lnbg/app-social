@@ -21,6 +21,7 @@ Route::post('/facebook/analytics-facebook-page', 'FacebookAnalyticsController@an
 Route::post('/facebook/create-new-facebook-page', 'FacebookAnalyticsController@createNewFacebookPage');
 
 Route::get('/instagram/get-list-instagram-profile-analytics', 'InstagramAnalyticsController@getListInstagramProfilesAnalytics');
+Route::get('/instagram/get-instagram-profile-analytics', 'InstagramAnalyticsController@getInstagramProfileByInstagramAnalyticsID');
 Route::post('/instagram/analytics-instagram-profile', 'InstagramAnalyticsController@analyticsInstagramProfile');
 Route::post('/instagram/create-new-instagram-profile', 'InstagramAnalyticsController@createNewInstagramProfile');
 // Debug

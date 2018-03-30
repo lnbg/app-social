@@ -8,6 +8,13 @@ const getListInstagramProfileAnalytics = ({commit, state}) => {
         })
 }
 
+const getInstagramProfileAnalytics = ({commit, state}, username) => {
+    queryString(`${endPoint.GET.GET_INSTAGRAM_PROFILE_ANALYTICS}?username=${username}`)
+        .then(response => {
+            commit('GET_INSTAGRAM_PROFILE_ANALYTICS', response.data);
+        })
+}
+
 const analyticsInstagramProfile = (event, instagram_analytics_id) => {
     return new Promise((resolve, reject) => {
         post(endPoint.POST.ANALYTICS_INSTAGRAM_PROFILE, {id: instagram_analytics_id})
@@ -26,8 +33,19 @@ const createNewInstagramProfile = (event, instagram_link) => {
     })
 }
 
+const resetGrowthFans = ({commit, state}) => {
+    commit('RESET_GROWTH_FANS');
+}
+
+const resetTotalMediaPerDay = ({commit, state}) => {
+    commit('RESET_TOTAL_MEDIA_PER_DAY');
+}
+
 export default {
+    getInstagramProfileAnalytics,
     getListInstagramProfileAnalytics,
     createNewInstagramProfile,
-    analyticsInstagramProfile
+    analyticsInstagramProfile,
+    resetGrowthFans,
+    resetTotalMediaPerDay
 };

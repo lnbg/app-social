@@ -1,8 +1,8 @@
 <template>
-    <div id="growth-fans-chart" style="padding-left: 5px; padding-right: 5px;">
-        <div class="box box-info">
+    <div id="area-chart" style="padding-left: 5px; padding-right: 5px;">
+        <div class="box" :class="boxStyle">
             <div class="box-header with-border">
-                <h3 class="box-title">Growth of fans</h3>
+                <h3 class="box-title">{{ title }}</h3>
                 <div class="box-tools pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
                         <i class="fa fa-minus"></i>
@@ -22,7 +22,9 @@
 <script>
 export default {
     props: {
-        source: Object
+        source: Object,
+        title: String,
+        boxStyle: String
     },
     mounted() {
         var _vue = this;

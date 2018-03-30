@@ -13181,6 +13181,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
 
 
 
@@ -17243,21 +17245,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
         comments: 0,
         facebook_created_at: String.empty
     },
-    facebookBestPost: {
-        facebook_post_id: 0,
-        facebook_analytics_id: 0,
-        messages: String.empty,
-        story: String.empty,
-        reaction_like: 0,
-        reaction_haha: 0,
-        reaction_love: 0,
-        reaction_wow: 0,
-        reaction_sad: 0,
-        reaction_angry: 0,
-        shares: 0,
-        comments: 0,
-        facebook_created_at: String.empty
-    },
     facebookLastPosts: []
 });
 
@@ -17356,8 +17343,8 @@ var endPoint = {
 var lstFacebookPageAnalytics = function lstFacebookPageAnalytics(state) {
     return state.lstFacebookPageAnalytics;
 };
-var facebookPageAnalytics = function facebookPageAnalytics(state) {
-    return state.facebookPageAnalytics;
+var facebookAnalytics = function facebookAnalytics(state) {
+    return state.facebookAnalytics;
 };
 var facebookGrowthFans = function facebookGrowthFans(state) {
     return state.facebookGrowthFans;
@@ -17366,7 +17353,7 @@ var facebookEvolutionOfInteractions = function facebookEvolutionOfInteractions(s
     return state.facebookEvolutionOfInteractions;
 };
 var facebookBestPost = function facebookBestPost(state) {
-    return state.facebookBestPost;
+    return state.post;
 };
 var facebookLastPosts = function facebookLastPosts(state) {
     return state.facebookLastPosts;
@@ -17374,7 +17361,7 @@ var facebookLastPosts = function facebookLastPosts(state) {
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     lstFacebookPageAnalytics: lstFacebookPageAnalytics,
-    facebookPageAnalytics: facebookPageAnalytics,
+    facebookAnalytics: facebookAnalytics,
     facebookBestPost: facebookBestPost,
     facebookGrowthFans: facebookGrowthFans,
     facebookEvolutionOfInteractions: facebookEvolutionOfInteractions,
@@ -17392,7 +17379,7 @@ var GET_LIST_FACEBOOK_PAGE_ANALYTICS = function GET_LIST_FACEBOOK_PAGE_ANALYTICS
 
 var GET_FACEBOOK_PAGE_ANALYTICS = function GET_FACEBOOK_PAGE_ANALYTICS(state, data) {
     Object.assign(state.facebookAnalytics, data.page);
-    Object.assign(state.facebookBestPost, data.analytics.bestPost);
+    Object.assign(state.post, data.analytics.bestPost);
     state.facebookLastPosts = data.analytics.facebookLastPosts;
     state.facebookGrowthFans = data.analytics.growthFans;
     state.facebookEvolutionOfInteractions = data.analytics.evolutionOfInteractions;
@@ -18487,6 +18474,8 @@ return numeral;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_page_facebook_page__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_page_facebook_overview__ = __webpack_require__(77);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_page_instagram_index__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_page_instagram_overview__ = __webpack_require__(292);
+
 
 
 
@@ -18500,7 +18489,11 @@ var routes = [{
 }, {
     path: '/instagram',
     component: __WEBPACK_IMPORTED_MODULE_3__components_page_instagram_index__["a" /* default */]
-}, { path: '*', component: __WEBPACK_IMPORTED_MODULE_0__components_page_dashboard_index_v1__["a" /* default */] }];
+}, {
+    path: '/instagram/overview/:username',
+    name: 'instagram_overview',
+    component: __WEBPACK_IMPORTED_MODULE_4__components_page_instagram_overview__["a" /* default */]
+}, { path: '*', component: __WEBPACK_IMPORTED_MODULE_1__components_page_facebook_page__["a" /* default */] }];
 
 /* harmony default export */ __webpack_exports__["a"] = (routes);
 
@@ -18552,7 +18545,7 @@ if (false) {(function () {
   })
 })()}
 
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+/* unused harmony default export */ var _unused_webpack_default_export = (Component.exports);
 
 
 /***/ }),
@@ -20559,33 +20552,47 @@ var render = function() {
           style: _vm.styleForCoverPicture
         },
         [
-          _c("div", { staticClass: "widget-user-image" }, [
-            _c("img", {
-              staticClass: "img-circle",
-              attrs: {
-                src: _vm.page.account_picture,
-                alt: _vm.page.account_name
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "h3",
-              {
-                staticClass:
-                  "widget-user-username widget-user-username-f20 widget-text-shadown"
-              },
-              [_vm._v(_vm._s(_vm.page.account_name))]
-            ),
-            _vm._v(" "),
-            _c(
-              "h5",
-              {
-                staticClass:
-                  "widget-user-username widget-user-username-f14 widget-text-shadown"
-              },
-              [_vm._v(_vm._s(_vm.page.account_username))]
-            )
-          ])
+          _c(
+            "div",
+            { staticClass: "widget-user-image" },
+            [
+              _c("img", {
+                staticClass: "img-circle",
+                attrs: {
+                  src: _vm.page.account_picture,
+                  alt: _vm.page.account_name
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "widget-user-link",
+                  attrs: { to: _vm.overviewLink }
+                },
+                [
+                  _c(
+                    "h3",
+                    {
+                      staticClass:
+                        "widget-user-username widget-user-username-f20 widget-text-shadown"
+                    },
+                    [_vm._v(_vm._s(_vm.page.account_name))]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "h5",
+                    {
+                      staticClass:
+                        "widget-user-username widget-user-username-f14 widget-text-shadown"
+                    },
+                    [_vm._v(_vm._s(_vm.page.account_username))]
+                  )
+                ]
+              )
+            ],
+            1
+          )
         ]
       ),
       _vm._v(" "),
@@ -21213,7 +21220,9 @@ if (false) {
         followers_count: 0,
         follows_count: 0,
         media_counts: 0
-    }
+    },
+    instagramGrowthFans: [],
+    instagramTotalMediaPerDay: []
 });
 
 /***/ }),
@@ -21235,6 +21244,15 @@ var getListInstagramProfileAnalytics = function getListInstagramProfileAnalytics
     });
 };
 
+var getInstagramProfileAnalytics = function getInstagramProfileAnalytics(_ref2, username) {
+    var commit = _ref2.commit,
+        state = _ref2.state;
+
+    Object(__WEBPACK_IMPORTED_MODULE_0__http_http__["d" /* queryString */])(__WEBPACK_IMPORTED_MODULE_1__endpoint__["a" /* endPoint */].GET.GET_INSTAGRAM_PROFILE_ANALYTICS + '?username=' + username).then(function (response) {
+        commit('GET_INSTAGRAM_PROFILE_ANALYTICS', response.data);
+    });
+};
+
 var analyticsInstagramProfile = function analyticsInstagramProfile(event, instagram_analytics_id) {
     return new Promise(function (resolve, reject) {
         Object(__WEBPACK_IMPORTED_MODULE_0__http_http__["c" /* post */])(__WEBPACK_IMPORTED_MODULE_1__endpoint__["a" /* endPoint */].POST.ANALYTICS_INSTAGRAM_PROFILE, { id: instagram_analytics_id }).then(function (response) {
@@ -21251,10 +21269,27 @@ var createNewInstagramProfile = function createNewInstagramProfile(event, instag
     });
 };
 
+var resetGrowthFans = function resetGrowthFans(_ref3) {
+    var commit = _ref3.commit,
+        state = _ref3.state;
+
+    commit('RESET_GROWTH_FANS');
+};
+
+var resetTotalMediaPerDay = function resetTotalMediaPerDay(_ref4) {
+    var commit = _ref4.commit,
+        state = _ref4.state;
+
+    commit('RESET_TOTAL_MEDIA_PER_DAY');
+};
+
 /* harmony default export */ __webpack_exports__["a"] = ({
+    getInstagramProfileAnalytics: getInstagramProfileAnalytics,
     getListInstagramProfileAnalytics: getListInstagramProfileAnalytics,
     createNewInstagramProfile: createNewInstagramProfile,
-    analyticsInstagramProfile: analyticsInstagramProfile
+    analyticsInstagramProfile: analyticsInstagramProfile,
+    resetGrowthFans: resetGrowthFans,
+    resetTotalMediaPerDay: resetTotalMediaPerDay
 });
 
 /***/ }),
@@ -21268,7 +21303,8 @@ var createNewInstagramProfile = function createNewInstagramProfile(event, instag
 
 var endPoint = {
     GET: {
-        GET_LIST_INSTAGRAM_PROFILE_ANALYTICS: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/instagram/get-list-instagram-profile-analytics'
+        GET_LIST_INSTAGRAM_PROFILE_ANALYTICS: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/instagram/get-list-instagram-profile-analytics',
+        GET_INSTAGRAM_PROFILE_ANALYTICS: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/instagram/get-instagram-profile-analytics'
     },
     POST: {
         CREATE_NEW_INSTAGRAM_PROFILE: __WEBPACK_IMPORTED_MODULE_0__http_http__["a" /* API_DOMAIN */] + '/instagram/create-new-instagram-profile',
@@ -21284,9 +21320,21 @@ var endPoint = {
 var lstInstagramProfileAnalytics = function lstInstagramProfileAnalytics(state) {
     return state.lstInstagramProfileAnalytics;
 };
+var instagramProfile = function instagramProfile(state) {
+    return state.instagramProfile;
+};
+var instagramGrowthFans = function instagramGrowthFans(state) {
+    return state.instagramGrowthFans;
+};
+var instagramTotalMediaPerDay = function instagramTotalMediaPerDay(state) {
+    return state.instagramTotalMediaPerDay;
+};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    lstInstagramProfileAnalytics: lstInstagramProfileAnalytics
+    lstInstagramProfileAnalytics: lstInstagramProfileAnalytics,
+    instagramProfile: instagramProfile,
+    instagramGrowthFans: instagramGrowthFans,
+    instagramTotalMediaPerDay: instagramTotalMediaPerDay
 });
 
 /***/ }),
@@ -21298,8 +21346,26 @@ var GET_LIST_INSTAGRAM_PROFILE_ANALYTICS = function GET_LIST_INSTAGRAM_PROFILE_A
     state.lstInstagramProfileAnalytics = data;
 };
 
+var GET_INSTAGRAM_PROFILE_ANALYTICS = function GET_INSTAGRAM_PROFILE_ANALYTICS(state, data) {
+    Object.assign(state.instagramProfile, data.profile);
+    state.instagramGrowthFans = data.analytics.growthFans;
+    state.instagramTotalMediaPerDay = data.analytics.instagramTotalMediaPerDay;
+};
+
+var RESET_GROWTH_FANS = function RESET_GROWTH_FANS(state) {
+    state.instagramGrowthFans = [];
+};
+
+var RESET_TOTAL_MEDIA_PER_DAY = function RESET_TOTAL_MEDIA_PER_DAY(state) {
+    state.instagramTotalMediaPerDay = [];
+};
+
 /* harmony default export */ __webpack_exports__["a"] = ({
-    GET_LIST_INSTAGRAM_PROFILE_ANALYTICS: GET_LIST_INSTAGRAM_PROFILE_ANALYTICS
+    GET_LIST_INSTAGRAM_PROFILE_ANALYTICS: GET_LIST_INSTAGRAM_PROFILE_ANALYTICS,
+    GET_INSTAGRAM_PROFILE_ANALYTICS: GET_INSTAGRAM_PROFILE_ANALYTICS,
+    RESET_GROWTH_FANS: RESET_GROWTH_FANS,
+    RESET_TOTAL_MEDIA_PER_DAY: RESET_TOTAL_MEDIA_PER_DAY
+
 });
 
 /***/ }),
@@ -21498,10 +21564,25 @@ var render = function() {
           class: _vm.getBackgroundBoxHeader
         },
         [
-          _c("h3", { staticClass: "widget-user-username" }, [
-            _vm._v(_vm._s(_vm.profile.name))
-          ])
-        ]
+          _c(
+            "router-link",
+            {
+              staticClass: "widget-user-link",
+              attrs: {
+                to: {
+                  name: "instagram_overview",
+                  params: { username: _vm.profile.user_name }
+                }
+              }
+            },
+            [
+              _c("h3", { staticClass: "widget-user-username" }, [
+                _vm._v(_vm._s(_vm.profile.name))
+              ])
+            ]
+          )
+        ],
+        1
       ),
       _vm._v(" "),
       _c("div", { staticClass: "widget-user-image" }, [
@@ -21951,7 +22032,11 @@ var render = function() {
                 [
                   _vm.chartLoadSuccess
                     ? _c("growth-fans-chart", {
-                        attrs: { source: _vm.growthFans }
+                        attrs: {
+                          boxStyle: "box-info",
+                          title: "Growth of Fans",
+                          source: _vm.growthFans
+                        }
                       })
                     : _vm._e()
                 ],
@@ -21969,7 +22054,12 @@ var render = function() {
                   [
                     _vm.chartLoadSuccess
                       ? _c("evolution-of-interactions-chart", {
-                          attrs: { source: _vm.evolutionOfInteractions }
+                          attrs: {
+                            stacked: true,
+                            title: "Evolution of Interactions",
+                            boxStyle: "box-info",
+                            source: _vm.evolutionOfInteractions
+                          }
                         })
                       : _vm._e()
                   ],
@@ -22018,8 +22108,8 @@ if (false) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__global_facebook_reactions_box__ = __webpack_require__(279);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__global_facebook_growth_fans_chart__ = __webpack_require__(272);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global_facebook_evolution_of_interactions_chart__ = __webpack_require__(283);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__global_area_chart__ = __webpack_require__(301);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global_bar_chart__ = __webpack_require__(310);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_facebook_facebook_post__ = __webpack_require__(286);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_facebook_posts_timeline__ = __webpack_require__(289);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -22109,8 +22199,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     name: 'Page_Facebook__Overview',
     components: {
         'reactions-box': __WEBPACK_IMPORTED_MODULE_1__global_facebook_reactions_box__["a" /* default */],
-        'growth-fans-chart': __WEBPACK_IMPORTED_MODULE_2__global_facebook_growth_fans_chart__["a" /* default */],
-        'evolution-of-interactions-chart': __WEBPACK_IMPORTED_MODULE_3__global_facebook_evolution_of_interactions_chart__["a" /* default */],
+        'growth-fans-chart': __WEBPACK_IMPORTED_MODULE_2__global_area_chart__["a" /* default */],
+        'evolution-of-interactions-chart': __WEBPACK_IMPORTED_MODULE_3__global_bar_chart__["a" /* default */],
         'facebook-post': __WEBPACK_IMPORTED_MODULE_4__global_facebook_facebook_post__["a" /* default */],
         'posts-timeline': __WEBPACK_IMPORTED_MODULE_5__global_facebook_posts_timeline__["a" /* default */]
     },
@@ -22118,7 +22208,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         return {};
     },
 
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["d" /* mapState */])('facebook', ['facebookAnalytics', 'facebookGrowthFans', 'facebookEvolutionOfInteractions', 'facebookBestPost']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])('facebook', ['facebookLastPosts']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])('facebook', ['facebookAnalytics', 'facebookGrowthFans', 'facebookEvolutionOfInteractions', 'facebookLastPosts', 'facebookBestPost']), {
         styleForCoverPicture: function styleForCoverPicture() {
             return 'background: url(\'' + this.facebookAnalytics.account_picture_cover + '\'); background-size: cover;';
         },
@@ -22406,159 +22496,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /* 268 */,
 /* 269 */,
 /* 270 */,
-/* 271 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-    props: {
-        source: Object
-    },
-    mounted: function mounted() {
-        var _vue = this;
-        var chartOptions = {
-            //Boolean - If we should show the scale at all
-            showScale: true,
-            //Boolean - Whether grid lines are shown across the chart
-            scaleShowGridLines: false,
-            //String - Colour of the grid lines
-            scaleGridLineColor: 'rgba(0,0,0,.05)',
-            //Number - Width of the grid lines
-            scaleGridLineWidth: 1,
-            //Boolean - Whether to show horizontal lines (except X axis)
-            scaleShowHorizontalLines: true,
-            //Boolean - Whether to show vertical lines (except Y axis)
-            scaleShowVerticalLines: true,
-            //Boolean - Whether the line is curved between points
-            bezierCurve: true,
-            //Number - Tension of the bezier curve between points
-            bezierCurveTension: 0.3,
-            //Boolean - Whether to show a dot for each point
-            pointDot: true,
-            //Number - Radius of each point dot in pixels
-            pointDotRadius: 4,
-            //Number - Pixel width of point dot stroke
-            pointDotStrokeWidth: 2,
-            //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-            pointHitDetectionRadius: 20,
-            //Boolean - Whether to show a stroke for datasets
-            datasetStroke: true,
-            //Number - Pixel width of dataset stroke
-            datasetStrokeWidth: 2,
-            //Boolean - Whether to fill the dataset with a color
-            datasetFill: true,
-            //String - A legend template
-            legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].lineColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-            //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-            maintainAspectRatio: true,
-            //Boolean - whether to make the chart responsive to window resizing
-            responsive: true,
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        callback: function callback(value, index, values) {
-                            return numeral(value).format('0,0');
-                        }
-                    }
-                }]
-            },
-            tooltips: {
-                callbacks: {
-                    label: function label(tooltipItem, chart) {
-                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                        return numeral(tooltipItem.yLabel).format('0,0');
-                    }
-                }
-            }
-            //-------------
-            //- LINE CHART -
-            //--------------
-        };var lineChartCanvas = $('#lineChart').get(0).getContext('2d');
-        new Chart(lineChartCanvas, {
-            type: "line",
-            data: _vue.source,
-            options: chartOptions
-        });
-    }
-});
-
-/***/ }),
-/* 272 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_growth_fans_chart_vue__ = __webpack_require__(271);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_8029221a_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_growth_fans_chart_vue__ = __webpack_require__(281);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
-var disposed = false
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-
-var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_growth_fans_chart_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_8029221a_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_growth_fans_chart_vue__["a" /* render */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_8029221a_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_growth_fans_chart_vue__["b" /* staticRenderFns */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/global/facebook/growth_fans_chart.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-8029221a", Component.options)
-  } else {
-    hotAPI.reload("data-v-8029221a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
+/* 271 */,
+/* 272 */,
 /* 273 */,
 /* 274 */,
 /* 275 */,
@@ -22675,288 +22614,10 @@ if (false) {
 }
 
 /***/ }),
-/* 281 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticStyle: { "padding-left": "5px", "padding-right": "5px" },
-      attrs: { id: "growth-fans-chart" }
-    },
-    [
-      _c("div", { staticClass: "box box-info" }, [
-        _c("div", { staticClass: "box-header with-border" }, [
-          _c("h3", { staticClass: "box-title" }, [_vm._v("Growth of fans")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "box-tools pull-right" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            false
-              ? _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-box-tool",
-                    attrs: { type: "button", "data-widget": "remove" }
-                  },
-                  [_c("i", { staticClass: "fa fa-times" })]
-                )
-              : _vm._e()
-          ])
-        ]),
-        _vm._v(" "),
-        _vm._m(1)
-      ])
-    ]
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-box-tool",
-        attrs: { type: "button", "data-widget": "collapse" }
-      },
-      [_c("i", { staticClass: "fa fa-minus" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "box-body" }, [
-      _c("div", { staticClass: "chart" }, [
-        _c("canvas", {
-          staticStyle: { height: "250px" },
-          attrs: { id: "lineChart" }
-        })
-      ])
-    ])
-  }
-]
-render._withStripped = true
-
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-8029221a", { render: render, staticRenderFns: staticRenderFns })
-  }
-}
-
-/***/ }),
-/* 282 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-    props: {
-        source: Object
-    },
-    mounted: function mounted() {
-        var _vue = this;
-        var barChartCanvas = $('#barChart').get(0).getContext('2d');
-        var barChartOptions = {
-            scales: {
-                xAxes: [{
-                    stacked: true
-                }],
-                yAxes: [{
-                    stacked: true,
-                    ticks: {
-                        callback: function callback(value, index, values) {
-                            return numeral(value).format('0,0');
-                        }
-                    }
-                }]
-            },
-            tooltips: {
-                callbacks: {
-                    label: function label(tooltipItem, chart) {
-                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                        return numeral(tooltipItem.yLabel).format('0,0');
-                    }
-                }
-            }
-        };
-
-        new Chart(barChartCanvas, {
-            type: "bar",
-            data: _vue.source,
-            options: barChartOptions
-        });
-    }
-});
-
-/***/ }),
-/* 283 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_evolution_of_interactions_chart_vue__ = __webpack_require__(282);
-/* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_78106480_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_evolution_of_interactions_chart_vue__ = __webpack_require__(284);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
-var disposed = false
-/* script */
-
-
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-
-var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_evolution_of_interactions_chart_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_78106480_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_evolution_of_interactions_chart_vue__["a" /* render */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_78106480_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_evolution_of_interactions_chart_vue__["b" /* staticRenderFns */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/global/facebook/evolution_of_interactions_chart.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-78106480", Component.options)
-  } else {
-    hotAPI.reload("data-v-78106480", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 284 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticStyle: { "padding-left": "5px", "padding-right": "5px" },
-      attrs: { id: "evolution-of-interactions" }
-    },
-    [
-      _c("div", { staticClass: "box box-info" }, [
-        _c("div", { staticClass: "box-header with-border" }, [
-          _c("h3", { staticClass: "box-title" }, [
-            _vm._v("Evolution of Interactions")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "box-tools pull-right" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            false
-              ? _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-box-tool",
-                    attrs: { type: "button", "data-widget": "remove" }
-                  },
-                  [_c("i", { staticClass: "fa fa-times" })]
-                )
-              : _vm._e()
-          ])
-        ]),
-        _vm._v(" "),
-        _vm._m(1)
-      ])
-    ]
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-box-tool",
-        attrs: { type: "button", "data-widget": "collapse" }
-      },
-      [_c("i", { staticClass: "fa fa-minus" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "box-body" }, [
-      _c("div", { staticClass: "chart" }, [
-        _c("canvas", {
-          staticStyle: { height: "250px" },
-          attrs: { id: "barChart" }
-        })
-      ])
-    ])
-  }
-]
-render._withStripped = true
-
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-78106480", { render: render, staticRenderFns: staticRenderFns })
-  }
-}
-
-/***/ }),
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
 /* 285 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -23590,6 +23251,704 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-42a8b601", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
+
+/***/ }),
+/* 291 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__global_instagram_box_profile__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__global_area_chart__ = __webpack_require__(301);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global_bar_chart__ = __webpack_require__(310);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    name: 'Page_Instagram__Overview',
+    components: {
+        'box-instagram-profile': __WEBPACK_IMPORTED_MODULE_1__global_instagram_box_profile__["a" /* default */],
+        'growth-fans-chart': __WEBPACK_IMPORTED_MODULE_2__global_area_chart__["a" /* default */],
+        'total-posts-per-day-chart': __WEBPACK_IMPORTED_MODULE_3__global_bar_chart__["a" /* default */]
+    },
+    data: function data() {
+        return {};
+    },
+
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])('instagram', ['instagramProfile', 'instagramGrowthFans', 'instagramTotalMediaPerDay']), {
+        growthFans: function growthFans() {
+            var data = {
+                labels: this.growthFansLabels,
+                datasets: [{
+                    label: 'Growth Of Followers',
+                    backgroundColor: 'rgb(3, 192, 239, 0.75)',
+                    pointColor: 'rgb(243, 156, 18)',
+                    pointStrokeColor: 'rgb(243, 156, 18)',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
+                    data: this.growthFansValues
+                }]
+            };
+            return data;
+        },
+        growthFansLabels: function growthFansLabels() {
+            return this.instagramGrowthFans.map(function (item) {
+                return item.date_sync;
+            });
+        },
+        growthFansValues: function growthFansValues() {
+            return this.instagramGrowthFans.map(function (item) {
+                return item.instagram_followers;
+            });
+        },
+        totalMediaPerDay: function totalMediaPerDay() {
+            var data = {
+                labels: this.totalMediaPerDayLabels,
+                datasets: [{
+                    type: 'bar',
+                    label: 'Number of Profile Posts',
+                    backgroundColor: 'rgb(240, 82, 103)',
+                    data: this.totalMediaPerDayValues
+                }]
+            };
+            return data;
+        },
+        totalMediaPerDayLabels: function totalMediaPerDayLabels() {
+            return this.instagramTotalMediaPerDay.map(function (item) {
+                return item.date;
+            });
+        },
+        totalMediaPerDayValues: function totalMediaPerDayValues() {
+            return this.instagramTotalMediaPerDay.map(function (item) {
+                return item.value;
+            });
+        },
+        chartLoadSuccess: function chartLoadSuccess() {
+            return this.growthFans.labels.length > 0;
+        }
+    }),
+    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('instagram', ['resetGrowthFans', 'resetTotalMediaPerDay'])),
+    beforeCreate: function beforeCreate() {
+        this.$store.dispatch('instagram/getInstagramProfileAnalytics', this.$route.params.username);
+    },
+    created: function created() {},
+    beforeDestroy: function beforeDestroy() {
+        this.resetGrowthFans();
+        this.resetTotalMediaPerDay();
+    }
+});
+
+/***/ }),
+/* 292 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_overview_vue__ = __webpack_require__(291);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_10e0a5ef_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_overview_vue__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_overview_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_10e0a5ef_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_overview_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_10e0a5ef_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_overview_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/page/instagram/overview.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-10e0a5ef", Component.options)
+  } else {
+    hotAPI.reload("data-v-10e0a5ef", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 293 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "page-overview", attrs: { id: "facebook-overview" } },
+    [
+      _c("div", { staticClass: "page-overview-wrapper" }, [
+        _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _c("box-instagram-profile", {
+              staticClass: "box-overview-instagram",
+              attrs: { profile: _vm.instagramProfile }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "instagram-analytic-content row" }, [
+          _c("div", { staticClass: "col-md-6 col-sm-6 col-xs-12" }, [
+            _c(
+              "section",
+              { attrs: { id: "facebook-growth-fans-chart" } },
+              [
+                _vm.chartLoadSuccess
+                  ? _c("growth-fans-chart", {
+                      attrs: {
+                        boxStyle: "box-success",
+                        title: "Growth of Followers",
+                        source: _vm.growthFans
+                      }
+                    })
+                  : _vm._e()
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-6 col-sm-6 col-xs-12" }, [
+            _c(
+              "section",
+              { attrs: { id: "facebook-growth-fans-chart" } },
+              [
+                _vm.chartLoadSuccess
+                  ? _c("total-posts-per-day-chart", {
+                      attrs: {
+                        stacked: false,
+                        title: "Number of Profile Posts",
+                        boxStyle: "box-success",
+                        source: _vm.totalMediaPerDay
+                      }
+                    })
+                  : _vm._e()
+              ],
+              1
+            )
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-10e0a5ef", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
+
+/***/ }),
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    props: {
+        source: Object,
+        title: String,
+        boxStyle: String
+    },
+    mounted: function mounted() {
+        var _vue = this;
+        var chartOptions = {
+            //Boolean - If we should show the scale at all
+            showScale: true,
+            //Boolean - Whether grid lines are shown across the chart
+            scaleShowGridLines: false,
+            //String - Colour of the grid lines
+            scaleGridLineColor: 'rgba(0,0,0,.05)',
+            //Number - Width of the grid lines
+            scaleGridLineWidth: 1,
+            //Boolean - Whether to show horizontal lines (except X axis)
+            scaleShowHorizontalLines: true,
+            //Boolean - Whether to show vertical lines (except Y axis)
+            scaleShowVerticalLines: true,
+            //Boolean - Whether the line is curved between points
+            bezierCurve: true,
+            //Number - Tension of the bezier curve between points
+            bezierCurveTension: 0.3,
+            //Boolean - Whether to show a dot for each point
+            pointDot: true,
+            //Number - Radius of each point dot in pixels
+            pointDotRadius: 4,
+            //Number - Pixel width of point dot stroke
+            pointDotStrokeWidth: 2,
+            //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+            pointHitDetectionRadius: 20,
+            //Boolean - Whether to show a stroke for datasets
+            datasetStroke: true,
+            //Number - Pixel width of dataset stroke
+            datasetStrokeWidth: 2,
+            //Boolean - Whether to fill the dataset with a color
+            datasetFill: true,
+            //String - A legend template
+            legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].lineColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+            //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+            maintainAspectRatio: true,
+            //Boolean - whether to make the chart responsive to window resizing
+            responsive: true,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback: function callback(value, index, values) {
+                            return numeral(value).format('0,0');
+                        }
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function label(tooltipItem, chart) {
+                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                        return numeral(tooltipItem.yLabel).format('0,0');
+                    }
+                }
+            }
+            //-------------
+            //- LINE CHART -
+            //--------------
+        };var lineChartCanvas = $('#lineChart').get(0).getContext('2d');
+        new Chart(lineChartCanvas, {
+            type: "line",
+            data: _vue.source,
+            options: chartOptions
+        });
+    }
+});
+
+/***/ }),
+/* 301 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_area_chart_vue__ = __webpack_require__(300);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_2636e283_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_area_chart_vue__ = __webpack_require__(302);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_area_chart_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_2636e283_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_area_chart_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_2636e283_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_area_chart_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/global/area-chart.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2636e283", Component.options)
+  } else {
+    hotAPI.reload("data-v-2636e283", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 302 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticStyle: { "padding-left": "5px", "padding-right": "5px" },
+      attrs: { id: "area-chart" }
+    },
+    [
+      _c("div", { staticClass: "box", class: _vm.boxStyle }, [
+        _c("div", { staticClass: "box-header with-border" }, [
+          _c("h3", { staticClass: "box-title" }, [_vm._v(_vm._s(_vm.title))]),
+          _vm._v(" "),
+          _c("div", { staticClass: "box-tools pull-right" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            false
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-box-tool",
+                    attrs: { type: "button", "data-widget": "remove" }
+                  },
+                  [_c("i", { staticClass: "fa fa-times" })]
+                )
+              : _vm._e()
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(1)
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-box-tool",
+        attrs: { type: "button", "data-widget": "collapse" }
+      },
+      [_c("i", { staticClass: "fa fa-minus" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-body" }, [
+      _c("div", { staticClass: "chart" }, [
+        _c("canvas", {
+          staticStyle: { height: "250px" },
+          attrs: { id: "lineChart" }
+        })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2636e283", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
+
+/***/ }),
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    props: {
+        source: Object,
+        title: String,
+        boxStyle: String,
+        stacked: Boolean
+    },
+    mounted: function mounted() {
+        var _vue = this;
+        var barChartCanvas = $('#barChart').get(0).getContext('2d');
+        var barChartOptions = {
+            scales: {
+                xAxes: [{
+                    stacked: _vue.stacked
+                }],
+                yAxes: [{
+                    stacked: _vue.stacked,
+                    ticks: {
+                        callback: function callback(value, index, values) {
+                            return numeral(value).format('0,0');
+                        }
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function label(tooltipItem, chart) {
+                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                        return numeral(tooltipItem.yLabel).format('0,0');
+                    }
+                }
+            }
+        };
+
+        new Chart(barChartCanvas, {
+            type: "bar",
+            data: _vue.source,
+            options: barChartOptions
+        });
+    }
+});
+
+/***/ }),
+/* 310 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_bar_chart_vue__ = __webpack_require__(309);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3d68004f_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bar_chart_vue__ = __webpack_require__(311);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_bar_chart_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3d68004f_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bar_chart_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3d68004f_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_bar_chart_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/global/bar-chart.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3d68004f", Component.options)
+  } else {
+    hotAPI.reload("data-v-3d68004f", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 311 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticStyle: { "padding-left": "5px", "padding-right": "5px" },
+      attrs: { id: "bar-chart-stack" }
+    },
+    [
+      _c("div", { staticClass: "box", class: _vm.boxStyle }, [
+        _c("div", { staticClass: "box-header with-border" }, [
+          _c("h3", { staticClass: "box-title" }, [_vm._v(_vm._s(_vm.title))]),
+          _vm._v(" "),
+          _c("div", { staticClass: "box-tools pull-right" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            false
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-box-tool",
+                    attrs: { type: "button", "data-widget": "remove" }
+                  },
+                  [_c("i", { staticClass: "fa fa-times" })]
+                )
+              : _vm._e()
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(1)
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-box-tool",
+        attrs: { type: "button", "data-widget": "collapse" }
+      },
+      [_c("i", { staticClass: "fa fa-minus" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-body" }, [
+      _c("div", { staticClass: "chart" }, [
+        _c("canvas", {
+          staticStyle: { height: "250px" },
+          attrs: { id: "barChart" }
+        })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3d68004f", { render: render, staticRenderFns: staticRenderFns })
   }
 }
 

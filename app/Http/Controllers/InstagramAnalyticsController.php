@@ -8,6 +8,7 @@ use App\Helpers\InstagramHelper;
 
 use App\Models\InstagramAnalytics;
 use App\Models\InstagramMedia;
+use App\Models\InstagramFollower;
 
 class InstagramAnalyticsController extends Controller
 {
@@ -33,6 +34,22 @@ class InstagramAnalyticsController extends Controller
     {
         $listInstagramAnalytics = InstagramAnalytics::all();
         return response()->json($listInstagramAnalytics, 200);
+    }
+
+    public function getInstagramProfileByInstagramAnalyticsID(Request $request)
+    {
+        $instagramProfile = InstagramAnalytics::where('user_name', '=', $request->username)->first();
+        $growthFans = InstagramFollower::where('instagram_analytics_id', '=', $instagramProfile->id)->select('instagram_followers', 'date_sync')->get();
+        $instagramTotalMediaPerDay = InstagramMedia::where('instagram_analytics_id', '=', $instagramProfile->id)->select(\DB::raw("date_format(created_at, '%Y-%m-%d') as date, count(media_id) as value"))
+            ->groupBy(\DB::raw("date_format(created_at, '%Y-%m-%d')"))->get();
+        $data = [
+            'profile' => $instagramProfile,
+            'analytics' => [
+                'growthFans' => $growthFans,
+                'instagramTotalMediaPerDay' => $instagramTotalMediaPerDay
+            ]
+        ];
+        return response()->json($data, 200);
     }
 
     public function createNewInstagramProfile(Request $request)

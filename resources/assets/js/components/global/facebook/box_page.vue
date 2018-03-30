@@ -13,9 +13,11 @@
         <!-- Add the bg color to the header using any of the bg-* classes -->
         <div class="widget-user-header bg-black min-height-120 bg-image" :style="styleForCoverPicture">
             <div class="widget-user-image">
-                <img class="img-circle" :src="page.account_picture" :alt="page.account_name">
-                <h3 class="widget-user-username widget-user-username-f20 widget-text-shadown">{{ page.account_name }}</h3>
-                <h5 class="widget-user-username widget-user-username-f14 widget-text-shadown">{{ page.account_username }}</h5>
+                    <img class="img-circle" :src="page.account_picture" :alt="page.account_name">
+                    <router-link class="widget-user-link" :to="overviewLink">
+                        <h3 class="widget-user-username widget-user-username-f20 widget-text-shadown">{{ page.account_name }}</h3>
+                        <h5 class="widget-user-username widget-user-username-f14 widget-text-shadown">{{ page.account_username }}</h5>
+                    </router-link>
             </div>
         </div>
         <div class="box-footer no-padding">

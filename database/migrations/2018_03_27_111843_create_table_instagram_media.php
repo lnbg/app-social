@@ -24,6 +24,7 @@ class CreateTableInstagramMedia extends Migration
             $table->integer('comments')->nullable()->default(0);
             $table->string('location')->nullable();
             $table->text('tags')->nullable();
+            $table->timestamps('instagram_created_at')->nullable();
             $table->timestamps();
         });
     }

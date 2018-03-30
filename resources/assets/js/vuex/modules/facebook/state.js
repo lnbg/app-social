@@ -41,20 +41,5 @@ export default {
         comments: 0,
         facebook_created_at: String.empty
     },
-    facebookBestPost: {
-        facebook_post_id: 0,
-        facebook_analytics_id: 0,
-        messages: String.empty,
-        story: String.empty,
-        reaction_like: 0,
-        reaction_haha: 0,
-        reaction_love: 0,
-        reaction_wow: 0,
-        reaction_sad: 0,
-        reaction_angry: 0,
-        shares: 0,
-        comments: 0,
-        facebook_created_at: String.empty
-    },
     facebookLastPosts: []
 }
