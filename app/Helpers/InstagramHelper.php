@@ -83,21 +83,39 @@ class InstagramHelper {
                 'updated_at' => date('Y-m-d H:s:i'),
             ]);
         }
-
+        // update again likes and comments count for each media
+        $this->updateReactionMediaByMediaID($instagramAnalytics->user_name, $instagramAnalyticsID);
+        // insert new media
         $new = $this->getPostsOfInstagramByUserName($instagramAnalytics->user_name, $instagramAnalyticsID);
         InstagramMedia::insert($new);
         return $new;
     }
 
+    public function updateReactionMediaByMediaID($username, $instagram_analytics_id)
+    {
+        $allMedia = InstagramMedia::where('instagram_analytics_id', '=', $instagram_analytics_id);
+        foreach ($allMedia as $media) {
+            try {
+                $_media = $this->instagramCrawler->getMedia($media->getShortCode());
+                $media->likes = $_media->getLikesCount();
+                $media->comments = $_media->getCommentsCount();
+                $media->save();
+            }
+            catch (\Exception $e) {
+                continue;
+            }
+        }
+    }
+
     /**
-     * get all posts of instagram via user user
+     * get new posts of instagram via user name
      *
      * @param [type] $username
      * @return void
      */
     public function getPostsOfInstagramByUserName($username, $instagram_analytics_id)
     {
-        $allMedia = $this->instagramScrapper->getMedias($instagram->user_name, 10);
+        $allMedia = $this->instagramScrapper->getMedias($username, 10);
         $lastInstagramMedia = InstagramMedia::where('instagram_analytics_id', '=', $instagram_analytics_id)->orderBy('media_id', 'desc')->first();
         $lastInstagramMediaID = 0;
         if (isset($lastInstagramMedia)){
@@ -123,7 +141,7 @@ class InstagramHelper {
                 }
                 $item = [
                     'media_id' => $media->getId(),
-                    'instagram_analytics_id' => $instagram->id,
+                    'instagram_analytics_id' => $instagram_analytics_id,
                     'media_type' => $media->getType(),
                     'media_code' => $media->getShortCode(),
                     'caption' => $media->getCaption(),
@@ -144,6 +162,12 @@ class InstagramHelper {
         return $data;
     }
 
+    /**
+     * Init analytics instagram with 100 media lastest
+     *
+     * @param [type] $id
+     * @return void
+     */
     public function initAnalyticsInstagramMediaByID($id) {
         $instagram = InstagramAnalytics::find($id);
         $allMedia = $this->instagramScrapper->getMedias($instagram->user_name, 100);
