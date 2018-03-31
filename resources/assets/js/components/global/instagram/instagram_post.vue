@@ -26,7 +26,7 @@
             <div class="box-footer">
                 <span class="pull-left text-muted">
                     <span><i class="fa fa-comment"></i> {{ mediaInstance.comments | currency }}</span>&nbsp;
-                    <span><i class="fa fa-like"></i> {{ mediaInstance.like | currency }}</span>
+                    <span><i class="fa fa-heart"></i> {{ mediaInstance.like | currency }}</span>
                 </span>
             </div>
             <!-- /.box-footer -->

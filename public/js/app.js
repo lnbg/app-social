@@ -24450,7 +24450,7 @@ var render = function() {
           ]),
           _vm._v(" \n                "),
           _c("span", [
-            _c("i", { staticClass: "fa fa-like" }),
+            _c("i", { staticClass: "fa fa-heart" }),
             _vm._v(" " + _vm._s(_vm._f("currency")(_vm.mediaInstance.like)))
           ])
         ])
