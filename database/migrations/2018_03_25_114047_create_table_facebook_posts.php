@@ -14,6 +14,7 @@ class CreateTableFacebookPosts extends Migration
     public function up()
     {
         Schema::create('facebook_posts', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('facebook_analytics_id');
             $table->string('facebook_post_id');
             $table->text('messages')->nullable();

@@ -77,7 +77,7 @@ class FacebookAnalyticsController extends Controller
         $facebookAnalytics = FacebookAnalytics::find($id);
         // get since
         $now = date('Y-m-d');
-        $effectiveDate = date('Y-m-d', strtotime($now . "-2 days"));
+        $effectiveDate = date('Y-m-d', strtotime($now . "-1 days"));
         //retrive yesterday's date in the format 9999-99-99
         $facebookFanpageLink = explode('/', $facebookAnalytics->account_link);
         $facebookFanpageUserName = $facebookFanpageLink[3];
@@ -111,9 +111,8 @@ class FacebookAnalyticsController extends Controller
         $diffDays = $dteNow->diff($dteEffective)->days;
 
         // analytics facebook_page data
-        $this->facebookHelper->facebookFanpageGetPostByURI($laravelFacebookSDK, $facebookAnalytics->id,
+        $a = $this->facebookHelper->facebookFanpageGetPostByURI($laravelFacebookSDK, $facebookAnalytics->id,
             $user->access_token, $facebookFanpageUserName, $postsStorage, $effectiveDate);
-
         // get page likes
         $analyticsData['total_page_likes'] = $this->facebookHelper->getPageLikes($laravelFacebookSDK, $user->access_token, $facebookFanpageUserName);
 
@@ -223,9 +222,8 @@ class FacebookAnalyticsController extends Controller
 
         $evolutionOfInteractions = FacebookPost::where(
             'facebook_analytics_id','=', $pageOverview->id)
-        ->where(
-            'facebook_created_at', '>=', date('Y-m-d', strtotime($now . "-7 days")))
-        ->select(\DB::raw("DATE_FORMAT(facebook_created_at, '%Y-%m-%d') as date, sum(reaction_like + reaction_wow + reaction_angry + reaction_haha + reaction_wow + reaction_sad) as reactions,
+            ->where('facebook_created_at', '>=', date('Y-m-d', strtotime($now . "-1 months")))
+            ->select(\DB::raw("DATE_FORMAT(facebook_created_at, '%Y-%m-%d') as date, sum(reaction_like + reaction_wow + reaction_angry + reaction_haha + reaction_wow + reaction_sad) as reactions,
         sum(comments) as comments, sum(shares) as shares"))->groupBy(\DB::raw("DATE_FORMAT(facebook_created_at, '%Y-%m-%d')"))->get();
 
         $result = [

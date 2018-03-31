@@ -68,15 +68,21 @@ class KolsFetchingFacebookPage extends Command
         $user = User::first();
         $accessToken = $user->access_token;
         foreach ($facebookAnalytics as $page) {
-            $this->line("Update all old post of page: " . $page->account_name);
-            $this->facebookHelper->facebookFanpageUpdateEachPostByAnalyticsID($this->laravelFacebookSDK, $accessToken, $page->id);
-            $this->line("Fetching new posts of page: " . $page->account_name);
-            try {
-                $result = $this->analyticsNewPostFacebookPage($this->laravelFacebookSDK, $accessToken, $page->id);
-                $this->line("page: " . $page->account_name . " done!");
-            } catch (\Exception $ex) {
-                $this->line("page: " . $page->account_name . " error!");
-                $this->line($ex);
+            if ($page->id > 25) {
+                $now = date('Y-m-d');
+                $effectiveDate = date('Y-m-d', strtotime($now . "-1 years"));
+                FacebookPost::where('facebook_analytics_id', '=', $page->id)
+                                ->where('facebook_created_at', '<', $effectiveDate)->delete();   
+                $this->line("Update all old post of page: " . $page->account_name);
+                $this->facebookHelper->facebookFanpageUpdateEachPostByAnalyticsID($this->laravelFacebookSDK, $user->access_token, $page->id);
+                $this->line("Fetching new posts of page: " . $page->account_name);
+                try {
+                    $result = $this->analyticsNewPostFacebookPage($this->laravelFacebookSDK, $accessToken, $page->id);
+                    $this->line("page: " . $page->account_name . " done!");
+                } catch (\Exception $ex) {
+                    $this->line("page: " . $page->account_name . " error!");
+                    $this->line($ex);
+                }
             }
         }
     }
@@ -88,16 +94,15 @@ class KolsFetchingFacebookPage extends Command
         $id = $pageID;
         // Meta data
         $facebookAnalytics = FacebookAnalytics::find($id);
-        // get data facebook from two day ago.
+        
         $now = date('Y-m-d');
-        $effectiveDate = date('Y-m-d', strtotime($now . "-2 days"));
+        // get data facebook from two day ago.
+        $effectiveDate = date('Y-m-d', strtotime($now . "-1 days"));
         //retrive yesterday's date in the format 9999-99-99
         $facebookFanpageLink = explode('/', $facebookAnalytics->account_link);
         $facebookFanpageUserName = $facebookFanpageLink[3];
         // storage all posts when analytics progressing
         $postsStorage = [];
-        // get accpimt actived date
-        $accountActivedDate = date('Y-m-d');
         // init analytics data for facebook_analytics table
         $analyticsData = [
             'total_posts' => 0,
@@ -122,14 +127,11 @@ class KolsFetchingFacebookPage extends Command
         $dteNow = new DateTime($now);
         $dteEffective = new DateTime($effectiveDate);
         $diffDays = $dteNow->diff($dteEffective)->days;
-        
         // analytics facebook_page data
         $this->facebookHelper->facebookFanpageGetPostByURI($laravelFacebookSDK, $facebookAnalytics->id,
             $user->access_token, $facebookFanpageUserName, $postsStorage, $effectiveDate);
-
         // get page likes
         $analyticsData['total_page_likes'] = $this->facebookHelper->getPageLikes($laravelFacebookSDK, $user->access_token, $facebookFanpageUserName);
-
         $facebookFan = FacebookFan::where(
             [
                 ['facebook_analytics_id', '=', $facebookAnalytics->id],
@@ -155,18 +157,13 @@ class KolsFetchingFacebookPage extends Command
         if (isset($picture['cover']['source'])) {
             $facebookAnalytics->account_picture_cover = $picture['cover']['source'];
         }
-        $effectiveDate = date('Y-m-d', strtotime($now . "-1 years"));
-        FacebookPost::where('facebook_analytics_id', '=', $facebookAnalytics->id)
-                        ->where('facebook_created_at', '<', $effectiveDate)->delete();
-                        
-        $this->facebookHelper->facebookFanpageUpdateEachPostByAnalyticsID($laravelFacebookSDK, $user->access_token, $facebookAnalytics->id);
-        
+
         FacebookPost::insert($postsStorage);
 
         $analyticsPostObject = FacebookPost::where('facebook_analytics_id', '=', $facebookAnalytics->id)
             ->select(\DB::raw('count(facebook_post_id) as total, sum(reaction_like) as likes, sum(reaction_haha) as hahas, sum(reaction_wow) as wows,
             sum(reaction_love) as loves, sum(reaction_sad) as sads, sum(reaction_angry) as angries, sum(reaction_thankful) as thankfuls, sum(comments) as comments, sum(shares) as shares'))->first();
-
+        
         $facebookAnalytics->total_page_likes = $analyticsData['total_page_likes'];
         $facebookAnalytics->total_page_followers = $analyticsData['total_page_followers'];
         $facebookAnalytics->total_posts = $analyticsPostObject->total;

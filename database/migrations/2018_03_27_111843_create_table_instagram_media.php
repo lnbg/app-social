@@ -14,6 +14,7 @@ class CreateTableInstagramMedia extends Migration
     public function up()
     {
         Schema::create('instagram_media', function (Blueprint $table) {
+            $table->increments('id');
             $table->bigInteger('media_id');
             $table->integer('instagram_analytics_id');
             $table->string('media_type')->nullable();
