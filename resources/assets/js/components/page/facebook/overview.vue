@@ -27,11 +27,6 @@
                     <section id="facebook-most-intereactions-post">
                         <facebook-post v-if="chartLoadSuccess" :facebookAnalytics="facebookAnalytics" :post="facebookBestPost"></facebook-post>
                     </section>
-                    <section id="facebook-posts-timeline">
-                        <div class="row">
-                            <posts-timeline v-if="chartLoadSuccess" :facebookAnalytics="facebookAnalytics" :source="facebookLastPosts"></posts-timeline>
-                        </div>
-                    </section>
                 </div>
                 <div class="overview-panel-right col-md-8">
                     <section id="facebook-posts-analytics">
@@ -64,6 +59,11 @@
                     <section id="facebook-evolution-of-interactions-chart">
                         <div class="row">
                             <evolution-of-interactions-chart :stacked="true" :title="'Evolution of Interactions'" :boxStyle="'box-info'" v-if="chartLoadSuccess" :source="evolutionOfInteractions"></evolution-of-interactions-chart>
+                        </div>
+                    </section>
+                    <section id="facebook-posts-timeline">
+                        <div class="row">
+                            <posts-timeline v-if="chartLoadSuccess" :facebookAnalytics="facebookAnalytics" :source="facebookLastPosts"></posts-timeline>
                         </div>
                     </section>
                 </div>

@@ -145,6 +145,7 @@ class FacebookAnalyticsController extends Controller
         $facebookAnalytics->total_page_followers = $analyticsData['total_page_followers'];
         $facebookAnalytics->total_posts = $analyticsPostObject->total;
         $facebookAnalytics->total_posts_shares = $analyticsPostObject->shares;
+        $facebookAnalytics->total_days = 365;
         $facebookAnalytics->total_posts_comments = $analyticsPostObject->comments;
         $facebookAnalytics->total_posts_likes = $analyticsPostObject->likes;
         $facebookAnalytics->total_posts_hahas = $analyticsPostObject->hahas;

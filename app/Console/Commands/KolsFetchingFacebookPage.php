@@ -165,6 +165,7 @@ class KolsFetchingFacebookPage extends Command
         $facebookAnalytics->total_posts = $analyticsPostObject->total;
         $facebookAnalytics->total_posts_shares = $analyticsPostObject->shares;
         $facebookAnalytics->total_posts_comments = $analyticsPostObject->comments;
+        $facebookAnalytics->total_days = 365;
         $facebookAnalytics->total_posts_likes = $analyticsPostObject->likes;
         $facebookAnalytics->total_posts_hahas = $analyticsPostObject->hahas;
         $facebookAnalytics->total_posts_wows = $analyticsPostObject->wows;
