@@ -158,7 +158,7 @@ class FacebookAnalyticsController extends Controller
                     $facebookAnalytics->total_posts_thankfuls;
 
         $interactions = $reactions + $facebookAnalytics->total_posts_shares + $facebookAnalytics->total_posts_comments;
-        $facebookAnalytics->average_posts_per_day = round($total_posts / $facebookAnalytics->total_days, 2);
+        $facebookAnalytics->average_posts_per_day = round($facebookAnalytics->total_posts / $facebookAnalytics->total_days, 2);
         $facebookAnalytics->average_reactions_per_post = round($reactions / $facebookAnalytics->total_days, 2);
         $facebookAnalytics->average_interactions_per_post = round($interactions / $facebookAnalytics->total_days, 2);
 
