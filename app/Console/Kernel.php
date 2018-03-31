@@ -27,12 +27,14 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $file = 'storage/logs/kols_fetching_page.txt';
+        $file = 'storage/logs/kols_fetching_instagram.txt';
         
         $schedule->command('kols:instagram')
                 ->timezone('Asia/Saigon')
                 ->dailyAt('01:00')
                 ->sendOutputTo($file);
+
+        $file = 'storage/logs/kols_fetching_facebook_page.txt';
                 
         $schedule->command('kols:facebook_page')
                 ->timezone('Asia/Saigon')
