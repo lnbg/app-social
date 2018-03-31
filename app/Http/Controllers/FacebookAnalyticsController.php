@@ -77,14 +77,12 @@ class FacebookAnalyticsController extends Controller
         $facebookAnalytics = FacebookAnalytics::find($id);
         // get since
         $now = date('Y-m-d');
-        $effectiveDate = date('Y-m-d', strtotime($now . "-1 days"));
+        $effectiveDate = date('Y-m-d', strtotime($now . "-1 years"));
         //retrive yesterday's date in the format 9999-99-99
         $facebookFanpageLink = explode('/', $facebookAnalytics->account_link);
         $facebookFanpageUserName = $facebookFanpageLink[3];
         // storage all posts when analytics progressing
         $postsStorage = [];
-        // get accpimt actived date
-        $accountActivedDate = date('Y-m-d');
         // init analytics data for facebook_analytics table
         $analyticsData = [
             'total_posts' => 0,
@@ -105,13 +103,8 @@ class FacebookAnalyticsController extends Controller
         $crawler = $client->request('GET', 'https://www.facebook.com/' . $facebookFanpageUserName);
         $nodeFollowers = $crawler->filter('div._4bl9')->eq(2)->extract(array('_text', 'class', 'href'));
         $analyticsData['total_page_followers'] = intval(preg_replace( '/[^0-9]/', '', $nodeFollowers[0][0]));
-        // get diff days when analytics
-        $dteNow = new DateTime($now);
-        $dteEffective = new DateTime($effectiveDate);
-        $diffDays = $dteNow->diff($dteEffective)->days;
-
         // analytics facebook_page data
-        $a = $this->facebookHelper->facebookFanpageGetPostByURI($laravelFacebookSDK, $facebookAnalytics->id,
+        $this->facebookHelper->facebookFanpageGetPostByURI($laravelFacebookSDK, $facebookAnalytics->id,
             $user->access_token, $facebookFanpageUserName, $postsStorage, $effectiveDate);
         // get page likes
         $analyticsData['total_page_likes'] = $this->facebookHelper->getPageLikes($laravelFacebookSDK, $user->access_token, $facebookFanpageUserName);
@@ -141,11 +134,6 @@ class FacebookAnalyticsController extends Controller
         if (isset($picture['cover']['source'])) {
             $facebookAnalytics->account_picture_cover = $picture['cover']['source'];
         }
-        $effectiveDate = date('Y-m-d', strtotime($now . "-1 years"));
-        FacebookPost::where('facebook_analytics_id', '=', $facebookAnalytics->id)
-                        ->where('facebook_created_at', '<', $effectiveDate)->delete();
-
-        $this->facebookHelper->facebookFanpageUpdateEachPostByAnalyticsID($laravelFacebookSDK, $user->access_token, $facebookAnalytics->id);
 
         FacebookPost::insert($postsStorage);
 

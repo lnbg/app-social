@@ -135,7 +135,6 @@ export default {
                     }
                 ]
             }
-            console.log(data);
             return data;
         },
         totalMediaGroupByTypeLabels() {
@@ -149,7 +148,7 @@ export default {
             })
         },
         chartLoadSuccess() {
-            return this.growthFans.labels.length > 0
+            return this.totalMediaGroupByTypeLabels.length > 0;
         }
     },
     methods: {

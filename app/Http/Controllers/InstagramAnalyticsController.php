@@ -90,7 +90,7 @@ class InstagramAnalyticsController extends Controller
     {
         try {
             $instagramAnalyticsID = $request->id;
-            $new = $this->instagramHelper->analyticsInstagramProfile($instagramAnalyticsID);
+            $new = $this->instagramHelper->initAnalyticsInstagramMediaByID($instagramAnalyticsID);
             return response()->json($new, 200);
         } catch (\Exception $e) {
             return $e->getMessage();

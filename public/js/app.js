@@ -23400,7 +23400,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     data: this.totalMediaGroupByTypeValues
                 }]
             };
-            console.log(data);
             return data;
         },
         totalMediaGroupByTypeLabels: function totalMediaGroupByTypeLabels() {
@@ -23414,7 +23413,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             });
         },
         chartLoadSuccess: function chartLoadSuccess() {
-            return this.growthFans.labels.length > 0;
+            return this.totalMediaGroupByTypeLabels.length > 0;
         }
     }),
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('instagram', ['resetGrowthFans', 'resetTotalMediaPerDay', 'resetTotalMediaGroupByType'])),
