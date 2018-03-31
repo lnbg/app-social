@@ -94,7 +94,6 @@ class KolsFetchingFacebookPage extends Command
         $id = $pageID;
         // Meta data
         $facebookAnalytics = FacebookAnalytics::find($id);
-        
         $now = date('Y-m-d');
         // get data facebook from two day ago.
         $effectiveDate = date('Y-m-d', strtotime($now . "-1 days"));
@@ -157,13 +156,10 @@ class KolsFetchingFacebookPage extends Command
         if (isset($picture['cover']['source'])) {
             $facebookAnalytics->account_picture_cover = $picture['cover']['source'];
         }
-
         FacebookPost::insert($postsStorage);
-
         $analyticsPostObject = FacebookPost::where('facebook_analytics_id', '=', $facebookAnalytics->id)
             ->select(\DB::raw('count(facebook_post_id) as total, sum(reaction_like) as likes, sum(reaction_haha) as hahas, sum(reaction_wow) as wows,
             sum(reaction_love) as loves, sum(reaction_sad) as sads, sum(reaction_angry) as angries, sum(reaction_thankful) as thankfuls, sum(comments) as comments, sum(shares) as shares'))->first();
-        
         $facebookAnalytics->total_page_likes = $analyticsData['total_page_likes'];
         $facebookAnalytics->total_page_followers = $analyticsData['total_page_followers'];
         $facebookAnalytics->total_posts = $analyticsPostObject->total;

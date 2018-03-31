@@ -8,7 +8,7 @@
             <router-link :to="overviewLink">
                 <i class="fa fa-eye"></i>
             </router-link>&nbsp;&nbsp;
-            <a href="javascript:void(0)"><i class="fa fa-download" @click="boxAnalyticsFacebookPage"></i></a>
+            <a v-if="page.total_posts == 0" href="javascript:void(0)"><i class="fa fa-download" @click="boxAnalyticsFacebookPage"></i></a>
         </div>
         <!-- Add the bg color to the header using any of the bg-* classes -->
         <div class="widget-user-header bg-black min-height-120 bg-image" :style="styleForCoverPicture">

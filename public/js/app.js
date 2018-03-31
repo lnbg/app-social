@@ -20526,12 +20526,14 @@ var render = function() {
             _c("i", { staticClass: "fa fa-eye" })
           ]),
           _vm._v("  \n        "),
-          _c("a", { attrs: { href: "javascript:void(0)" } }, [
-            _c("i", {
-              staticClass: "fa fa-download",
-              on: { click: _vm.boxAnalyticsFacebookPage }
-            })
-          ])
+          _vm.page.total_posts == 0
+            ? _c("a", { attrs: { href: "javascript:void(0)" } }, [
+                _c("i", {
+                  staticClass: "fa fa-download",
+                  on: { click: _vm.boxAnalyticsFacebookPage }
+                })
+              ])
+            : _vm._e()
         ],
         1
       ),
