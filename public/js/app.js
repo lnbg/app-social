@@ -13171,18 +13171,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -20632,24 +20620,6 @@ var render = function() {
           _vm._v(" "),
           _c("li", [
             _c("a", { attrs: { href: "#" } }, [
-              _vm._v("Total Reactions "),
-              _c("span", { staticClass: "pull-right badge bg-green" }, [
-                _vm._v(_vm._s(_vm._f("currency")(_vm.reactions)))
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#" } }, [
-              _vm._v("Total Interactions "),
-              _c("span", { staticClass: "pull-right badge bg-green" }, [
-                _vm._v(_vm._s(_vm._f("currency")(_vm.interactions)))
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#" } }, [
               _vm._v("Average Posts/Day "),
               _c("span", { staticClass: "pull-right badge bg-yellow" }, [
                 _vm._v(
@@ -21963,7 +21933,25 @@ var render = function() {
                   : _vm._e()
               ],
               1
-            )
+            ),
+            _vm._v(" "),
+            _c("section", { attrs: { id: "facebook-posts-timeline" } }, [
+              _c(
+                "div",
+                { staticClass: "row" },
+                [
+                  _vm.chartLoadSuccess
+                    ? _c("posts-timeline", {
+                        attrs: {
+                          facebookAnalytics: _vm.facebookAnalytics,
+                          source: _vm.facebookLastPosts
+                        }
+                      })
+                    : _vm._e()
+                ],
+                1
+              )
+            ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "overview-panel-right col-md-8" }, [
@@ -22114,25 +22102,7 @@ var render = function() {
                   1
                 )
               ]
-            ),
-            _vm._v(" "),
-            _c("section", { attrs: { id: "facebook-posts-timeline" } }, [
-              _c(
-                "div",
-                { staticClass: "row" },
-                [
-                  _vm.chartLoadSuccess
-                    ? _c("posts-timeline", {
-                        attrs: {
-                          facebookAnalytics: _vm.facebookAnalytics,
-                          source: _vm.facebookLastPosts
-                        }
-                      })
-                    : _vm._e()
-                ],
-                1
-              )
-            ])
+            )
           ])
         ])
       ])

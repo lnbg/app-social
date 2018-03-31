@@ -25,18 +25,6 @@
                 <li><a href="#">Total Posts: <span class="pull-right badge bg-blue">{{ page.total_posts | currency }}</span></a></li>
                 <li><a href="#">Total Page Followers <span class="pull-right badge bg-aqua">{{ page.total_page_followers | currency }}</span></a></li>
                 <li><a href="#">Total Fans <span class="pull-right badge bg-aqua">{{ page.total_page_likes | currency }}</span></a></li>
-                <li>
-                    <a href="#">Total Reactions <span class="pull-right badge bg-green">{{ reactions | currency }}</span></a>
-                    <!-- <a href="#">
-                        <span><img class="reactions-img" src="/imgs/reactions/love.gif" height="16px" style="margin-left: 0;" />{{ page.total_posts_loves | currency }}</span>
-                        <span><img class="reactions-img"  src="/imgs/reactions/like.gif" height="16px" /> {{ page.total_posts_likes | currency }}</span>
-                        <span><img class="reactions-img"  src="/imgs/reactions/wow.gif" height="16px" /> {{ page.total_posts_wows | currency }}</span>
-                        <span><img class="reactions-img"  src="/imgs/reactions/sad.gif" height="16px" /> {{ page.total_posts_sads | currency }}</span>
-                        <span><img class="reactions-img"  src="/imgs/reactions/haha.gif" height="16px" /> {{ page.total_posts_hahas | currency }}</span>
-                        <span><img class="reactions-img"  src="/imgs/reactions/angry.gif" height="16px" /> {{ page.total_posts_angries | currency }}</span>
-                    </a> -->
-                </li>
-                <li><a href="#">Total Interactions <span class="pull-right badge bg-green">{{ interactions | currency }}</span></a></li>
                 <li><a href="#">Average Posts/Day <span class="pull-right badge bg-yellow">{{ page.average_posts_per_day | currency }}</span></a></li>
                 <li><a href="#">Average Reactions/Post <span class="pull-right badge bg-yellow">{{ page.average_reactions_per_post | currency }}</span></a></li>
                 <li><a href="#">Average Interactions/Post <span class="pull-right badge bg-yellow">{{ page.average_interactions_per_post | currency }}</span></a></li>
