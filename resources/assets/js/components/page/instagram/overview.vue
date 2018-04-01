@@ -19,7 +19,7 @@
                 </div>
                 <div class="row">
                     <section id="instagram-post-per-day">
-                        <total-posts-per-day-chart :stacked="false" :title="'Number of Profile Posts'" :boxStyle="'box-success'" v-if="totalMediaPerDayLoadSuccess" :source="totalMediaPerDay"></total-posts-per-day-chart>
+                        <total-posts-per-day-chart :options="totalMediaPerDayOption" :title="'Number of Profile Posts'" :boxStyle="'box-success'" v-if="totalMediaPerDayLoadSuccess" :source="totalMediaPerDay"></total-posts-per-day-chart>
                     </section>
                 </div>
                 <div class="row masonry-grid">
@@ -104,6 +104,19 @@ export default {
                 ]
             }
             return data;
+        },
+        totalMediaPerDayOption() {
+            var barChartOptions = {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1,
+                        },
+                    }],
+                },
+            }
+            return barChartOptions
         },
         totalMediaPerDayLabels() {
              return this.instagramTotalMediaPerDay.map(function(item) {

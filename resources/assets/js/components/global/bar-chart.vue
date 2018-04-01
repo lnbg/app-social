@@ -25,39 +25,16 @@ export default {
         source: Object,
         title: String,
         boxStyle: String,
-        stacked: Boolean
+        options: Object
     },
     mounted() {
         var _vue = this;
         var barChartCanvas                   = $('#barChart').get(0).getContext('2d')
-        var barChartOptions                  = {
-            scales: {
-                xAxes: [{
-                    stacked: _vue.stacked
-                }],
-                yAxes: [{
-                    stacked: _vue.stacked,
-                    ticks: {
-                        callback: function(value, index, values) {
-                            return numeral(value).format('0,0')
-                        }
-                    }
-                }]
-            },
-            tooltips: {
-                callbacks: {
-                    label: function(tooltipItem, chart){
-                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                        return numeral(tooltipItem.yLabel).format('0,0')
-                    }
-                }
-            },
-        }
-
+        var _options = Object.assign({}, this.options)
         new Chart(barChartCanvas , {
             type: "bar",
             data: _vue.source, 
-            options: barChartOptions,
+            options: _options,
         });
     }
 }

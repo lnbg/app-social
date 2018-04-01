@@ -64,7 +64,7 @@
                     </section>
                     <section id="facebook-evolution-of-interactions-chart">
                         <div class="row">
-                            <evolution-of-interactions-chart :stacked="true" :title="'Evolution of Interactions'" :boxStyle="'box-info'" v-if="chartLoadSuccess" :source="evolutionOfInteractions"></evolution-of-interactions-chart>
+                            <evolution-of-interactions-chart :options="evolutionOfInteractionOption" :title="'Evolution of Interactions'" :boxStyle="'box-info'" v-if="chartLoadSuccess" :source="evolutionOfInteractions"></evolution-of-interactions-chart>
                         </div>
                     </section>
                     <section id="facebook-posts-timeline">
@@ -152,6 +152,32 @@ export default {
             return this.facebookGrowthFans.map(function(item) {
                 return item.facebook_fans
             })
+        },
+        evolutionOfInteractionOption() {
+            var barChartOptions = {
+                scales: {
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return numeral(value).format('0,0')
+                            }
+                        },
+                    }],
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, chart){
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return numeral(tooltipItem.yLabel).format('0,0')
+                        }
+                    }
+                },
+            }
+            return barChartOptions
         },
         evolutionOfInteractions() {
             var data = {

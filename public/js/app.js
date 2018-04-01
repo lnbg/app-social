@@ -20538,14 +20538,12 @@ var render = function() {
             _c("i", { staticClass: "fa fa-eye" })
           ]),
           _vm._v("  \n        "),
-          _vm.page.total_posts == 0
-            ? _c("a", { attrs: { href: "javascript:void(0)" } }, [
-                _c("i", {
-                  staticClass: "fa fa-download",
-                  on: { click: _vm.boxAnalyticsFacebookPage }
-                })
-              ])
-            : _vm._e()
+          _c("a", { attrs: { href: "javascript:void(0)" } }, [
+            _c("i", {
+              staticClass: "fa fa-download",
+              on: { click: _vm.boxAnalyticsFacebookPage }
+            })
+          ])
         ],
         1
       ),
@@ -22119,7 +22117,7 @@ var render = function() {
                     _vm.chartLoadSuccess
                       ? _c("evolution-of-interactions-chart", {
                           attrs: {
-                            stacked: true,
+                            options: _vm.evolutionOfInteractionOption,
                             title: "Evolution of Interactions",
                             boxStyle: "box-info",
                             source: _vm.evolutionOfInteractions
@@ -22322,6 +22320,32 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.facebookGrowthFans.map(function (item) {
                 return item.facebook_fans;
             });
+        },
+        evolutionOfInteractionOption: function evolutionOfInteractionOption() {
+            var barChartOptions = {
+                scales: {
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            callback: function callback(value, index, values) {
+                                return numeral(value).format('0,0');
+                            }
+                        }
+                    }]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function label(tooltipItem, chart) {
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return numeral(tooltipItem.yLabel).format('0,0');
+                        }
+                    }
+                }
+            };
+            return barChartOptions;
         },
         evolutionOfInteractions: function evolutionOfInteractions() {
             var data = {
@@ -23480,6 +23504,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             };
             return data;
         },
+        totalMediaPerDayOption: function totalMediaPerDayOption() {
+            var barChartOptions = {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1
+                        }
+                    }]
+                }
+            };
+            return barChartOptions;
+        },
         totalMediaPerDayLabels: function totalMediaPerDayLabels() {
             return this.instagramTotalMediaPerDay.map(function (item) {
                 return item.date;
@@ -23664,7 +23701,7 @@ var render = function() {
                 _vm.totalMediaPerDayLoadSuccess
                   ? _c("total-posts-per-day-chart", {
                       attrs: {
-                        stacked: false,
+                        options: _vm.totalMediaPerDayOption,
                         title: "Number of Profile Posts",
                         boxStyle: "box-success",
                         source: _vm.totalMediaPerDay
@@ -23995,39 +24032,16 @@ if (false) {
         source: Object,
         title: String,
         boxStyle: String,
-        stacked: Boolean
+        options: Object
     },
     mounted: function mounted() {
         var _vue = this;
         var barChartCanvas = $('#barChart').get(0).getContext('2d');
-        var barChartOptions = {
-            scales: {
-                xAxes: [{
-                    stacked: _vue.stacked
-                }],
-                yAxes: [{
-                    stacked: _vue.stacked,
-                    ticks: {
-                        callback: function callback(value, index, values) {
-                            return numeral(value).format('0,0');
-                        }
-                    }
-                }]
-            },
-            tooltips: {
-                callbacks: {
-                    label: function label(tooltipItem, chart) {
-                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                        return numeral(tooltipItem.yLabel).format('0,0');
-                    }
-                }
-            }
-        };
-
+        var _options = Object.assign({}, this.options);
         new Chart(barChartCanvas, {
             type: "bar",
             data: _vue.source,
-            options: barChartOptions
+            options: _options
         });
     }
 });
