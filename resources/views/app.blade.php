@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>Bot Social</title>
+        <title>iMedia KOLs Network</title>
          <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Google Font -->
@@ -244,14 +244,14 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Ken.Deveio</span>
+                            <span class="hidden-xs">Ken.imediavn</span>
                             </a>
                             <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
                                 <img src="/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                                 <p>
-                                Ken.Deveio - Web Developer
+                                Ken.imediavn - Web Developer
                                 <small>Member since Nov. 2012</small>
                                 </p>
                             </li>
