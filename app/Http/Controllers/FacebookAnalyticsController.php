@@ -108,7 +108,6 @@ class FacebookAnalyticsController extends Controller
             $user->access_token, $facebookFanpageUserName, $postsStorage, $effectiveDate);
         // get page likes
         $analyticsData['total_page_likes'] = $this->facebookHelper->getPageLikes($laravelFacebookSDK, $user->access_token, $facebookFanpageUserName);
-
         $facebookFan = FacebookFan::where(
             [
                 ['facebook_analytics_id', '=', $facebookAnalytics->id],
@@ -134,9 +133,7 @@ class FacebookAnalyticsController extends Controller
         if (isset($picture['cover']['source'])) {
             $facebookAnalytics->account_picture_cover = $picture['cover']['source'];
         }
-
         FacebookPost::insert($postsStorage);
-
         $analyticsPostObject = FacebookPost::where('facebook_analytics_id', '=', $facebookAnalytics->id)
             ->select(\DB::raw('count(facebook_post_id) as total, sum(reaction_like) as likes, sum(reaction_haha) as hahas, sum(reaction_wow) as wows,
             sum(reaction_love) as loves, sum(reaction_sad) as sads, sum(reaction_angry) as angries, sum(reaction_thankful) as thankfuls, sum(comments) as comments, sum(shares) as shares'))->first();
@@ -173,6 +170,14 @@ class FacebookAnalyticsController extends Controller
 
         $pageOverview = FacebookAnalytics::where('account_username', '=', $request->username)->first();
         $growthFans = FacebookFan::where('facebook_analytics_id', '=', $pageOverview->id)->select('facebook_fans', 'date_sync')->get();
+
+        $facebookDistributionOfPostType = FacebookPost::where(
+            'facebook_analytics_id', '=', $pageOverview->id
+        )->select(\DB::raw("count(facebook_post_id) as value, facebook_posts.type"))->groupBy('facebook_posts.type')->get();
+
+        $facebookDistributionOfInteraction = FacebookPost::where('facebook_analytics_id', '=', $pageOverview->id)
+        ->select(\DB::raw("sum(reaction_like + reaction_wow + reaction_angry + reaction_haha + reaction_wow + reaction_sad) as reactions, sum(shares) as shares, sum(comments) as comments"))
+        ->first();
 
         $bestPost = FacebookPost::where(
             'facebook_analytics_id','=', $pageOverview->id)
@@ -222,7 +227,9 @@ class FacebookAnalyticsController extends Controller
                 'growthFans' => $growthFans,
                 'evolutionOfInteractions' => $evolutionOfInteractions,
                 'bestPost' => $bestPost,
-                'facebookLastPosts' => $lastPostsResults
+                'facebookLastPosts' => $lastPostsResults,
+                'facebookDistributionOfInteraction' => $facebookDistributionOfInteraction,
+                'facebookDistributionOfPostType' => $facebookDistributionOfPostType
             ]
         ];
         return response()->json($result, 200);

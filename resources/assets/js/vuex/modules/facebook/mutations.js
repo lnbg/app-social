@@ -8,6 +8,8 @@ const GET_FACEBOOK_PAGE_ANALYTICS = (state, data) => {
     state.facebookLastPosts = data.analytics.facebookLastPosts
     state.facebookGrowthFans = data.analytics.growthFans
     state.facebookEvolutionOfInteractions = data.analytics.evolutionOfInteractions
+    state.facebookDistributionOfPostType = data.analytics.facebookDistributionOfPostType
+    Object.assign(state.facebookDistributionOfInteraction, data.analytics.facebookDistributionOfInteraction)
 }
 
 const RESET_GROWTH_FANS = (state) => {

@@ -1,5 +1,5 @@
 <template>
-    <div class="pie-chart" style="padding-left: 5px; padding-right: 5px;">
+    <div class="doughnut-chart" style="padding-left: 5px; padding-right: 5px;">
         <div class="box" :class="boxStyle">
             <div class="box-header with-border">
                 <h3 class="box-title">{{ title }}</h3>
@@ -12,7 +12,7 @@
             </div>
             <div class="box-body">
                 <div class="chart">
-                    <canvas id="pieChart" style="height:250px"></canvas>
+                    <canvas id="doughnutChart" style="height:250px"></canvas>
                 </div>
             </div>
         <!-- /.box-body -->
@@ -31,9 +31,9 @@ export default {
         //-------------
         //- PIE CHART -
         //--------------
-        var pieChartCanvas          = $('#pieChart').get(0).getContext('2d')
-        new Chart(pieChartCanvas , {
-            type: "pie",
+        var doughnutChartCanvas          = $('#doughnutChart').get(0).getContext('2d')
+        new Chart(doughnutChartCanvas , {
+            type: "doughnut",
             data: _vue.source, 
         });
     }

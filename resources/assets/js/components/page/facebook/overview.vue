@@ -27,6 +27,12 @@
                     <section id="facebook-most-intereactions-post">
                         <facebook-post v-if="chartLoadSuccess" :facebookAnalytics="facebookAnalytics" :post="facebookBestPost"></facebook-post>
                     </section>
+                    <section id="facebook-distribution-post-type">
+                        <distribution-of-post-type-chart v-if="chartLoadSuccess" :title="'Distribution of post type'" :source="distributionOfPostType"></distribution-of-post-type-chart>
+                    </section>
+                    <section id="facebook-distribution-reactions">
+                        <distribution-of-interaction-chart v-if="chartLoadSuccess" :title="'Distribution of reactions'" :source="distributionOfInteraction"></distribution-of-interaction-chart>
+                    </section>
                 </div>
                 <div class="overview-panel-right col-md-8">
                     <section id="facebook-posts-analytics">
@@ -76,6 +82,8 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import reactionsBox from '../../global/facebook/reactions_box'
 import growthFansChart from '../../global/area-chart'
 import evolutionOfInteractionsChart from '../../global/bar-chart'
+import distributionPostOfReaction from '../../global/pie-chart'
+import distributionPostOfTypeChart from '../../global/doughnut-chart'
 import facebookPost from '../../global/facebook/facebook_post'
 import facebookPostsTimeLine from '../../global/facebook/posts_timeline'
 
@@ -85,6 +93,8 @@ export default {
         'reactions-box': reactionsBox,
         'growth-fans-chart': growthFansChart,
         'evolution-of-interactions-chart': evolutionOfInteractionsChart,
+        'distribution-of-post-type-chart': distributionPostOfTypeChart,
+        'distribution-of-interaction-chart': distributionPostOfReaction,
         'facebook-post': facebookPost,
         'posts-timeline': facebookPostsTimeLine
     },
@@ -98,7 +108,9 @@ export default {
             'facebookGrowthFans',
             'facebookEvolutionOfInteractions',
             'facebookLastPosts',
-            'facebookBestPost'
+            'facebookBestPost',
+            'facebookDistributionOfPostType',
+            'facebookDistributionOfInteraction'
         ]),
         styleForCoverPicture() {
             return `background: url('${this.facebookAnalytics.account_picture_cover}'); background-size: cover;`;
@@ -187,10 +199,79 @@ export default {
                 return item.shares
             })
         },
+        distributionOfPostType() {
+            var data = {
+                labels: this.distributionOfPostTypeLabels,
+                datasets: [
+                    {
+                        type: 'doughnut',
+                        backgroundColor: [
+                            "rgb(0, 166, 90)",
+                            "rgb(243, 156, 18)",
+                            "rgb(221, 75, 57)",
+                            "rgb(232, 233, 232)",
+                            "rgb(0, 192, 239)"
+                        ],
+                        borderColor: [
+                            "rgb(255,255,255)",
+                            "rgb(255,255,255)",
+                            "rgb(255,255,255)",
+                            "rgb(255,255,255)",
+                            "rgb(255,255,255)"
+                        ],
+                        data: this.distributionOfPostTypeValues
+                    }
+                ]
+            }
+            return data;
+        },
+        distributionOfPostTypeLabels() {
+            return this.facebookDistributionOfPostType.map(function(item) {
+                return item.type
+            })
+        },
+        distributionOfPostTypeValues() {
+            return this.facebookDistributionOfPostType.map(function(item) {
+                return item.value
+            })
+        },
+        distributionOfInteraction() {
+            var data = {
+                labels: this.distributionOfInteractionLabels,
+                datasets: [
+                    {
+                        type: 'pie',
+                        backgroundColor: [
+                            "rgb(0, 166, 90)",
+                            "rgb(243, 156, 18)",
+                            "rgb(221, 75, 57)",
+                        ],
+                        borderColor: [
+                            "rgb(255,255,255)",
+                            "rgb(255,255,255)",
+                            "rgb(255,255,255)",
+                        ],
+                        data: this.distributionOfInteractionValues
+                    }
+                ]
+            }
+            console.log(data);
+            return data;
+        },
+        distributionOfInteractionLabels() {
+            return ['comments', 'shares', 'reactions']
+        },
+        distributionOfInteractionValues() {
+            var data = [
+                    parseInt(this.facebookDistributionOfInteraction.comments),
+                    parseInt(this.facebookDistributionOfInteraction.shares),
+                    parseInt(this.facebookDistributionOfInteraction.reactions)
+                ];
+            return data;
+        },
         chartLoadSuccess() {
             return this.growthFans.labels.length > 0
-        }
-        
+        },
     },
     methods: {
         ...mapActions('facebook', [

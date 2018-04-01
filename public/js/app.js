@@ -17221,6 +17221,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
     },
     facebookGrowthFans: [],
     facebookEvolutionOfInteractions: [],
+    facebookDistributionOfPostType: [],
+    facebookDistributionOfInteraction: {},
     post: {
         facebook_post_id: 0,
         facebook_analytics_id: 0,
@@ -17349,6 +17351,12 @@ var facebookBestPost = function facebookBestPost(state) {
 var facebookLastPosts = function facebookLastPosts(state) {
     return state.facebookLastPosts;
 };
+var facebookDistributionOfPostType = function facebookDistributionOfPostType(state) {
+    return state.facebookDistributionOfPostType;
+};
+var facebookDistributionOfInteraction = function facebookDistributionOfInteraction(state) {
+    return state.facebookDistributionOfInteraction;
+};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     lstFacebookPageAnalytics: lstFacebookPageAnalytics,
@@ -17356,7 +17364,9 @@ var facebookLastPosts = function facebookLastPosts(state) {
     facebookBestPost: facebookBestPost,
     facebookGrowthFans: facebookGrowthFans,
     facebookEvolutionOfInteractions: facebookEvolutionOfInteractions,
-    facebookLastPosts: facebookLastPosts
+    facebookLastPosts: facebookLastPosts,
+    facebookDistributionOfPostType: facebookDistributionOfPostType,
+    facebookDistributionOfInteraction: facebookDistributionOfInteraction
 });
 
 /***/ }),
@@ -17374,6 +17384,8 @@ var GET_FACEBOOK_PAGE_ANALYTICS = function GET_FACEBOOK_PAGE_ANALYTICS(state, da
     state.facebookLastPosts = data.analytics.facebookLastPosts;
     state.facebookGrowthFans = data.analytics.growthFans;
     state.facebookEvolutionOfInteractions = data.analytics.evolutionOfInteractions;
+    state.facebookDistributionOfPostType = data.analytics.facebookDistributionOfPostType;
+    Object.assign(state.facebookDistributionOfInteraction, data.analytics.facebookDistributionOfInteraction);
 };
 
 var RESET_GROWTH_FANS = function RESET_GROWTH_FANS(state) {
@@ -21935,6 +21947,38 @@ var render = function() {
                   : _vm._e()
               ],
               1
+            ),
+            _vm._v(" "),
+            _c(
+              "section",
+              { attrs: { id: "facebook-distribution-post-type" } },
+              [
+                _vm.chartLoadSuccess
+                  ? _c("distribution-of-post-type-chart", {
+                      attrs: {
+                        title: "Distribution of post type",
+                        source: _vm.distributionOfPostType
+                      }
+                    })
+                  : _vm._e()
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "section",
+              { attrs: { id: "facebook-distribution-reactions" } },
+              [
+                _vm.chartLoadSuccess
+                  ? _c("distribution-of-interaction-chart", {
+                      attrs: {
+                        title: "Distribution of reactions",
+                        source: _vm.distributionOfInteraction
+                      }
+                    })
+                  : _vm._e()
+              ],
+              1
             )
           ]),
           _vm._v(" "),
@@ -22130,8 +22174,10 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__global_facebook_reactions_box__ = __webpack_require__(279);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__global_area_chart__ = __webpack_require__(301);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global_bar_chart__ = __webpack_require__(310);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_facebook_facebook_post__ = __webpack_require__(286);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_facebook_posts_timeline__ = __webpack_require__(289);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_pie_chart__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_doughnut_chart__ = __webpack_require__(329);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__global_facebook_facebook_post__ = __webpack_require__(286);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__global_facebook_posts_timeline__ = __webpack_require__(289);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -22207,6 +22253,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
+
 
 
 
@@ -22221,14 +22275,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         'reactions-box': __WEBPACK_IMPORTED_MODULE_1__global_facebook_reactions_box__["a" /* default */],
         'growth-fans-chart': __WEBPACK_IMPORTED_MODULE_2__global_area_chart__["a" /* default */],
         'evolution-of-interactions-chart': __WEBPACK_IMPORTED_MODULE_3__global_bar_chart__["a" /* default */],
-        'facebook-post': __WEBPACK_IMPORTED_MODULE_4__global_facebook_facebook_post__["a" /* default */],
-        'posts-timeline': __WEBPACK_IMPORTED_MODULE_5__global_facebook_posts_timeline__["a" /* default */]
+        'distribution-of-post-type-chart': __WEBPACK_IMPORTED_MODULE_5__global_doughnut_chart__["a" /* default */],
+        'distribution-of-interaction-chart': __WEBPACK_IMPORTED_MODULE_4__global_pie_chart__["a" /* default */],
+        'facebook-post': __WEBPACK_IMPORTED_MODULE_6__global_facebook_facebook_post__["a" /* default */],
+        'posts-timeline': __WEBPACK_IMPORTED_MODULE_7__global_facebook_posts_timeline__["a" /* default */]
     },
     data: function data() {
         return {};
     },
 
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])('facebook', ['facebookAnalytics', 'facebookGrowthFans', 'facebookEvolutionOfInteractions', 'facebookLastPosts', 'facebookBestPost']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])('facebook', ['facebookAnalytics', 'facebookGrowthFans', 'facebookEvolutionOfInteractions', 'facebookLastPosts', 'facebookBestPost', 'facebookDistributionOfPostType', 'facebookDistributionOfInteraction']), {
         styleForCoverPicture: function styleForCoverPicture() {
             return 'background: url(\'' + this.facebookAnalytics.account_picture_cover + '\'); background-size: cover;';
         },
@@ -22308,6 +22364,48 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.facebookEvolutionOfInteractions.map(function (item) {
                 return item.shares;
             });
+        },
+        distributionOfPostType: function distributionOfPostType() {
+            var data = {
+                labels: this.distributionOfPostTypeLabels,
+                datasets: [{
+                    type: 'doughnut',
+                    backgroundColor: ["rgb(0, 166, 90)", "rgb(243, 156, 18)", "rgb(221, 75, 57)", "rgb(232, 233, 232)", "rgb(0, 192, 239)"],
+                    borderColor: ["rgb(255,255,255)", "rgb(255,255,255)", "rgb(255,255,255)", "rgb(255,255,255)", "rgb(255,255,255)"],
+                    data: this.distributionOfPostTypeValues
+                }]
+            };
+            return data;
+        },
+        distributionOfPostTypeLabels: function distributionOfPostTypeLabels() {
+            return this.facebookDistributionOfPostType.map(function (item) {
+                return item.type;
+            });
+        },
+        distributionOfPostTypeValues: function distributionOfPostTypeValues() {
+            return this.facebookDistributionOfPostType.map(function (item) {
+                return item.value;
+            });
+        },
+        distributionOfInteraction: function distributionOfInteraction() {
+            var data = {
+                labels: this.distributionOfInteractionLabels,
+                datasets: [{
+                    type: 'pie',
+                    backgroundColor: ["rgb(0, 166, 90)", "rgb(243, 156, 18)", "rgb(221, 75, 57)"],
+                    borderColor: ["rgb(255,255,255)", "rgb(255,255,255)", "rgb(255,255,255)"],
+                    data: this.distributionOfInteractionValues
+                }]
+            };
+            console.log(data);
+            return data;
+        },
+        distributionOfInteractionLabels: function distributionOfInteractionLabels() {
+            return ['comments', 'shares', 'reactions'];
+        },
+        distributionOfInteractionValues: function distributionOfInteractionValues() {
+            var data = [parseInt(this.facebookDistributionOfInteraction.comments), parseInt(this.facebookDistributionOfInteraction.shares), parseInt(this.facebookDistributionOfInteraction.reactions)];
+            return data;
         },
         chartLoadSuccess: function chartLoadSuccess() {
             return this.growthFans.labels.length > 0;
@@ -23398,7 +23496,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 datasets: [{
                     type: 'pie',
                     backgroundColor: ["rgb(0, 166, 90)", "rgb(243, 156, 18)", "rgb(221, 75, 57)"],
-                    borderColor: ["rgb(0, 166, 90)", "rgb(243, 156, 18)", "rgb(221, 75, 57)"],
+                    borderColor: ["rgb(255, 255, 255)", "rgb(255, 255, 255)", "rgb(255, 255, 255)"],
                     data: this.totalMediaGroupByTypeValues
                 }]
             };
@@ -23414,8 +23512,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 return item.value;
             });
         },
-        chartLoadSuccess: function chartLoadSuccess() {
+        growthFansLoadSuccess: function growthFansLoadSuccess() {
+            return this.growthFansLabels.length > 0;
+        },
+        totalMediaGroupByTypeLoadSuccess: function totalMediaGroupByTypeLoadSuccess() {
             return this.totalMediaGroupByTypeLabels.length > 0;
+        },
+        totalMediaPerDayLoadSuccess: function totalMediaPerDayLoadSuccess() {
+            return this.totalMediaPerDayLabels.length > 0;
         }
     }),
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('instagram', ['resetGrowthFans', 'resetTotalMediaPerDay', 'resetTotalMediaGroupByType'])),
@@ -23518,7 +23622,7 @@ var render = function() {
                 "section",
                 { attrs: { id: "instagram-growth-fans-chart" } },
                 [
-                  _vm.chartLoadSuccess
+                  _vm.growthFansLoadSuccess
                     ? _c("growth-fans-chart", {
                         attrs: {
                           boxStyle: "box-success",
@@ -23537,7 +23641,7 @@ var render = function() {
                 "section",
                 { attrs: { id: "instagram-media-by-type" } },
                 [
-                  _vm.chartLoadSuccess
+                  _vm.totalMediaGroupByTypeLoadSuccess
                     ? _c("media-group-type", {
                         attrs: {
                           boxStyle: "box-success",
@@ -23557,7 +23661,7 @@ var render = function() {
               "section",
               { attrs: { id: "instagram-post-per-day" } },
               [
-                _vm.chartLoadSuccess
+                _vm.totalMediaPerDayLoadSuccess
                   ? _c("total-posts-per-day-chart", {
                       attrs: {
                         stacked: false,
@@ -23787,8 +23891,8 @@ var render = function() {
   return _c(
     "div",
     {
-      staticStyle: { "padding-left": "5px", "padding-right": "5px" },
-      attrs: { id: "area-chart" }
+      staticClass: "area-chart",
+      staticStyle: { "padding-left": "5px", "padding-right": "5px" }
     },
     [
       _c("div", { staticClass: "box", class: _vm.boxStyle }, [
@@ -23996,8 +24100,8 @@ var render = function() {
   return _c(
     "div",
     {
-      staticStyle: { "padding-left": "5px", "padding-right": "5px" },
-      attrs: { id: "bar-chart-stack" }
+      staticClass: "bar-chart-stack",
+      staticStyle: { "padding-left": "5px", "padding-right": "5px" }
     },
     [
       _c("div", { staticClass: "box", class: _vm.boxStyle }, [
@@ -24176,8 +24280,8 @@ var render = function() {
   return _c(
     "div",
     {
-      staticStyle: { "padding-left": "5px", "padding-right": "5px" },
-      attrs: { id: "pie-chart" }
+      staticClass: "pie-chart",
+      staticStyle: { "padding-left": "5px", "padding-right": "5px" }
     },
     [
       _c("div", { staticClass: "box", class: _vm.boxStyle }, [
@@ -24665,6 +24769,186 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 /* harmony default export */ __webpack_exports__["a"] = (Plugin);
 
+
+/***/ }),
+/* 328 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    props: {
+        source: Object,
+        title: String,
+        boxStyle: String
+    },
+    mounted: function mounted() {
+        var _vue = this;
+        //-------------
+        //- PIE CHART -
+        //--------------
+        var doughnutChartCanvas = $('#doughnutChart').get(0).getContext('2d');
+        new Chart(doughnutChartCanvas, {
+            type: "doughnut",
+            data: _vue.source
+        });
+    }
+});
+
+/***/ }),
+/* 329 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_doughnut_chart_vue__ = __webpack_require__(328);
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_5f79b538_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_doughnut_chart_vue__ = __webpack_require__(330);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+var disposed = false
+/* script */
+
+
+/* template */
+
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+
+var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_doughnut_chart_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_5f79b538_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_doughnut_chart_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_5f79b538_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_doughnut_chart_vue__["b" /* staticRenderFns */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/global/doughnut-chart.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5f79b538", Component.options)
+  } else {
+    hotAPI.reload("data-v-5f79b538", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
+
+
+/***/ }),
+/* 330 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "doughnut-chart",
+      staticStyle: { "padding-left": "5px", "padding-right": "5px" }
+    },
+    [
+      _c("div", { staticClass: "box", class: _vm.boxStyle }, [
+        _c("div", { staticClass: "box-header with-border" }, [
+          _c("h3", { staticClass: "box-title" }, [_vm._v(_vm._s(_vm.title))]),
+          _vm._v(" "),
+          _c("div", { staticClass: "box-tools pull-right" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            false
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-box-tool",
+                    attrs: { type: "button", "data-widget": "remove" }
+                  },
+                  [_c("i", { staticClass: "fa fa-times" })]
+                )
+              : _vm._e()
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(1)
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-box-tool",
+        attrs: { type: "button", "data-widget": "collapse" }
+      },
+      [_c("i", { staticClass: "fa fa-minus" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-body" }, [
+      _c("div", { staticClass: "chart" }, [
+        _c("canvas", {
+          staticStyle: { height: "250px" },
+          attrs: { id: "doughnutChart" }
+        })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5f79b538", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
 
 /***/ })
 /******/ ]);

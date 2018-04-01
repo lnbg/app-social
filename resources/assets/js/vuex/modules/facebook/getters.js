@@ -4,6 +4,8 @@ const facebookGrowthFans = (state) => state.facebookGrowthFans
 const facebookEvolutionOfInteractions = (state) => state.facebookEvolutionOfInteractions
 const facebookBestPost = (state) => state.post
 const facebookLastPosts = (state) => state.facebookLastPosts
+const facebookDistributionOfPostType = (state) => state.facebookDistributionOfPostType
+const facebookDistributionOfInteraction = (state) =>state.facebookDistributionOfInteraction
 
 export default {
     lstFacebookPageAnalytics,
@@ -11,5 +13,7 @@ export default {
     facebookBestPost,
     facebookGrowthFans,
     facebookEvolutionOfInteractions,
-    facebookLastPosts
+    facebookLastPosts,
+    facebookDistributionOfPostType,
+    facebookDistributionOfInteraction
 }

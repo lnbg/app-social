@@ -8,18 +8,18 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-xs-12"> 
                         <section id="instagram-growth-fans-chart">
-                            <growth-fans-chart v-if="chartLoadSuccess" :boxStyle="'box-success'" :title="'Growth of Followers'" :source="growthFans"></growth-fans-chart>
+                            <growth-fans-chart v-if="growthFansLoadSuccess" :boxStyle="'box-success'" :title="'Growth of Followers'" :source="growthFans"></growth-fans-chart>
                         </section>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-12"> 
                         <section id="instagram-media-by-type">
-                            <media-group-type v-if="chartLoadSuccess" :boxStyle="'box-success'" :title="'Distribution Of Media Type'" :source="totalMediaGroupByType"></media-group-type>
+                            <media-group-type v-if="totalMediaGroupByTypeLoadSuccess" :boxStyle="'box-success'" :title="'Distribution Of Media Type'" :source="totalMediaGroupByType"></media-group-type>
                         </section>
                     </div>
                 </div>
                 <div class="row">
                     <section id="instagram-post-per-day">
-                        <total-posts-per-day-chart :stacked="false" :title="'Number of Profile Posts'" :boxStyle="'box-success'" v-if="chartLoadSuccess" :source="totalMediaPerDay"></total-posts-per-day-chart>
+                        <total-posts-per-day-chart :stacked="false" :title="'Number of Profile Posts'" :boxStyle="'box-success'" v-if="totalMediaPerDayLoadSuccess" :source="totalMediaPerDay"></total-posts-per-day-chart>
                     </section>
                 </div>
                 <div class="row masonry-grid">
@@ -127,9 +127,9 @@ export default {
                             "rgb(221, 75, 57)"
                         ],
                         borderColor: [
-                            "rgb(0, 166, 90)",
-                            "rgb(243, 156, 18)",
-                            "rgb(221, 75, 57)"
+                            "rgb(255, 255, 255)",
+                            "rgb(255, 255, 255)",
+                            "rgb(255, 255, 255)",
                         ],
                         data: this.totalMediaGroupByTypeValues
                     }
@@ -147,8 +147,14 @@ export default {
                 return item.value
             })
         },
-        chartLoadSuccess() {
-            return this.totalMediaGroupByTypeLabels.length > 0;
+        growthFansLoadSuccess() {
+            return this.growthFansLabels.length > 0
+        },
+        totalMediaGroupByTypeLoadSuccess() {
+            return this.totalMediaGroupByTypeLabels.length > 0
+        },
+        totalMediaPerDayLoadSuccess() {
+            return this.totalMediaPerDayLabels.length > 0
         }
     },
     methods: {

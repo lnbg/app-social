@@ -26,6 +26,8 @@ export default {
     },
     facebookGrowthFans: [],
     facebookEvolutionOfInteractions: [],
+    facebookDistributionOfPostType: [],
+    facebookDistributionOfInteraction: {},
     post: {
         facebook_post_id: 0,
         facebook_analytics_id: 0,

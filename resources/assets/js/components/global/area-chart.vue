@@ -1,5 +1,5 @@
 <template>
-    <div id="area-chart" style="padding-left: 5px; padding-right: 5px;">
+    <div class="area-chart" style="padding-left: 5px; padding-right: 5px;">
         <div class="box" :class="boxStyle">
             <div class="box-header with-border">
                 <h3 class="box-title">{{ title }}</h3>
