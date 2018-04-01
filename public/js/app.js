@@ -20804,7 +20804,7 @@ var staticRenderFns = [
     return _c("h3", { staticClass: "box-title" }, [
       _vm._v("FACBOOK FANPAGE "),
       _c("i", { staticStyle: { "font-size": "10px" } }, [
-        _vm._v("(analytics facebook for last 3 months)")
+        _vm._v("(analytics facebook for 1 year)")
       ])
     ])
   }

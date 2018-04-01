@@ -12,7 +12,7 @@
         </div>
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">FACBOOK FANPAGE <i style="font-size: 10px">(analytics facebook for last 3 months)</i></h3>
+                <h3 class="box-title">FACBOOK FANPAGE <i style="font-size: 10px">(analytics facebook for 1 year)</i></h3>
                 <div class="box-tools">
                     <a class="btn btn-box-tool" @click="analyticsAll" title="Fetching"><i class="fa fa-download"></i> Analytics</a>
                     <a class="btn btn-box-tool" @click="orderByFollowers" title="Order by followers"><i class="fa fa-sort"></i> Order by Followers</a>
