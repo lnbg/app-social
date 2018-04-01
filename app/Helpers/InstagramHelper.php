@@ -170,6 +170,30 @@ class InstagramHelper {
      */
     public function initAnalyticsInstagramMediaByID($id) {
         $instagram = InstagramAnalytics::find($id);
+        $instagramInfo = $this->getInstagramInfoViaUsername($instagram->user_name);
+        $instagram->followers_count = $instagramInfo['followers_count'];
+        $instagram->picture = $instagramInfo['picture'];
+        $instagram->follows_count = $instagramInfo['follows_count'];
+        $instagram->media_counts = $instagramInfo['media_counts'];
+        $instagram->biography = $instagramInfo['biography'];
+        $instagram->save();
+
+        $existInstagramFollowerInday = InstagramFollower::where('instagram_analytics_id', '=', $id)
+            ->where('date_sync', '=', date('Y-m-d'))->first();
+
+        if (isset($existInstagramFollowerInday)) {
+            $existInstagramFollowerInday->instagram_followers = $instagramInfo['followers_count'];
+            $existInstagramFollowerInday->updated_at = date('Y-m-d H:s:i');
+            $existInstagramFollowerInday->save();
+        } else {
+            InstagramFollower::insert([
+                'instagram_analytics_id' => $id,
+                'instagram_followers' => $instagramInfo['followers_count'],
+                'date_sync' => date('Y-m-d'),
+                'created_at' => date('Y-m-d H:s:i'),
+                'updated_at' => date('Y-m-d H:s:i'),
+            ]);
+        }
         $allMedia = $this->instagramScrapper->getMedias($instagram->user_name, 100);
         foreach ($allMedia as $media) {
             $_media = $this->instagramCrawler->getMedia($media->getShortCode());
