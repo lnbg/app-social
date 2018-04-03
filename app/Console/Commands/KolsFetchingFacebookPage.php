@@ -68,14 +68,14 @@ class KolsFetchingFacebookPage extends Command
         $user = User::first();
         $accessToken = $user->access_token;
         foreach ($facebookAnalytics as $page) {
-            $now = date('Y-m-d');
-            $effectiveDate = date('Y-m-d', strtotime($now . "-1 years"));
-            FacebookPost::where('facebook_analytics_id', '=', $page->id)
-                            ->where('facebook_created_at', '<', $effectiveDate)->delete();   
-            $this->line("Update all old post of page: " . $page->account_name);
-            $this->facebookHelper->facebookFanpageUpdateEachPostByAnalyticsID($this->laravelFacebookSDK, $user->access_token, $page->id);
-            $this->line("Fetching new posts of page: " . $page->account_name);
             try {
+                $now = date('Y-m-d');
+                $effectiveDate = date('Y-m-d', strtotime($now . "-1 years"));
+                FacebookPost::where('facebook_analytics_id', '=', $page->id)
+                                ->where('facebook_created_at', '<', $effectiveDate)->delete();   
+                $this->line("Update all old post of page: " . $page->account_name);
+                $this->facebookHelper->facebookFanpageUpdateEachPostByAnalyticsID($this->laravelFacebookSDK, $user->access_token, $page->id);
+                $this->line("Fetching new posts of page: " . $page->account_name);
                 $result = $this->analyticsNewPostFacebookPage($this->laravelFacebookSDK, $accessToken, $page->id);
                 $this->line("page: " . $page->account_name . " done!");
             } catch (\Exception $ex) {
