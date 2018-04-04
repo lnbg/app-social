@@ -37,7 +37,7 @@
                                     <distribution-tags :idWrapper="'distributionOfTagsChart'" v-if="distributionOfTagsLoadSuccess" :boxStyle="'box-warning'" :title="'Top 5 HashTags'" :source="distributionOfTags"></distribution-tags>
                                 </section>
                             </div>  
-                            <div class="col-md-6 col-sm-6 col-xs-12" style="height: 300px; overflow: scroll;">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
                                 <section id="instagram-popular-hastags">
                                     <div class="box">
                                         <div class="box-header with-border">
@@ -49,7 +49,7 @@
                                                 <button v-if="false" type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                                             </div>
                                         </div>
-                                        <div class="box-body">
+                                        <div class="box-body" style="height: 300px; overflow: scroll;">
                                             <table id="popularHashtags" class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>

@@ -4969,43 +4969,43 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "col-md-6 col-sm-6 col-xs-12",
-                    staticStyle: { height: "300px", overflow: "scroll" }
-                  },
-                  [
-                    _c(
-                      "section",
-                      { attrs: { id: "instagram-popular-hastags" } },
-                      [
-                        _c("div", { staticClass: "box" }, [
-                          _c("div", { staticClass: "box-header with-border" }, [
-                            _c("h3", { staticClass: "box-title" }, [
-                              _vm._v("Popular Hashtags")
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "box-tools pull-right" }, [
-                              _vm._m(0),
-                              _vm._v(" "),
-                              false
-                                ? _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-box-tool",
-                                      attrs: {
-                                        type: "button",
-                                        "data-widget": "remove"
-                                      }
-                                    },
-                                    [_c("i", { staticClass: "fa fa-times" })]
-                                  )
-                                : _vm._e()
-                            ])
+                _c("div", { staticClass: "col-md-6 col-sm-6 col-xs-12" }, [
+                  _c(
+                    "section",
+                    { attrs: { id: "instagram-popular-hastags" } },
+                    [
+                      _c("div", { staticClass: "box" }, [
+                        _c("div", { staticClass: "box-header with-border" }, [
+                          _c("h3", { staticClass: "box-title" }, [
+                            _vm._v("Popular Hashtags")
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "box-body" }, [
+                          _c("div", { staticClass: "box-tools pull-right" }, [
+                            _vm._m(0),
+                            _vm._v(" "),
+                            false
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-box-tool",
+                                    attrs: {
+                                      type: "button",
+                                      "data-widget": "remove"
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "fa fa-times" })]
+                                )
+                              : _vm._e()
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "box-body",
+                            staticStyle: { height: "300px", overflow: "scroll" }
+                          },
+                          [
                             _c(
                               "table",
                               {
@@ -5037,12 +5037,12 @@ var render = function() {
                                 )
                               ]
                             )
-                          ])
-                        ])
-                      ]
-                    )
-                  ]
-                )
+                          ]
+                        )
+                      ])
+                    ]
+                  )
+                ])
               ])
             ])
           ]),
