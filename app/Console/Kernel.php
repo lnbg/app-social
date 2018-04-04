@@ -31,10 +31,9 @@ class Kernel extends ConsoleKernel
                 ->dailyAt('01:00')
                 ->sendOutputTo($file);
 
-        // $schedule->command('kols:facebook_page')
-        //         ->timezone('Asia/Saigon')
-        //         ->dailyAt('02:00')
-        //         ->sendOutputTo($file);
+        $schedule->command('queue:work --tried=3 --timeout=3600')
+                ->timezone('Asia/Saigon')
+                ->dailyAt('02:00');
     }
 
     /**

@@ -79,16 +79,21 @@ class FacebookHelper {
     {
         $allPosts = FacebookPost::where('facebook_analytics_id', '=', $facebookAnalyticsID)->get();
         foreach ($allPosts as  $oldPost)  {
-            $defaultURI = '/' . $oldPost->facebook_post_id;
-            $postFromAPI = $laravelFacebookSDK->sendRequest('GET', $defaultURI, 
-                ['fields' => 'type, shares.summary(true), comments.summary(true), likes.summary(true), reactions.type(LOVE).limit(0).summary(1).as(loves), 
-                reactions.type(HAHA).limit(0).summary(1).as(hahas), reactions.type(WOW).limit(0).summary(1).as(wows),
-                reactions.type(THANKFUL).limit(0).summary(1).as(thankfuls),
-                reactions.type(SAD).limit(0).summary(1).as(sads), reactions.type(ANGRY).limit(0).summary(1).as(angries)'], $accessToken);
-            // get post from above request
-            $postFromAPI = $postFromAPI->getGraphNode();
-            // get meta data of posts
-            self::getMetaDataEachPostOfFanpage($laravelFacebookSDK, $postFromAPI, $oldPost);
+            try {
+                $defaultURI = '/' . $oldPost->facebook_post_id;
+                $postFromAPI = $laravelFacebookSDK->sendRequest('GET', $defaultURI, 
+                    ['fields' => 'type, shares.summary(true), comments.summary(true), likes.summary(true), reactions.type(LOVE).limit(0).summary(1).as(loves), 
+                    reactions.type(HAHA).limit(0).summary(1).as(hahas), reactions.type(WOW).limit(0).summary(1).as(wows),
+                    reactions.type(THANKFUL).limit(0).summary(1).as(thankfuls),
+                    reactions.type(SAD).limit(0).summary(1).as(sads), reactions.type(ANGRY).limit(0).summary(1).as(angries)'], $accessToken);
+                // get post from above request
+                $postFromAPI = $postFromAPI->getGraphNode();
+                // get meta data of posts
+                self::getMetaDataEachPostOfFanpage($laravelFacebookSDK, $postFromAPI, $oldPost);
+            } catch (Facebook\Exceptions\FacebookSDKException $ex) {
+                \Log::error($ex->getMessage());
+                continue;
+            }
         }
     }
 
