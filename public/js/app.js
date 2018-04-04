@@ -4813,7 +4813,7 @@ var render = function() {
                             value: _vm.instagramTotalInteractionComments,
                             bg: "bg-red",
                             title: "Comments",
-                            icon: "fa-heart"
+                            icon: "fa-comments"
                           }
                         })
                       : _vm._e()

@@ -12,7 +12,7 @@
                                 <box-interaction v-if="instagramTotalInteractionLoadSuccess" class="box-interaction-ele pull-right" :value="instagramTotalInteractionLikes" :bg="'bg-green'" :title="'Likes'" :icon="'fa-thumbs-o-up'"></box-interaction>
                             </div>
                             <div class="col-md-6">
-                                <box-interaction v-if="instagramTotalInteractionLoadSuccess" class="box-interaction-ele pull-left" :value="instagramTotalInteractionComments" :bg="'bg-red'" :title="'Comments'" :icon="'fa-heart'"></box-interaction>
+                                <box-interaction v-if="instagramTotalInteractionLoadSuccess" class="box-interaction-ele pull-left" :value="instagramTotalInteractionComments" :bg="'bg-red'" :title="'Comments'" :icon="'fa-comments'"></box-interaction>
                             </div>
                         </div>
                     </section>
