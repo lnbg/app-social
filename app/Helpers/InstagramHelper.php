@@ -99,6 +99,7 @@ class InstagramHelper {
                 $_media = $this->instagramCrawler->getMedia($media->getShortCode());
                 $media->likes = $_media->getLikesCount();
                 $media->comments = $_media->getCommentsCount();
+                $media->media_picture = $_media->getUrl();
                 $media->save();
             }
             catch (\Exception $e) {
