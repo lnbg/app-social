@@ -234,7 +234,7 @@ export default {
                     {
                         type                : 'bar',
                         label               : 'Likes',
-                        backgroundColor     : 'rgb(240, 82, 103)',
+                        backgroundColor     : 'rgb(243, 156, 17)',
                         data: this.evolutionOfInteractionsReactionsValues
                     },
                     {

@@ -3084,7 +3084,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 datasets: [{
                     type: 'bar',
                     label: 'Likes',
-                    backgroundColor: 'rgb(240, 82, 103)',
+                    backgroundColor: 'rgb(243, 156, 17)',
                     data: this.evolutionOfInteractionsReactionsValues
                 }, {
                     type: 'bar',
