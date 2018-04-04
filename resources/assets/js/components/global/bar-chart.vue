@@ -1,5 +1,5 @@
 <template>
-    <div class="bar-chart-stack" style="padding-left: 5px; padding-right: 5px;">
+    <div class="bar-chart" style="padding-left: 5px; padding-right: 5px;">
         <div class="box" :class="boxStyle">
             <div class="box-header with-border">
                 <h3 class="box-title">{{ title }}</h3>
@@ -12,7 +12,7 @@
             </div>
             <div class="box-body">
                 <div class="chart">
-                    <canvas id="barChart" style="height:250px"></canvas>
+                    <canvas :id="idWrapper" style="height:250px"></canvas>
                 </div>
             </div>
         <!-- /.box-body -->
@@ -25,11 +25,16 @@ export default {
         source: Object,
         title: String,
         boxStyle: String,
-        options: Object
+        options: Object,
+        idWrapper: {
+            default: "barChart",
+            type: String
+        }
     },
     mounted() {
         var _vue = this;
-        var barChartCanvas                   = $('#barChart').get(0).getContext('2d')
+        var _idWrapper = "#" + this.idWrapper;
+        var barChartCanvas                   = $(_idWrapper).get(0).getContext('2d')
         var _options = Object.assign({}, this.options)
         new Chart(barChartCanvas , {
             type: "bar",

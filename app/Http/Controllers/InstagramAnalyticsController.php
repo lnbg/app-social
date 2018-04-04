@@ -39,7 +39,7 @@ class InstagramAnalyticsController extends Controller
     public function getInstagramProfileByInstagramAnalyticsID(Request $request)
     {
         $now = date('Y-m-d');
-        $since = date('Y-m-d', strtotime($now . "-1 months"));
+        $since = date('Y-m-d', strtotime($now . "-2 months"));
         
         $instagramProfile = InstagramAnalytics::where('user_name', '=', $request->username)->first();
         $growthFans = InstagramFollower::where('instagram_analytics_id', '=', $instagramProfile->id)->select('instagram_followers', 'date_sync')->get();
@@ -50,6 +50,15 @@ class InstagramAnalyticsController extends Controller
 
         $instagramTotalMediaGroupByType = InstagramMedia::where('instagram_analytics_id', '=', $instagramProfile->id)
             ->select(\DB::raw('media_type, count(media_id) as value'))->groupBy('media_type')->get();
+
+        $instagramTotalInteraction = InstagramMedia::where('instagram_analytics_id', '=', $instagramProfile->id)
+            ->select(\DB::raw('sum(likes) as likes, sum(comments) as comments'))->first();
+
+        $instagramEvolutionOfInteractions = InstagramMedia::where('instagram_analytics_id', '=', $instagramProfile->id)
+            ->where('instagram_created_at', '>=', $since)
+            ->select(\DB::raw("sum(likes) as likes, sum(comments) as comments, date_format(instagram_created_at, '%Y-%m-%d') as date"))
+            ->groupBy(\DB::raw("date_format(instagram_created_at, '%Y-%m-%d')"))->get();
+        
             
         $instagramLastMedias = InstagramMedia::where(
             'instagram_analytics_id','=', $instagramProfile->id)
@@ -60,7 +69,9 @@ class InstagramAnalyticsController extends Controller
                 'growthFans' => $growthFans,
                 'instagramTotalMediaPerDay' => $instagramTotalMediaPerDay,
                 'instagramTotalMediaGroupByType' => $instagramTotalMediaGroupByType,
-                'instagramLastMedias' => $instagramLastMedias
+                'instagramLastMedias' => $instagramLastMedias,
+                'instagramTotalInteraction' => $instagramTotalInteraction,
+                'instagramEvolutionOfInteractions' => $instagramEvolutionOfInteractions
             ]
         ];
         return response()->json($data, 200);

@@ -35,7 +35,6 @@ class CreateTableFacebookAnalytics extends Migration
             $table->integer('account_type')->nullable()->default(1);
             $table->datetime('account_created_date')->nullable();
             $table->integer('total_page_posts')->nullable()->default(0);
-            $table->integer('total_page_followers')->nullable()->default(0);
             $table->integer('total_page_likes')->nullable()->default(0);
             $table->integer('total_posts_likes')->nullable()->default(0);
             $table->integer('total_posts_shares')->nullable()->default(0);

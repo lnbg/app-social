@@ -27,3 +27,4 @@ Route::post('/instagram/create-new-instagram-profile', 'InstagramAnalyticsContro
 // Debug
 Route::get('/debug', 'FacebookAnalyticsController@debug');
 Route::get('/instagram/debug', 'InstagramAnalyticsController@debug');
+Route::get('/facebook/reload-queue', 'FacebookAnalyticsController@reloadQueue');

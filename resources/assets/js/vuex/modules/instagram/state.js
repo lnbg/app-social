@@ -32,4 +32,9 @@ export default {
     instagramTotalMediaPerDay: [],
     instagramTotalMediaGroupByType: [],
     instagramLastMedias: [],
+    instagramTotalInteraction: {
+        comments: String.empty,
+        likes: String.empty
+    },
+    instagramEvolutionOfInteractions: []
 }

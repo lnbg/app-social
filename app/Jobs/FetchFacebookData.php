@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Jobs;
 
-use Illuminate\Console\Command;
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 use App\Models\User;
 use App\Models\FacebookAnalytics;
@@ -14,74 +18,48 @@ use Goutte\Client;
 use GuzzleHttp\Client as Client2;
 use App\Helpers\FacebookHelper;
 
-class KolsFetchingFacebookPage extends Command
+class FetchFacebookData implements ShouldQueue
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'kols:facebook_page';
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Fetching Facebook Page';
 
-    /**
-     * LaravelFacebookSDK
-     *
-     * @var LaravelFacebookSDK
-     */
-    protected $laravelFacebookSDK;
-    
-    /**
-     * FacebookHelper
-     *
-     * @var FacebookHelper
-     */
+    protected $facebook;
+    protected $accessToken;
     protected $facebookHelper;
-
+    protected $laravelFacebookSDK;
     /**
-     * Create a new command instance.
+     * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(LaravelFacebookSDK $laravelFacebookSDK,FacebookHelper $facebookHelper)
+    public function __construct($facebook, $accessToken)
     {
-        parent::__construct();
-        $this->laravelFacebookSDK = $laravelFacebookSDK;
-        $this->facebookHelper = $facebookHelper;
+        $this->facebook = $facebook;
+        $this->accessToken = $accessToken;
+        $this->facebookHelper = new FacebookHelper();
     }
 
     /**
-     * Execute the console command.
+     * Execute the job.
      *
-     * @return mixed
+     * @return void
      */
-    public function handle()
+    public function handle(LaravelFacebookSDK $laravelFacebookSDK)
     {
-        $facebookAnalytics = FacebookAnalytics::where('account_type', '=', 1)->get();
-        $this->line("fetching facebook page data: " . date('Y-m-d'));
-        $user = User::first();
-        $accessToken = $user->access_token;
-        foreach ($facebookAnalytics as $page) {
-            try {
-                $now = date('Y-m-d');
-                $effectiveDate = date('Y-m-d', strtotime($now . "-1 years"));
-                FacebookPost::where('facebook_analytics_id', '=', $page->id)
-                                ->where('facebook_created_at', '<', $effectiveDate)->delete();   
-                $this->line("Update all old post of page: " . $page->account_name);
-                $this->facebookHelper->facebookFanpageUpdateEachPostByAnalyticsID($this->laravelFacebookSDK, $user->access_token, $page->id);
-                $this->line("Fetching new posts of page: " . $page->account_name);
-                $result = $this->analyticsNewPostFacebookPage($this->laravelFacebookSDK, $accessToken, $page->id);
-                $this->line("page: " . $page->account_name . " done!");
-            } catch (\Exception $ex) {
-                $this->line("page: " . $page->account_name . " error!");
-                $this->line($ex);
-            }
+        $this->laravelFacebookSDK = $laravelFacebookSDK;
+        try {
+            $now = date('Y-m-d');
+            $effectiveDate = date('Y-m-d', strtotime($now . "-1 years"));
+            FacebookPost::where('facebook_analytics_id', '=', $this->facebook->id)
+                            ->where('facebook_created_at', '<', $effectiveDate)->delete();   
+            \Log::info("Update all old post of page: " . $this->facebook->account_name);
+            $this->facebookHelper->facebookFanpageUpdateEachPostByAnalyticsID($this->laravelFacebookSDK, $this->accessToken, $this->facebook->id);
+            \Log::info("Fetching new posts of page: " . $this->facebook->account_name);
+            $result = $this->analyticsNewPostFacebookPage($this->laravelFacebookSDK, $this->accessToken, $this->facebook->id);
+            \Log::info("page: " . $this->facebook->account_name . " done!");
+        } catch (\Exception $ex) {
+            \Log::error("page: " . $this->facebook->account_name . " error!");
+            \Log::errore($ex);
         }
     }
 
@@ -115,11 +93,11 @@ class KolsFetchingFacebookPage extends Command
             'total_posts_comments' => 0,
             'total_posts_thankfuls' => 0
         ];
-        // get followers from graph api
-        $client = new Client();
-        $crawler = $client->request('GET', 'https://www.facebook.com/' . $facebookFanpageUserName);
-        $nodeFollowers = $crawler->filter('div._4bl9')->eq(2)->extract(array('_text', 'class', 'href'));
-        $analyticsData['total_page_followers'] = intval(preg_replace( '/[^0-9]/', '', $nodeFollowers[0][0]));
+        // // get followers from graph api
+        // $client = new Client();
+        // $crawler = $client->request('GET', 'https://www.facebook.com/' . $facebookFanpageUserName);
+        // $nodeFollowers = $crawler->filter('div._4bl9')->eq(2)->extract(array('_text', 'class', 'href'));
+        // $analyticsData['total_page_followers'] = intval(preg_replace( '/[^0-9]/', '', $nodeFollowers[0][0]));
         // get diff days when analytics
         $dteNow = new DateTime($now);
         $dteEffective = new DateTime($effectiveDate);
@@ -159,7 +137,6 @@ class KolsFetchingFacebookPage extends Command
             ->select(\DB::raw('count(facebook_post_id) as total, sum(reaction_like) as likes, sum(reaction_haha) as hahas, sum(reaction_wow) as wows,
             sum(reaction_love) as loves, sum(reaction_sad) as sads, sum(reaction_angry) as angries, sum(reaction_thankful) as thankfuls, sum(comments) as comments, sum(shares) as shares'))->first();
         $facebookAnalytics->total_page_likes = $analyticsData['total_page_likes'];
-        $facebookAnalytics->total_page_followers = $analyticsData['total_page_followers'];
         $facebookAnalytics->total_posts = $analyticsPostObject->total;
         $facebookAnalytics->total_posts_shares = $analyticsPostObject->shares;
         $facebookAnalytics->total_posts_comments = $analyticsPostObject->comments;

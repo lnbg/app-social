@@ -6,6 +6,18 @@
             </div>
             <div class="instagram-analytic-content row">
                 <div class="row">
+                    <section id="box-interactions">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <box-interaction v-if="instagramTotalInteractionLoadSuccess" class="box-interaction-ele pull-right" :value="instagramTotalInteractionLikes" :bg="'bg-green'" :title="'Likes'" :icon="'fa-thumbs-o-up'"></box-interaction>
+                            </div>
+                            <div class="col-md-6">
+                                <box-interaction v-if="instagramTotalInteractionLoadSuccess" class="box-interaction-ele pull-left" :value="instagramTotalInteractionComments" :bg="'bg-red'" :title="'Comments'" :icon="'fa-heart'"></box-interaction>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="row">
                     <div class="col-md-6 col-sm-6 col-xs-12"> 
                         <section id="instagram-growth-fans-chart">
                             <growth-fans-chart v-if="growthFansLoadSuccess" :boxStyle="'box-success'" :title="'Growth of Followers'" :source="growthFans"></growth-fans-chart>
@@ -19,7 +31,12 @@
                 </div>
                 <div class="row">
                     <section id="instagram-post-per-day">
-                        <total-posts-per-day-chart :options="totalMediaPerDayOption" :title="'Number of Profile Posts'" :boxStyle="'box-success'" v-if="totalMediaPerDayLoadSuccess" :source="totalMediaPerDay"></total-posts-per-day-chart>
+                        <total-posts-per-day-chart :idWrapper="'totalPostPerDay'" :options="totalMediaPerDayOption" :title="'Number of Profile Posts'" :boxStyle="'box-success'" v-if="totalMediaPerDayLoadSuccess" :source="totalMediaPerDay"></total-posts-per-day-chart>
+                    </section>
+                </div>
+                <div class="row">
+                    <section id="instagram-interaction--per-day">
+                        <evolution-of-interactions-chart :idWrapper="'evolutionOfInteractionBarChartStacked'" :options="evolutionOfInteractionOption" :title="'Evolution Of Interactions'" :boxStyle="'box-info'" v-if="evolutionOfInteractionsLoadSuccess" :source="evolutionOfInteractions"></evolution-of-interactions-chart>
                     </section>
                 </div>
                 <div class="row masonry-grid">
@@ -38,10 +55,12 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 import BoxInstagramProfile from '../../global/instagram/box_profile'
 import BoxInstagramMedia from '../../global/instagram/instagram_post'
+import BoxInteraction from '../../global/instagram/box_interaction'
+
 import growthFansChart from '../../global/area-chart'
 import totalPostsPerDay from '../../global/bar-chart'
+import evolutionOfInteractionChart from '../../global/bar-chart'
 import totalMediaGroupByType from '../../global/pie-chart'
-
 
 export default {
     name: 'Page_Instagram__Overview',
@@ -50,7 +69,9 @@ export default {
         'box-instagram-media': BoxInstagramMedia,
         'growth-fans-chart': growthFansChart,
         'total-posts-per-day-chart': totalPostsPerDay,
-        'media-group-type': totalMediaGroupByType
+        'media-group-type': totalMediaGroupByType,
+        'box-interaction': BoxInteraction,
+        'evolution-of-interactions-chart': evolutionOfInteractionChart
     },
     data() {
         return {    
@@ -62,7 +83,9 @@ export default {
             'instagramGrowthFans',
             'instagramTotalMediaPerDay',
             'instagramTotalMediaGroupByType',
-            'instagramLastMedias'
+            'instagramLastMedias',
+            'instagramTotalInteraction',
+            'instagramEvolutionOfInteractions'
         ]),
         growthFans() {
             var data = {
@@ -168,7 +191,81 @@ export default {
         },
         totalMediaPerDayLoadSuccess() {
             return this.totalMediaPerDayLabels.length > 0
-        }
+        },
+        instagramTotalInteractionLikes() {
+            return this.$options.filters.currency(parseInt(this.instagramTotalInteraction.likes))
+        },
+        instagramTotalInteractionComments() {
+            return this.$options.filters.currency(parseInt(this.instagramTotalInteraction.comments))
+        },
+        instagramTotalInteractionLoadSuccess() {
+            return this.instagramTotalInteraction.likes != String.empty;
+        },
+        evolutionOfInteractionOption() {
+            var barChartOptions = {
+                scales: {
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return numeral(value).format('0,0')
+                            }
+                        },
+                    }],
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, chart){
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return numeral(tooltipItem.yLabel).format('0,0')
+                        }
+                    }
+                },
+            }
+            return barChartOptions
+        },
+        evolutionOfInteractions() {
+            var data = {
+                labels: this.evolutionOfInteractionsLabels,
+                datasets: [
+                    {
+                        type                : 'bar',
+                        label               : 'Likes',
+                        backgroundColor     : 'rgb(240, 82, 103)',
+                        data: this.evolutionOfInteractionsReactionsValues
+                    },
+                    {
+                        type                : 'bar',
+                        label               : 'Comments',
+                        backgroundColor     : 'rgb(0, 166, 90)',
+                        data: this.evolutionOfInteractionsCommentsValues
+                    },
+                ]
+            }
+            console.log(data);
+            return data;
+        },
+        evolutionOfInteractionsLabels() {
+             return this.instagramEvolutionOfInteractions.map(function(item) {
+                return item.date
+            })
+        },
+        evolutionOfInteractionsReactionsValues() {
+             return this.instagramEvolutionOfInteractions.map(function(item) {
+                return item.likes
+            })
+        },
+        evolutionOfInteractionsCommentsValues() {
+             return this.instagramEvolutionOfInteractions.map(function(item) {
+                return item.comments
+            })
+        },
+        evolutionOfInteractionsLoadSuccess() {
+            return this.evolutionOfInteractionsLabels.length > 0
+        },
     },
     methods: {
         ...mapActions('instagram', [

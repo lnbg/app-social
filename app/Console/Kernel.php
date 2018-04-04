@@ -13,7 +13,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\KolsFetchingFacebookPage::class,
         Commands\KolsFetchingInstagramProfile::class
     ];
 
@@ -25,21 +24,17 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
         $file = 'storage/logs/kols_fetching_instagram.txt';
-        
+
         $schedule->command('kols:instagram')
                 ->timezone('Asia/Saigon')
                 ->dailyAt('01:00')
                 ->sendOutputTo($file);
 
-        $file = 'storage/logs/kols_fetching_facebook_page.txt';
-                
-        $schedule->command('kols:facebook_page')
-                ->timezone('Asia/Saigon')
-                ->dailyAt('02:00')
-                ->sendOutputTo($file);
+        // $schedule->command('kols:facebook_page')
+        //         ->timezone('Asia/Saigon')
+        //         ->dailyAt('02:00')
+        //         ->sendOutputTo($file);
     }
 
     /**

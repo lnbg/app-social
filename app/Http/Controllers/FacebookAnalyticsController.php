@@ -12,6 +12,7 @@ use SammyK\LaravelFacebookSdk\LaravelFacebookSdk as LaravelFacebookSDK;
 use Goutte\Client;
 use GuzzleHttp\Client as Client2;
 use App\Helpers\FacebookHelper;
+use App\Jobs\FetchFacebookData;
 
 class FacebookAnalyticsController extends Controller
 {
@@ -35,6 +36,16 @@ class FacebookAnalyticsController extends Controller
     {
         $listFacebookPageAnalytics = FacebookAnalytics::all();
         return response()->json($listFacebookPageAnalytics, 200);
+    }
+
+    public function reloadQueue() 
+    {
+        $user = User::first();
+        $accessToken = $user->access_token;
+        $facebookAnalytics = FacebookAnalytics::all();
+        foreach ($facebookAnalytics as $page) {
+            FetchFacebookData::dispatch($page, $accessToken);
+        }
     }
 
     public function createNewFacebookPage(LaravelFacebookSDK $laravelFacebookSDK, Request $request)
@@ -98,11 +109,6 @@ class FacebookAnalyticsController extends Controller
             'total_posts_comments' => 0,
             'total_posts_thankfuls' => 0
         ];
-        // get followers from graph api
-        $client = new Client();
-        $crawler = $client->request('GET', 'https://www.facebook.com/' . $facebookFanpageUserName);
-        $nodeFollowers = $crawler->filter('div._4bl9')->eq(2)->extract(array('_text', 'class', 'href'));
-        $analyticsData['total_page_followers'] = intval(preg_replace( '/[^0-9]/', '', $nodeFollowers[0][0]));
         // analytics facebook_page data
         $this->facebookHelper->facebookFanpageGetPostByURI($laravelFacebookSDK, $facebookAnalytics->id,
             $user->access_token, $facebookFanpageUserName, $postsStorage, $effectiveDate);
@@ -139,7 +145,6 @@ class FacebookAnalyticsController extends Controller
             sum(reaction_love) as loves, sum(reaction_sad) as sads, sum(reaction_angry) as angries, sum(reaction_thankful) as thankfuls, sum(comments) as comments, sum(shares) as shares'))->first();
 
         $facebookAnalytics->total_page_likes = $analyticsData['total_page_likes'];
-        $facebookAnalytics->total_page_followers = $analyticsData['total_page_followers'];
         $facebookAnalytics->total_posts = $analyticsPostObject->total;
         $facebookAnalytics->total_posts_shares = $analyticsPostObject->shares;
         $facebookAnalytics->total_days = 365;

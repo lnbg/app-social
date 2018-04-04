@@ -4,6 +4,8 @@ const instagramGrowthFans = (state) => state.instagramGrowthFans
 const instagramTotalMediaPerDay = (state) => state.instagramTotalMediaPerDay
 const instagramTotalMediaGroupByType = (state) => state.instagramTotalMediaGroupByType
 const instagramLastMedias = (state) => state.instagramLastMedias
+const instagramTotalInteraction = (state) => state.instagramTotalInteraction
+const instagramEvolutionOfInteractions = (state) => state.instagramEvolutionOfInteractions
 
 export default {
     lstInstagramProfileAnalytics,
@@ -11,5 +13,7 @@ export default {
     instagramGrowthFans,
     instagramTotalMediaPerDay,
     instagramTotalMediaGroupByType,
-    instagramLastMedias
+    instagramLastMedias,
+    instagramTotalInteraction,
+    instagramEvolutionOfInteractions
 }
