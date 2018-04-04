@@ -25,9 +25,52 @@
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-12"> 
                         <section id="instagram-media-by-type">
-                            <media-group-type v-if="totalMediaGroupByTypeLoadSuccess" :boxStyle="'box-success'" :title="'Distribution Of Media Type'" :source="totalMediaGroupByType"></media-group-type>
+                            <media-group-type v-if="totalMediaGroupByTypeLoadSuccess" :boxStyle="'box-info'" :title="'Distribution Of Media Type'" :source="totalMediaGroupByType"></media-group-type>
                         </section>
                     </div>
+                </div>
+                <div class="row">
+                    <section id="distribution-tags">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12"> 
+                                <section id="instagram-top-hashtags">
+                                    <distribution-tags :idWrapper="'distributionOfTagsChart'" v-if="distributionOfTagsLoadSuccess" :boxStyle="'box-warning'" :title="'Top 5 HashTags'" :source="distributionOfTags"></distribution-tags>
+                                </section>
+                            </div>  
+                            <div class="col-md-6 col-sm-6 col-xs-12" style="height: 300px; overflow: scroll;">
+                                <section id="instagram-popular-hastags">
+                                    <div class="box">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Popular Hashtags</h3>
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button v-if="false" type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <table id="popularHashtags" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tags</th>
+                                                        <th>Count</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="tag in instagramDistributionTagsOrder" :key="tag.tag">
+                                                        <td><a href="#">#{{ tag.tag }}</a></td>
+                                                        <td> {{ tag.count }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    <!-- /.box-body -->
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </section>
                 </div>
                 <div class="row">
                     <section id="instagram-post-per-day">
@@ -61,6 +104,7 @@ import growthFansChart from '../../global/area-chart'
 import totalPostsPerDay from '../../global/bar-chart'
 import evolutionOfInteractionChart from '../../global/bar-chart'
 import totalMediaGroupByType from '../../global/pie-chart'
+import distributionOfTagsChart from '../../global/pie-chart'
 
 export default {
     name: 'Page_Instagram__Overview',
@@ -71,7 +115,8 @@ export default {
         'total-posts-per-day-chart': totalPostsPerDay,
         'media-group-type': totalMediaGroupByType,
         'box-interaction': BoxInteraction,
-        'evolution-of-interactions-chart': evolutionOfInteractionChart
+        'evolution-of-interactions-chart': evolutionOfInteractionChart,
+        'distribution-tags': distributionOfTagsChart
     },
     data() {
         return {    
@@ -85,10 +130,11 @@ export default {
             'instagramTotalMediaGroupByType',
             'instagramLastMedias',
             'instagramTotalInteraction',
-            'instagramEvolutionOfInteractions'
+            'instagramEvolutionOfInteractions',
+            'instagramDistributionTags'
         ]),
         growthFans() {
-            var data = {
+            let data = {
                 labels: this.growthFansLabels,
                 datasets: [
                     {
@@ -115,7 +161,7 @@ export default {
             })
         },
         totalMediaPerDay() {
-            var data = {
+            let data = {
                 labels: this.totalMediaPerDayLabels,
                 datasets: [
                     {
@@ -129,7 +175,7 @@ export default {
             return data;
         },
         totalMediaPerDayOption() {
-            var barChartOptions = {
+            let barChartOptions = {
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -152,7 +198,7 @@ export default {
             })
         },
         totalMediaGroupByType() {
-            var data = {
+            let data = {
                 labels: this.totalMediaGroupByTypeLabels,
                 datasets: [
                     {
@@ -202,7 +248,7 @@ export default {
             return this.instagramTotalInteraction.likes != String.empty;
         },
         evolutionOfInteractionOption() {
-            var barChartOptions = {
+            let barChartOptions = {
                 scales: {
                     xAxes: [{
                         stacked: true
@@ -228,7 +274,7 @@ export default {
             return barChartOptions
         },
         evolutionOfInteractions() {
-            var data = {
+            let data = {
                 labels: this.evolutionOfInteractionsLabels,
                 datasets: [
                     {
@@ -245,7 +291,6 @@ export default {
                     },
                 ]
             }
-            console.log(data);
             return data;
         },
         evolutionOfInteractionsLabels() {
@@ -266,6 +311,53 @@ export default {
         evolutionOfInteractionsLoadSuccess() {
             return this.evolutionOfInteractionsLabels.length > 0
         },
+        instagramDistributionTagsOrder() {
+            let orders = this.instagramDistributionTags.sort(function(obj1, obj2) {
+                return obj2.count - obj1.count
+            }); 
+            return orders;
+        },
+        distributionOfTags() {
+            let data = {
+                labels: this.distributionOfTagsLabels,
+                datasets: [
+                    {
+                        type: 'pie',
+                        backgroundColor: [
+                            "rgb(0, 166, 90)",
+                            "rgb(243, 156, 18)",
+                            "rgb(221, 75, 57)",
+                            "#0D3B66",
+                            "EE964B"
+                        ],
+                        borderColor: [
+                            "rgb(255, 255, 255)",
+                            "rgb(255, 255, 255)",
+                            "rgb(255, 255, 255)",
+                            "rgb(255, 255, 255)",
+                            "rgb(255, 255, 255)"
+                        ],
+                        data: this.distributionOfTagsValues
+                    }
+                ]
+            }
+            return data;
+        },
+        distributionOfTagsLabels() {
+            let sourceLabel = this.instagramDistributionTagsOrder
+            return sourceLabel.slice(0, 5).map(function(item) {
+                return item.tag
+            })
+        },
+        distributionOfTagsValues() {
+            let sourceValue = this.instagramDistributionTagsOrder
+            return sourceValue.slice(0, 5).map(function(item) {
+                return item.count
+            })
+        },
+        distributionOfTagsLoadSuccess() {
+            return this.growthFansLabels.length > 0
+        },
     },
     methods: {
         ...mapActions('instagram', [
@@ -278,7 +370,7 @@ export default {
         this.$store.dispatch('instagram/getInstagramProfileAnalytics', this.$route.params.username)
     },
     created() {
-
+        
     },
     beforeDestroy() {
         this.resetGrowthFans()

@@ -12,7 +12,7 @@
             </div>
             <div class="box-body">
                 <div class="chart">
-                    <canvas id="pieChart" style="height:250px"></canvas>
+                    <canvas :id="idWrapper" style="height:250px"></canvas>
                 </div>
             </div>
         <!-- /.box-body -->
@@ -24,14 +24,19 @@ export default {
     props: {
         source: Object,
         title: String,
-        boxStyle: String
+        boxStyle: String,
+        idWrapper: {
+            default: "pieChart",
+            type: String
+        }
     },
     mounted() {
         var _vue = this;
         //-------------
         //- PIE CHART -
         //--------------
-        var pieChartCanvas          = $('#pieChart').get(0).getContext('2d')
+        var _idWrapper = "#" + this.idWrapper
+        var pieChartCanvas          = $(_idWrapper).get(0).getContext('2d')
         new Chart(pieChartCanvas , {
             type: "pie",
             data: _vue.source, 

@@ -59,7 +59,40 @@ class InstagramAnalyticsController extends Controller
             ->select(\DB::raw("sum(likes) as likes, sum(comments) as comments, date_format(instagram_created_at, '%Y-%m-%d') as date"))
             ->groupBy(\DB::raw("date_format(instagram_created_at, '%Y-%m-%d')"))->get();
         
-            
+        $instagramTags = InstagramMedia::where('instagram_analytics_id', '=', $instagramProfile->id)
+            ->where('tags', '!=', '')
+            ->select('tags')
+            ->get();
+
+        $instagramTagsAnalytics = [];
+        foreach ($instagramTags as $tag) 
+        {
+            $tag = $tag->tags;
+            if (strpos($tag, ',')) {
+                $tagSplits = explode(',', $tag);
+                foreach ($tagSplits as $tagSplit) {
+                    if (array_key_exists($tagSplit, $instagramTagsAnalytics)) {
+                        $instagramTagsAnalytics[$tagSplit]++;
+                    } else {
+                        $instagramTagsAnalytics[$tagSplit] = 1;
+                    }
+                }
+            } else {
+                if (array_key_exists($tag, $instagramTagsAnalytics)) {
+                    $instagramTagsAnalytics[$tag]++;
+                } else {
+                    $instagramTagsAnalytics[$tag] = 1;
+                }
+            }
+        }
+        $instagramTagsResults = [];
+        foreach ($instagramTagsAnalytics as $key => $value) {
+            $instagramTagsResults[] = [
+                'tag' => $key,
+                'count' => $value
+            ];
+        }
+
         $instagramLastMedias = InstagramMedia::where(
             'instagram_analytics_id','=', $instagramProfile->id)
             ->orderBy('instagram_created_at', 'desc')->limit(6)->get();
@@ -71,7 +104,8 @@ class InstagramAnalyticsController extends Controller
                 'instagramTotalMediaGroupByType' => $instagramTotalMediaGroupByType,
                 'instagramLastMedias' => $instagramLastMedias,
                 'instagramTotalInteraction' => $instagramTotalInteraction,
-                'instagramEvolutionOfInteractions' => $instagramEvolutionOfInteractions
+                'instagramEvolutionOfInteractions' => $instagramEvolutionOfInteractions,
+                'instagramDistributionTags' => $instagramTagsResults
             ]
         ];
         return response()->json($data, 200);

@@ -2407,14 +2407,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     props: {
         source: Object,
         title: String,
-        boxStyle: String
+        boxStyle: String,
+        idWrapper: {
+            default: "pieChart",
+            type: String
+        }
     },
     mounted: function mounted() {
         var _vue = this;
         //-------------
         //- PIE CHART -
         //--------------
-        var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+        var _idWrapper = "#" + this.idWrapper;
+        var pieChartCanvas = $(_idWrapper).get(0).getContext('2d');
         new Chart(pieChartCanvas, {
             type: "pie",
             data: _vue.source
@@ -2925,6 +2930,50 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -2945,13 +2994,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         'total-posts-per-day-chart': __WEBPACK_IMPORTED_MODULE_5__global_bar_chart__["a" /* default */],
         'media-group-type': __WEBPACK_IMPORTED_MODULE_6__global_pie_chart__["a" /* default */],
         'box-interaction': __WEBPACK_IMPORTED_MODULE_3__global_instagram_box_interaction__["a" /* default */],
-        'evolution-of-interactions-chart': __WEBPACK_IMPORTED_MODULE_5__global_bar_chart__["a" /* default */]
+        'evolution-of-interactions-chart': __WEBPACK_IMPORTED_MODULE_5__global_bar_chart__["a" /* default */],
+        'distribution-tags': __WEBPACK_IMPORTED_MODULE_6__global_pie_chart__["a" /* default */]
     },
     data: function data() {
         return {};
     },
 
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])('instagram', ['instagramProfile', 'instagramGrowthFans', 'instagramTotalMediaPerDay', 'instagramTotalMediaGroupByType', 'instagramLastMedias', 'instagramTotalInteraction', 'instagramEvolutionOfInteractions']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapGetters */])('instagram', ['instagramProfile', 'instagramGrowthFans', 'instagramTotalMediaPerDay', 'instagramTotalMediaGroupByType', 'instagramLastMedias', 'instagramTotalInteraction', 'instagramEvolutionOfInteractions', 'instagramDistributionTags']), {
         growthFans: function growthFans() {
             var data = {
                 labels: this.growthFansLabels,
@@ -3093,7 +3143,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     data: this.evolutionOfInteractionsCommentsValues
                 }]
             };
-            console.log(data);
             return data;
         },
         evolutionOfInteractionsLabels: function evolutionOfInteractionsLabels() {
@@ -3113,6 +3162,39 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         evolutionOfInteractionsLoadSuccess: function evolutionOfInteractionsLoadSuccess() {
             return this.evolutionOfInteractionsLabels.length > 0;
+        },
+        instagramDistributionTagsOrder: function instagramDistributionTagsOrder() {
+            var orders = this.instagramDistributionTags.sort(function (obj1, obj2) {
+                return obj2.count - obj1.count;
+            });
+            return orders;
+        },
+        distributionOfTags: function distributionOfTags() {
+            var data = {
+                labels: this.distributionOfTagsLabels,
+                datasets: [{
+                    type: 'pie',
+                    backgroundColor: ["rgb(0, 166, 90)", "rgb(243, 156, 18)", "rgb(221, 75, 57)", "#0D3B66", "EE964B"],
+                    borderColor: ["rgb(255, 255, 255)", "rgb(255, 255, 255)", "rgb(255, 255, 255)", "rgb(255, 255, 255)", "rgb(255, 255, 255)"],
+                    data: this.distributionOfTagsValues
+                }]
+            };
+            return data;
+        },
+        distributionOfTagsLabels: function distributionOfTagsLabels() {
+            var sourceLabel = this.instagramDistributionTagsOrder;
+            return sourceLabel.slice(0, 5).map(function (item) {
+                return item.tag;
+            });
+        },
+        distributionOfTagsValues: function distributionOfTagsValues() {
+            var sourceValue = this.instagramDistributionTagsOrder;
+            return sourceValue.slice(0, 5).map(function (item) {
+                return item.count;
+            });
+        },
+        distributionOfTagsLoadSuccess: function distributionOfTagsLoadSuccess() {
+            return this.growthFansLabels.length > 0;
         }
     }),
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('instagram', ['resetGrowthFans', 'resetTotalMediaPerDay', 'resetTotalMediaGroupByType'])),
@@ -4852,7 +4934,7 @@ var render = function() {
                   _vm.totalMediaGroupByTypeLoadSuccess
                     ? _c("media-group-type", {
                         attrs: {
-                          boxStyle: "box-success",
+                          boxStyle: "box-info",
                           title: "Distribution Of Media Type",
                           source: _vm.totalMediaGroupByType
                         }
@@ -4861,6 +4943,107 @@ var render = function() {
                 ],
                 1
               )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("section", { attrs: { id: "distribution-tags" } }, [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-6 col-sm-6 col-xs-12" }, [
+                  _c(
+                    "section",
+                    { attrs: { id: "instagram-top-hashtags" } },
+                    [
+                      _vm.distributionOfTagsLoadSuccess
+                        ? _c("distribution-tags", {
+                            attrs: {
+                              idWrapper: "distributionOfTagsChart",
+                              boxStyle: "box-warning",
+                              title: "Top 5 HashTags",
+                              source: _vm.distributionOfTags
+                            }
+                          })
+                        : _vm._e()
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "col-md-6 col-sm-6 col-xs-12",
+                    staticStyle: { height: "300px", overflow: "scroll" }
+                  },
+                  [
+                    _c(
+                      "section",
+                      { attrs: { id: "instagram-popular-hastags" } },
+                      [
+                        _c("div", { staticClass: "box" }, [
+                          _c("div", { staticClass: "box-header with-border" }, [
+                            _c("h3", { staticClass: "box-title" }, [
+                              _vm._v("Popular Hashtags")
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "box-tools pull-right" }, [
+                              _vm._m(0),
+                              _vm._v(" "),
+                              false
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-box-tool",
+                                      attrs: {
+                                        type: "button",
+                                        "data-widget": "remove"
+                                      }
+                                    },
+                                    [_c("i", { staticClass: "fa fa-times" })]
+                                  )
+                                : _vm._e()
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "box-body" }, [
+                            _c(
+                              "table",
+                              {
+                                staticClass:
+                                  "table table-bordered table-striped",
+                                attrs: { id: "popularHashtags" }
+                              },
+                              [
+                                _vm._m(1),
+                                _vm._v(" "),
+                                _c(
+                                  "tbody",
+                                  _vm._l(
+                                    _vm.instagramDistributionTagsOrder,
+                                    function(tag) {
+                                      return _c("tr", { key: tag.tag }, [
+                                        _c("td", [
+                                          _c("a", { attrs: { href: "#" } }, [
+                                            _vm._v("#" + _vm._s(tag.tag))
+                                          ])
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v(" " + _vm._s(tag.count))
+                                        ])
+                                      ])
+                                    }
+                                  )
+                                )
+                              ]
+                            )
+                          ])
+                        ])
+                      ]
+                    )
+                  ]
+                )
+              ])
             ])
           ]),
           _vm._v(" "),
@@ -4936,7 +5119,33 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-box-tool",
+        attrs: { type: "button", "data-widget": "collapse" }
+      },
+      [_c("i", { staticClass: "fa fa-minus" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Tags")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Count")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 if (false) {
@@ -4985,7 +5194,14 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(1)
+        _c("div", { staticClass: "box-body" }, [
+          _c("div", { staticClass: "chart" }, [
+            _c("canvas", {
+              staticStyle: { height: "250px" },
+              attrs: { id: _vm.idWrapper }
+            })
+          ])
+        ])
       ])
     ]
   )
@@ -5003,19 +5219,6 @@ var staticRenderFns = [
       },
       [_c("i", { staticClass: "fa fa-minus" })]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "box-body" }, [
-      _c("div", { staticClass: "chart" }, [
-        _c("canvas", {
-          staticStyle: { height: "250px" },
-          attrs: { id: "pieChart" }
-        })
-      ])
-    ])
   }
 ]
 render._withStripped = true
@@ -24970,6 +25173,9 @@ var instagramTotalInteraction = function instagramTotalInteraction(state) {
 var instagramEvolutionOfInteractions = function instagramEvolutionOfInteractions(state) {
     return state.instagramEvolutionOfInteractions;
 };
+var instagramDistributionTags = function instagramDistributionTags(state) {
+    return state.instagramDistributionTags;
+};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     lstInstagramProfileAnalytics: lstInstagramProfileAnalytics,
@@ -24979,7 +25185,8 @@ var instagramEvolutionOfInteractions = function instagramEvolutionOfInteractions
     instagramTotalMediaGroupByType: instagramTotalMediaGroupByType,
     instagramLastMedias: instagramLastMedias,
     instagramTotalInteraction: instagramTotalInteraction,
-    instagramEvolutionOfInteractions: instagramEvolutionOfInteractions
+    instagramEvolutionOfInteractions: instagramEvolutionOfInteractions,
+    instagramDistributionTags: instagramDistributionTags
 });
 
 /***/ }),
@@ -25023,6 +25230,7 @@ var GET_INSTAGRAM_PROFILE_ANALYTICS = function GET_INSTAGRAM_PROFILE_ANALYTICS(s
     state.instagramLastMedias = data.analytics.instagramLastMedias;
     Object.assign(state.instagramTotalInteraction, data.analytics.instagramTotalInteraction);
     state.instagramEvolutionOfInteractions = data.analytics.instagramEvolutionOfInteractions;
+    state.instagramDistributionTags = data.analytics.instagramDistributionTags;
 };
 
 var RESET_GROWTH_FANS = function RESET_GROWTH_FANS(state) {
@@ -25090,7 +25298,8 @@ var RESET_TOTAL_MEDIA_GROUP_BY_TYPE = function RESET_TOTAL_MEDIA_GROUP_BY_TYPE(s
         comments: String.empty,
         likes: String.empty
     },
-    instagramEvolutionOfInteractions: []
+    instagramEvolutionOfInteractions: [],
+    instagramDistributionTags: []
 });
 
 /***/ }),

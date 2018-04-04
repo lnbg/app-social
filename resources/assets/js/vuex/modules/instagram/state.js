@@ -36,5 +36,6 @@ export default {
         comments: String.empty,
         likes: String.empty
     },
-    instagramEvolutionOfInteractions: []
+    instagramEvolutionOfInteractions: [],
+    instagramDistributionTags: []
 }

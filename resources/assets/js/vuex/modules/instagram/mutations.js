@@ -8,8 +8,9 @@ const GET_INSTAGRAM_PROFILE_ANALYTICS= (state, data) => {
     state.instagramTotalMediaPerDay = data.analytics.instagramTotalMediaPerDay
     state.instagramTotalMediaGroupByType = data.analytics.instagramTotalMediaGroupByType
     state.instagramLastMedias = data.analytics.instagramLastMedias
-    Object.assign(state.instagramTotalInteraction, data.analytics.instagramTotalInteraction);
+    Object.assign(state.instagramTotalInteraction, data.analytics.instagramTotalInteraction)
     state.instagramEvolutionOfInteractions = data.analytics.instagramEvolutionOfInteractions
+    state.instagramDistributionTags = data.analytics.instagramDistributionTags
 };
 
 const RESET_GROWTH_FANS = (state) => {
