@@ -59,7 +59,6 @@ class FetchFacebookData implements ShouldQueue
             \Log::info("page: " . $this->facebook->account_name . " done!");
         } catch (Facebook\Exceptions\FacebookSDKException $ex) {
             \Log::error("page: " . $this->facebook->account_name . " error!");
-            \Log::errore($ex->getMessage());
         }
     }
 

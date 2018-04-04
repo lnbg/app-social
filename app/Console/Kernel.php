@@ -29,17 +29,17 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('kols:instagram')
                 ->timezone('Asia/Saigon')
-                ->dailyAt('00:05')
+                ->dailyAt('05:00')
                 ->sendOutputTo($file);
 
         
         $schedule->command('kols:facebook_queue')
                 ->timezone('Asia/Saigon')
-                ->dailyAt('01:30');
+                ->dailyAt('0:00');
 
         $schedule->command('queue:work --once --sleep=5 --timeout=3600')
                 ->timezone('Asia/Saigon')
-                ->dailyAt('02:00');
+                ->dailyAt('00:02');
     }
 
     /**
