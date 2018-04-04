@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\KolsFetchingInstagramProfile::class
+        Commands\KolsFetchingInstagramProfile::class,
+        Commands\KolsMakeFacebookQueue::class
     ];
 
     /**
@@ -28,10 +29,15 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('kols:instagram')
                 ->timezone('Asia/Saigon')
-                ->dailyAt('01:00')
+                ->dailyAt('00:05')
                 ->sendOutputTo($file);
 
-        $schedule->command('queue:work --tried=3 --timeout=3600')
+        
+        $schedule->command('kols:facebook_queue')
+                ->timezone('Asia/Saigon')
+                ->dailyAt('01:30');
+
+        $schedule->command('queue:work --once --sleep=5 --timeout=3600')
                 ->timezone('Asia/Saigon')
                 ->dailyAt('02:00');
     }
