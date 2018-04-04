@@ -1893,7 +1893,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
 
 
 
@@ -2443,7 +2442,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__global_facebook_posts_timeline__ = __webpack_require__("./resources/assets/js/components/global/facebook/posts_timeline.vue");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-//
 //
 //
 //
@@ -6059,25 +6057,6 @@ var render = function() {
                     _vm._v(" "),
                     _c("li", [
                       _c("a", { attrs: { href: "#" } }, [
-                        _vm._v("Total Page Followers "),
-                        _c(
-                          "span",
-                          { staticClass: "pull-right badge bg-aqua" },
-                          [
-                            _vm._v(
-                              _vm._s(
-                                _vm._f("currency")(
-                                  _vm.facebookAnalytics.total_page_followers
-                                )
-                              )
-                            )
-                          ]
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("li", [
-                      _c("a", { attrs: { href: "#" } }, [
                         _vm._v("Total Fans "),
                         _c(
                           "span",
@@ -8548,17 +8527,6 @@ var render = function() {
               _vm._v("Total Posts: "),
               _c("span", { staticClass: "pull-right badge bg-blue" }, [
                 _vm._v(_vm._s(_vm._f("currency")(_vm.page.total_posts)))
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#" } }, [
-              _vm._v("Total Page Followers "),
-              _c("span", { staticClass: "pull-right badge bg-aqua" }, [
-                _vm._v(
-                  _vm._s(_vm._f("currency")(_vm.page.total_page_followers))
-                )
               ])
             ])
           ]),

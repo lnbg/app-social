@@ -14,7 +14,6 @@
                             <ul class="nav nav-stacked">
                                 <li style="text-align: center"><a :href="facebookAnalytics.account_link"><span class="badge bg-yellow">{{ facebookAnalytics.account_link }}</span></a></li>
                                 <li><a href="#">Total Posts: <span class="pull-right badge bg-blue">{{ facebookAnalytics.total_posts | currency }}</span></a></li>
-                                <li><a href="#">Total Page Followers <span class="pull-right badge bg-aqua">{{ facebookAnalytics.total_page_followers | currency }}</span></a></li>
                                 <li><a href="#">Total Fans <span class="pull-right badge bg-aqua">{{ facebookAnalytics.total_page_likes | currency }}</span></a></li>
                                 <li><a href="#">Total Reactions <span class="pull-right badge bg-green">{{ reactions | currency }}</span></a></li>
                                 <li><a href="#">Total Interactions <span class="pull-right badge bg-green">{{ interactions | currency }}</span></a></li>
