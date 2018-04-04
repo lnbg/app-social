@@ -363,7 +363,11 @@ export default {
         ...mapActions('instagram', [
             'resetGrowthFans',
             'resetTotalMediaPerDay',
-            'resetTotalMediaGroupByType'
+            'resetTotalMediaGroupByType',
+            'resetInstagramLastMedia',
+            'resetInstagramEvolutionOfInteraction',
+            'resetInstagramTotalInteraction',
+            'resetInstagramDistributionTags'
         ]),
     },
     beforeCreate() {
@@ -375,6 +379,11 @@ export default {
     beforeDestroy() {
         this.resetGrowthFans()
         this.resetTotalMediaPerDay()
+        this.resetTotalMediaGroupByType()
+        this.resetInstagramLastMedia()
+        this.resetInstagramEvolutionOfInteraction()
+        this.resetInstagramTotalInteraction()
+        this.resetInstagramDistributionTags()
     }
 }
 </script>

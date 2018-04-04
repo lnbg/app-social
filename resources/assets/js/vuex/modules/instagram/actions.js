@@ -45,6 +45,22 @@ const resetTotalMediaGroupByType = ({commit, state}) => {
     commit('RESET_TOTAL_MEDIA_GROUP_BY_TYPE');
 }
 
+const resetInstagramLastMedia = ({commit, state}) => {
+    commit('RESET_INSTAGRAM_LAST_MEDIA');
+}
+
+const resetInstagramEvolutionOfInteraction = ({commit, state}) => {
+    commit('RESET_INSTAGRAM_EVOLUTION_OF_INTERACTION');
+}
+
+const resetInstagramTotalInteraction = ({commit, state}) => {
+    commit('RESET_INSTAGRAM_TOTAL_INTERACTION');
+}
+
+const resetInstagramDistributionTags = ({commit, state}) => {
+    commit('RESET_INSTAGRAM_DISTRIBUTION_TAGS');
+}
+
 export default {
     getInstagramProfileAnalytics,
     getListInstagramProfileAnalytics,
@@ -52,5 +68,9 @@ export default {
     analyticsInstagramProfile,
     resetGrowthFans,
     resetTotalMediaPerDay,
-    resetTotalMediaGroupByType
+    resetTotalMediaGroupByType,
+    resetInstagramLastMedia,
+    resetInstagramEvolutionOfInteraction,
+    resetInstagramTotalInteraction,
+    resetInstagramDistributionTags
 };

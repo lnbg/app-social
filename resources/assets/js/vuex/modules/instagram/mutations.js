@@ -24,12 +24,31 @@ const RESET_TOTAL_MEDIA_PER_DAY = (state) => {
 const RESET_TOTAL_MEDIA_GROUP_BY_TYPE = (state) => {
     state.instagramTotalMediaGroupByType = []
 }
-  
+
+const RESET_INSTAGRAM_LAST_MEDIA = (state) => {
+    state.instagramLastMedias = []
+}
+
+const RESET_INSTAGRAM_EVOLUTION_OF_INTERACTION = (state) => {
+    state.instagramEvolutionOfInteractions = []
+}
+
+const RESET_INSTAGRAM_TOTAL_INTERACTION = (state) => {
+    state.instagramTotalInteraction = {}
+}
+
+const RESET_INSTAGRAM_DISTRIBUTION_TAGS = (state) => {
+    state.instagramDistributionTags = []
+}
+
 export default {
     GET_LIST_INSTAGRAM_PROFILE_ANALYTICS,
     GET_INSTAGRAM_PROFILE_ANALYTICS,
     RESET_GROWTH_FANS,
     RESET_TOTAL_MEDIA_PER_DAY,
-    RESET_TOTAL_MEDIA_GROUP_BY_TYPE
-    
+    RESET_TOTAL_MEDIA_GROUP_BY_TYPE,
+    RESET_INSTAGRAM_LAST_MEDIA,
+    RESET_INSTAGRAM_EVOLUTION_OF_INTERACTION,
+    RESET_INSTAGRAM_TOTAL_INTERACTION,
+    RESET_INSTAGRAM_DISTRIBUTION_TAGS
 };

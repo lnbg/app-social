@@ -3195,7 +3195,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.growthFansLabels.length > 0;
         }
     }),
-    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('instagram', ['resetGrowthFans', 'resetTotalMediaPerDay', 'resetTotalMediaGroupByType'])),
+    methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])('instagram', ['resetGrowthFans', 'resetTotalMediaPerDay', 'resetTotalMediaGroupByType', 'resetInstagramLastMedia', 'resetInstagramEvolutionOfInteraction', 'resetInstagramTotalInteraction', 'resetInstagramDistributionTags'])),
     beforeCreate: function beforeCreate() {
         this.$store.dispatch('instagram/getInstagramProfileAnalytics', this.$route.params.username);
     },
@@ -3203,6 +3203,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     beforeDestroy: function beforeDestroy() {
         this.resetGrowthFans();
         this.resetTotalMediaPerDay();
+        this.resetTotalMediaGroupByType();
+        this.resetInstagramLastMedia();
+        this.resetInstagramEvolutionOfInteraction();
+        this.resetInstagramTotalInteraction();
+        this.resetInstagramDistributionTags();
     }
 });
 
@@ -25080,6 +25085,34 @@ var resetTotalMediaGroupByType = function resetTotalMediaGroupByType(_ref5) {
     commit('RESET_TOTAL_MEDIA_GROUP_BY_TYPE');
 };
 
+var resetInstagramLastMedia = function resetInstagramLastMedia(_ref6) {
+    var commit = _ref6.commit,
+        state = _ref6.state;
+
+    commit('RESET_INSTAGRAM_LAST_MEDIA');
+};
+
+var resetInstagramEvolutionOfInteraction = function resetInstagramEvolutionOfInteraction(_ref7) {
+    var commit = _ref7.commit,
+        state = _ref7.state;
+
+    commit('RESET_INSTAGRAM_EVOLUTION_OF_INTERACTION');
+};
+
+var resetInstagramTotalInteraction = function resetInstagramTotalInteraction(_ref8) {
+    var commit = _ref8.commit,
+        state = _ref8.state;
+
+    commit('RESET_INSTAGRAM_TOTAL_INTERACTION');
+};
+
+var resetInstagramDistributionTags = function resetInstagramDistributionTags(_ref9) {
+    var commit = _ref9.commit,
+        state = _ref9.state;
+
+    commit('RESET_INSTAGRAM_DISTRIBUTION_TAGS');
+};
+
 /* harmony default export */ __webpack_exports__["a"] = ({
     getInstagramProfileAnalytics: getInstagramProfileAnalytics,
     getListInstagramProfileAnalytics: getListInstagramProfileAnalytics,
@@ -25087,7 +25120,11 @@ var resetTotalMediaGroupByType = function resetTotalMediaGroupByType(_ref5) {
     analyticsInstagramProfile: analyticsInstagramProfile,
     resetGrowthFans: resetGrowthFans,
     resetTotalMediaPerDay: resetTotalMediaPerDay,
-    resetTotalMediaGroupByType: resetTotalMediaGroupByType
+    resetTotalMediaGroupByType: resetTotalMediaGroupByType,
+    resetInstagramLastMedia: resetInstagramLastMedia,
+    resetInstagramEvolutionOfInteraction: resetInstagramEvolutionOfInteraction,
+    resetInstagramTotalInteraction: resetInstagramTotalInteraction,
+    resetInstagramDistributionTags: resetInstagramDistributionTags
 });
 
 /***/ }),
@@ -25213,13 +25250,32 @@ var RESET_TOTAL_MEDIA_GROUP_BY_TYPE = function RESET_TOTAL_MEDIA_GROUP_BY_TYPE(s
     state.instagramTotalMediaGroupByType = [];
 };
 
+var RESET_INSTAGRAM_LAST_MEDIA = function RESET_INSTAGRAM_LAST_MEDIA(state) {
+    state.instagramLastMedias = [];
+};
+
+var RESET_INSTAGRAM_EVOLUTION_OF_INTERACTION = function RESET_INSTAGRAM_EVOLUTION_OF_INTERACTION(state) {
+    state.instagramEvolutionOfInteractions = [];
+};
+
+var RESET_INSTAGRAM_TOTAL_INTERACTION = function RESET_INSTAGRAM_TOTAL_INTERACTION(state) {
+    state.instagramTotalInteraction = {};
+};
+
+var RESET_INSTAGRAM_DISTRIBUTION_TAGS = function RESET_INSTAGRAM_DISTRIBUTION_TAGS(state) {
+    state.instagramDistributionTags = [];
+};
+
 /* harmony default export */ __webpack_exports__["a"] = ({
     GET_LIST_INSTAGRAM_PROFILE_ANALYTICS: GET_LIST_INSTAGRAM_PROFILE_ANALYTICS,
     GET_INSTAGRAM_PROFILE_ANALYTICS: GET_INSTAGRAM_PROFILE_ANALYTICS,
     RESET_GROWTH_FANS: RESET_GROWTH_FANS,
     RESET_TOTAL_MEDIA_PER_DAY: RESET_TOTAL_MEDIA_PER_DAY,
-    RESET_TOTAL_MEDIA_GROUP_BY_TYPE: RESET_TOTAL_MEDIA_GROUP_BY_TYPE
-
+    RESET_TOTAL_MEDIA_GROUP_BY_TYPE: RESET_TOTAL_MEDIA_GROUP_BY_TYPE,
+    RESET_INSTAGRAM_LAST_MEDIA: RESET_INSTAGRAM_LAST_MEDIA,
+    RESET_INSTAGRAM_EVOLUTION_OF_INTERACTION: RESET_INSTAGRAM_EVOLUTION_OF_INTERACTION,
+    RESET_INSTAGRAM_TOTAL_INTERACTION: RESET_INSTAGRAM_TOTAL_INTERACTION,
+    RESET_INSTAGRAM_DISTRIBUTION_TAGS: RESET_INSTAGRAM_DISTRIBUTION_TAGS
 });
 
 /***/ }),

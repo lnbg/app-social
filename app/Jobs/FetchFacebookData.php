@@ -59,7 +59,7 @@ class FetchFacebookData implements ShouldQueue
             \Log::info("page: " . $this->facebook->account_name . " done!");
         } catch (\Exception $ex) {
             \Log::error("page: " . $this->facebook->account_name . " error!");
-            \Log::errore($ex);
+            \Log::errore($ex->getMessage());
         }
     }
 
