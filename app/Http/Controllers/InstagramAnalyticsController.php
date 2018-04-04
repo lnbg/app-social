@@ -39,7 +39,7 @@ class InstagramAnalyticsController extends Controller
     public function getInstagramProfileByInstagramAnalyticsID(Request $request)
     {
         $now = date('Y-m-d');
-        $since = date('Y-m-d', strtotime($now . "-2 months"));
+        $since = date('Y-m-d', strtotime($now . "-1 months"));
         
         $instagramProfile = InstagramAnalytics::where('user_name', '=', $request->username)->first();
         $growthFans = InstagramFollower::where('instagram_analytics_id', '=', $instagramProfile->id)->select('instagram_followers', 'date_sync')->get();
