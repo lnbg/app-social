@@ -91,7 +91,8 @@ class FacebookHelper {
                 // get meta data of posts
                 self::getMetaDataEachPostOfFanpage($laravelFacebookSDK, $postFromAPI, $oldPost);
             } catch (Facebook\Exceptions\FacebookSDKException $ex) {
-                \Log::error($ex->getMessage());
+                continue;
+            } catch (\Exception $ex) {
                 continue;
             }
         }
@@ -109,9 +110,9 @@ class FacebookHelper {
      */
     private static function getMetaDataPostOfFanpage(LaravelFacebookSDK $laravelFacebookSDK, $facebookAnalyticsID, $accessToken, $posts, &$postsStorage, $lastPostId) 
     {
-        try {
-            foreach ($posts as $item) {
-                if ($item['id'] > $lastPostId) {
+        foreach ($posts as $item) {
+            if ($item['id'] > $lastPostId) {
+                try {
                     $likes = $item['likes'];
                     $likes = $likes->getMetaData()['summary']['total_count'];
                     
@@ -168,11 +169,14 @@ class FacebookHelper {
                         'updated_at' => date("Y-m-d H:i:s")
                     ];
                     $postsStorage[] = $dbItem;
+                } catch (Facebook\Exceptions\FacebookSDKException $ex) {
+                    continue;
+                } catch (\Exception $ex) {
+                    continue;
                 }
             }
-        } catch(Facebook\Exceptions\FacebookSDKException $e) {
-            return -1;
         }
+        
     }
 
     /**
@@ -184,47 +188,51 @@ class FacebookHelper {
      */
     private static function getMetaDataEachPostOfFanpage(LaravelFacebookSDK $laravelFacebookSDK, $postFromAPI, $oldPost) 
     {
-        $likes = $postFromAPI['likes'];
-        $reaction_like = $likes->getMetaData()['summary']['total_count'];
-        
-        $comments = $postFromAPI['comments'];
-        $comments = $comments->getMetaData()['summary']['total_count'];
+        try {
+            $likes = $postFromAPI['likes'];
+            $reaction_like = $likes->getMetaData()['summary']['total_count'];
+            
+            $comments = $postFromAPI['comments'];
+            $comments = $comments->getMetaData()['summary']['total_count'];
 
-        $shares = isset($postFromAPI['shares']) ? $postFromAPI['shares']['count'] : 0;
-        $type = $postFromAPI['type'];
+            $shares = isset($postFromAPI['shares']) ? $postFromAPI['shares']['count'] : 0;
+            $type = $postFromAPI['type'];
 
-        $hahas = $postFromAPI['hahas'];
-        $reaction_haha = $hahas->getMetaData()['summary']['total_count'];
+            $hahas = $postFromAPI['hahas'];
+            $reaction_haha = $hahas->getMetaData()['summary']['total_count'];
 
-        $wows = $postFromAPI['wows'];
-        $reaction_wow = $wows->getMetaData()['summary']['total_count'];
+            $wows = $postFromAPI['wows'];
+            $reaction_wow = $wows->getMetaData()['summary']['total_count'];
 
-        $sads = $postFromAPI['sads'];
-        $reaction_sad = $sads->getMetaData()['summary']['total_count'];
+            $sads = $postFromAPI['sads'];
+            $reaction_sad = $sads->getMetaData()['summary']['total_count'];
 
-        $thankfuls = $postFromAPI['thankfuls'];
-        $reaction_thankful = $thankfuls->getMetaData()['summary']['total_count'];
+            $thankfuls = $postFromAPI['thankfuls'];
+            $reaction_thankful = $thankfuls->getMetaData()['summary']['total_count'];
 
-        $loves = $postFromAPI['loves'];
-        $reaction_love = $loves->getMetaData()['summary']['total_count'];;
+            $loves = $postFromAPI['loves'];
+            $reaction_love = $loves->getMetaData()['summary']['total_count'];;
 
-        $angries = $postFromAPI['angries'];
-        $reaction_angry = $angries->getMetaData()['summary']['total_count'];
-        
-        $oldPost->reaction_like = $reaction_like;
-        $oldPost->comments = $comments;
-        $oldPost->shares = $shares;
-        $oldPost->type = $type;
-        $oldPost->reaction_haha = $reaction_haha;
-        $oldPost->reaction_love = $reaction_love;
-        $oldPost->reaction_wow = $reaction_wow;
-        $oldPost->reaction_sad = $reaction_sad;
-        $oldPost->reaction_thankful = $reaction_thankful;
-        $oldPost->reaction_angry = $reaction_angry;
-        $oldPost->save();
-
-        return 1;
-        
+            $angries = $postFromAPI['angries'];
+            $reaction_angry = $angries->getMetaData()['summary']['total_count'];
+            
+            $oldPost->reaction_like = $reaction_like;
+            $oldPost->comments = $comments;
+            $oldPost->shares = $shares;
+            $oldPost->type = $type;
+            $oldPost->reaction_haha = $reaction_haha;
+            $oldPost->reaction_love = $reaction_love;
+            $oldPost->reaction_wow = $reaction_wow;
+            $oldPost->reaction_sad = $reaction_sad;
+            $oldPost->reaction_thankful = $reaction_thankful;
+            $oldPost->reaction_angry = $reaction_angry;
+            $oldPost->save();
+            return true;
+        } catch (Facebook\Exceptions\FacebookSDKException $ex) {
+            return false;
+        } catch (\Exception $ex) {
+            return false;
+        }
     }
 
     public function getPageLikes(LaravelFacebookSDK $laravelFacebookSDK, $accessToken, $facebookPageName)
@@ -234,7 +242,9 @@ class FacebookHelper {
             $likes = $laravelFacebookSDK->get($defaultURIpageLikeFacebookAPI, $accessToken);
             return $likes->getDecodedBody()['fan_count'];
         } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            return 0;
+            return false;
+        } catch (\Exception $ex) {
+            return false;
         }
     }
 }
