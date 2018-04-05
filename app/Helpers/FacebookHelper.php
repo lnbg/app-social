@@ -93,10 +93,13 @@ class FacebookHelper {
                 // get post from above request
                 $postFromAPI = $postFromAPI->getGraphNode();
                 // get meta data of posts
-                self::getMetaDataEachPostOfFanpage($laravelFacebookSDK, $postFromAPI, $oldPost);
+                self::getMetaDataEachPostOfFanpage($laravelFacebookSDK, $postFromAPI, $oldPost->id);
             } catch (Facebook\Exceptions\FacebookSDKException $ex) {
+                \Log::error("facebookFanpageUpdateEachPostByAnalyticsID:FB:Post-" . $oldPost->facebook_post_id . " cannot update");
                 continue;
             } catch (\Exception $ex) {
+                dd($ex);
+                \Log::error("facebookFanpageUpdateEachPostByAnalyticsID:Post-" . $oldPost->facebook_post_id . " cannot update");
                 continue;
             }
         }
@@ -190,7 +193,7 @@ class FacebookHelper {
      * @param [type] $post
      * @return void
      */
-    private static function getMetaDataEachPostOfFanpage(LaravelFacebookSDK $laravelFacebookSDK, $postFromAPI, $oldPost) 
+    private static function getMetaDataEachPostOfFanpage(LaravelFacebookSDK $laravelFacebookSDK, $postFromAPI, $postID) 
     {
         try {
             $likes = $postFromAPI['likes'];
@@ -220,21 +223,25 @@ class FacebookHelper {
             $angries = $postFromAPI['angries'];
             $reaction_angry = $angries->getMetaData()['summary']['total_count'];
             
-            $oldPost->reaction_like = $reaction_like;
-            $oldPost->comments = $comments;
-            $oldPost->shares = $shares;
-            $oldPost->type = $type;
-            $oldPost->reaction_haha = $reaction_haha;
-            $oldPost->reaction_love = $reaction_love;
-            $oldPost->reaction_wow = $reaction_wow;
-            $oldPost->reaction_sad = $reaction_sad;
-            $oldPost->reaction_thankful = $reaction_thankful;
-            $oldPost->reaction_angry = $reaction_angry;
-            $oldPost->save();
+            FacebookPost::find($postID)->update([
+                'reaction_like' => $reaction_like,
+                'comments' => $comments,
+                'shares' => $shares,
+                'type' => $type,
+                'reaction_haha' => $reaction_haha,
+                'reaction_love' => $reaction_love,
+                'reaction_wow' => $reaction_wow,
+                'reaction_sad' => $reaction_sad,
+                'reaction_thankful' => $reaction_thankful,
+                'reaction_angry' => $reaction_angry,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
             return true;
         } catch (Facebook\Exceptions\FacebookSDKException $ex) {
+            \Log::error("getMetaDataEachPostOfFanpageFacebookSDKException:Post-" . $postID . " cannot update");
             return false;
         } catch (\Exception $ex) {
+            \Log::error("getMetaDataEachPostOfFanpage:Post-" . $postID . " cannot update");
             return false;
         }
     }
