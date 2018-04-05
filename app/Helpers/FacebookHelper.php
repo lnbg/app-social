@@ -13,6 +13,10 @@ class FacebookHelper {
     
     static $ENDPOINT_READ_POSTS = '/posts';
 
+    public function facebookAccessToken($type) {
+        return User::where('type', '=', $type)->first()->access_token;
+    }
+
     /**
      * analytics new posts from facebook graph api
      *

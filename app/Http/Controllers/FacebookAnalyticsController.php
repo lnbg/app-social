@@ -40,7 +40,7 @@ class FacebookAnalyticsController extends Controller
 
     public function reloadQueue() 
     {
-        $user = User::first();
+        $user = User::where('type', '=', 2)->first();
         $accessToken = $user->access_token;
         $facebookAnalytics = FacebookAnalytics::all();
         foreach ($facebookAnalytics as $page) {
@@ -51,7 +51,7 @@ class FacebookAnalyticsController extends Controller
     public function createNewFacebookPage(LaravelFacebookSDK $laravelFacebookSDK, Request $request)
     {
         try {
-            $accessToken = $user = User::first()->access_token;
+            $accessToken = User::where('type', '=', 2)->first()->access_token;
             $facebookFanpageLink = $request->page_link;
             $facebookFanpageLink = explode('/', $facebookFanpageLink);
             $facebookFanpageUserName = $facebookFanpageLink[3];
@@ -82,7 +82,7 @@ class FacebookAnalyticsController extends Controller
     public function analyticsFacebookPage(LaravelFacebookSDK $laravelFacebookSDK, Request $request)
     {
         // get request data
-        $user = User::first(); // get user to get access token
+        $user = User::where('type', '=', 2)->first(); // get user to get access token
         $id = $request->id; // id of facebook page
         // get facebook analytics object by id
         $facebookAnalytics = FacebookAnalytics::find($id);
@@ -242,7 +242,7 @@ class FacebookAnalyticsController extends Controller
 
     public function debug(LaravelFacebookSDK $laravelFacebookSDK, Request $request)
     {
-        $user = User::first();
+        $user = User::where('type', '=', 2)->first();
         $defaultURI = '/1124060737634509/insights';
         $posts = $laravelFacebookSDK->sendRequest('GET', $defaultURI,
         ['limit' => 100, 'since' => '2018-02-12', 'until' => '2018-03-12'], $user->access_token);

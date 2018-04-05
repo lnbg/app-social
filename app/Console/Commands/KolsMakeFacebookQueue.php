@@ -41,7 +41,7 @@ class KolsMakeFacebookQueue extends Command
      */
     public function handle()
     {
-        $user = User::first();
+        $user = User::where('type', '=', 2)->first();
         $accessToken = $user->access_token;
         $facebookAnalytics = FacebookAnalytics::all();
         \DB::table('jobs')->truncate();
