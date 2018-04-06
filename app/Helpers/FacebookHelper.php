@@ -13,8 +13,8 @@ class FacebookHelper {
     
     static $ENDPOINT_READ_POSTS = '/posts';
 
-    public function facebookAccessToken($type) {
-        return User::where('type', '=', $type)->first()->access_token;
+    public function getFacebookAccessToken() {
+        return User::where('type', '=', 1)->first()->access_token;
     }
 
     /**

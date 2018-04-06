@@ -7,6 +7,7 @@ use App\Models\FacebookAnalytics;
 use App\Models\User;
 
 use App\Jobs\FetchFacebookData;
+use App\Helpers\FacebookHelper;
 
 class KolsMakeFacebookQueue extends Command
 {
@@ -24,14 +25,17 @@ class KolsMakeFacebookQueue extends Command
      */
     protected $description = 'Make queue for facebook cronjobs';
 
+    protected $facebookHelper;
+
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(FacebookHelper $facebookHelper)
     {
         parent::__construct();
+        $this->facebookHelper = $facebookHelper;
     }
 
     /**
@@ -41,8 +45,8 @@ class KolsMakeFacebookQueue extends Command
      */
     public function handle()
     {
-        $user = User::where('type', '=', 2)->first();
-        $accessToken = $user->access_token;
+        
+        $accessToken = $this->facebookHelper->getFacebookAccessToken();
         $facebookAnalytics = FacebookAnalytics::all();
         \DB::table('jobs')->truncate();
         foreach ($facebookAnalytics as $page) {

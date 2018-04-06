@@ -40,8 +40,7 @@ class FacebookAnalyticsController extends Controller
 
     public function reloadQueue() 
     {
-        $user = User::where('type', '=', 2)->first();
-        $accessToken = $user->access_token;
+        $accessToken = $this->facebookHelper->getFacebookAccessToken();
         $facebookAnalytics = FacebookAnalytics::all();
         foreach ($facebookAnalytics as $page) {
             FetchFacebookData::dispatch($page, $accessToken);
@@ -51,7 +50,7 @@ class FacebookAnalyticsController extends Controller
     public function createNewFacebookPage(LaravelFacebookSDK $laravelFacebookSDK, Request $request)
     {
         try {
-            $accessToken = User::where('type', '=', 2)->first()->access_token;
+            $accessToken = $this->facebookHelper->getFacebookAccessToken();
             $facebookFanpageLink = $request->page_link;
             $facebookFanpageLink = explode('/', $facebookFanpageLink);
             $facebookFanpageUserName = $facebookFanpageLink[3];
@@ -82,7 +81,7 @@ class FacebookAnalyticsController extends Controller
     public function analyticsFacebookPage(LaravelFacebookSDK $laravelFacebookSDK, Request $request)
     {
         // get request data
-        $user = User::where('type', '=', 2)->first(); // get user to get access token
+        $accessToken = $this->facebookHelper->getFacebookAccessToken();
         $id = $request->id; // id of facebook page
         // get facebook analytics object by id
         $facebookAnalytics = FacebookAnalytics::find($id);
@@ -111,9 +110,9 @@ class FacebookAnalyticsController extends Controller
         ];
         // analytics facebook_page data
         $this->facebookHelper->facebookFanpageGetPostByURI($laravelFacebookSDK, $facebookAnalytics->id,
-            $user->access_token, $facebookFanpageUserName, $postsStorage, $effectiveDate);
+            $accessToken, $facebookFanpageUserName, $postsStorage, $effectiveDate);
         // get page likes
-        $analyticsData['total_page_likes'] = $this->facebookHelper->getPageLikes($laravelFacebookSDK, $user->access_token, $facebookFanpageUserName);
+        $analyticsData['total_page_likes'] = $this->facebookHelper->getPageLikes($laravelFacebookSDK, $accessToken, $facebookFanpageUserName);
         $facebookFan = FacebookFan::where(
             [
                 ['facebook_analytics_id', '=', $facebookAnalytics->id],
@@ -131,7 +130,7 @@ class FacebookAnalyticsController extends Controller
         }
         // get again pictures avatar of facebook page
         $defaultPictureGraphAPIURI = '/' . $facebookFanpageUserName;
-        $picture = $laravelFacebookSDK->sendRequest('GET', $defaultPictureGraphAPIURI, ['fields' => 'cover,picture.width(800).height(800)'], $user->access_token);
+        $picture = $laravelFacebookSDK->sendRequest('GET', $defaultPictureGraphAPIURI, ['fields' => 'cover,picture.width(800).height(800)'], $accessToken);
         $picture = $picture->getDecodedBody();
         if (isset($picture['picture']['data']['url'])) {
             $facebookAnalytics->account_picture = $picture['picture']['data']['url'];

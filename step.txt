@@ -29,5 +29,11 @@
     - Login facebook account to get data save to OwnSocialAccount
     - Get data for facebook page account
     - Get data for facebook profile account
+
+FACEBOOK_APP_ID=1855624591136504
+FACEBOOK_APP_SECRET=dedc0d80de18f8bdf943292e141d838d
+
+FACEBOOK_APP_ID=115232205977903
+FACEBOOK_APP_SECRET=e4447c297fec282f013d28dc22f17c9a
         
     
