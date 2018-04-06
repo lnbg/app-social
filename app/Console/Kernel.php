@@ -37,7 +37,7 @@ class Kernel extends ConsoleKernel
                 ->timezone('Asia/Saigon')
                 ->dailyAt('0:00');
 
-        $schedule->command('queue:work --once --sleep=5 --timeout=3600')
+        $schedule->command('queue:work --sleep=5 --timeout=3600')
                 ->timezone('Asia/Saigon')
                 ->dailyAt('00:02');
     }

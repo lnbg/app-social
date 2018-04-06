@@ -98,7 +98,6 @@ class FacebookHelper {
                 \Log::error("facebookFanpageUpdateEachPostByAnalyticsID:FB:Post-" . $oldPost->facebook_post_id . " cannot update");
                 continue;
             } catch (\Exception $ex) {
-                dd($ex);
                 \Log::error("facebookFanpageUpdateEachPostByAnalyticsID:Post-" . $oldPost->facebook_post_id . " cannot update");
                 continue;
             }
