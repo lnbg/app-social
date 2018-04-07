@@ -33,6 +33,15 @@ const analyticsFacebookPage = (event, id) => {
     })
 }
 
+const getFacebookPageRanking = ({commit, state}) => {
+    return new Promise((resolve, reject) => {
+        get(endPoint.GET.FACEBOOK_PAGE_RANKING)
+        .then(response => {
+            commit('GET_FACEBOOK_PAGE_RANKING', response.data)
+        })
+    })
+}
+
 const resetGrowthFans = ({commit, state}) => {
     commit('RESET_GROWTH_FANS');
 }
@@ -47,5 +56,6 @@ export default {
     createNewFacebookPage,
     analyticsFacebookPage,
     resetGrowthFans,
-    resetEvolutionOfInteractions
+    resetEvolutionOfInteractions,
+    getFacebookPageRanking
 };

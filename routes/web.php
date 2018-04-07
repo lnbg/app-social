@@ -16,6 +16,7 @@ Route::get('/', 'AppController@index');
 
 Route::get('/facebook/get-list-facebook-page-analytics', 'FacebookAnalyticsController@getListFacebookPageAnalytics');
 Route::get('/facebook/get-facebook-page-analytics', 'FacebookAnalyticsController@getFacebookPageByFacebookAnalyticID');
+Route::get('/facebook/get-page-ranking', 'FacebookAnalyticsController@getFacebookPageRanking');
 
 Route::post('/facebook/analytics-facebook-page', 'FacebookAnalyticsController@analyticsFacebookPage');
 Route::post('/facebook/create-new-facebook-page', 'FacebookAnalyticsController@createNewFacebookPage');

@@ -12,6 +12,10 @@ const GET_FACEBOOK_PAGE_ANALYTICS = (state, data) => {
     Object.assign(state.facebookDistributionOfInteraction, data.analytics.facebookDistributionOfInteraction)
 }
 
+const GET_FACEBOOK_PAGE_RANKING = (state, data) => {
+    state.facebookTopFanRanking = data.facebookTopFanRanking
+}
+
 const RESET_GROWTH_FANS = (state) => {
     state.facebookGrowthFans = []
 }
@@ -24,5 +28,6 @@ export default {
     GET_LIST_FACEBOOK_PAGE_ANALYTICS,
     GET_FACEBOOK_PAGE_ANALYTICS,
     RESET_GROWTH_FANS,
-    RESET_EVOLUTION_OF_INTERACTIONS
+    RESET_EVOLUTION_OF_INTERACTIONS,
+    GET_FACEBOOK_PAGE_RANKING
 };

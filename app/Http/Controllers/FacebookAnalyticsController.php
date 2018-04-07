@@ -239,6 +239,24 @@ class FacebookAnalyticsController extends Controller
         return response()->json($result, 200);
     }
 
+    public function getFacebookPageRanking(Request $request)
+    {
+        // get ranking for interactions/post/1 week
+        // $facebookFanRankingID = \DB::select('select facebook_analytics_id, max(facebook_fans) as max from facebook_fans group by facebook_analytics_id order by max desc limit 20');     
+        // $ids = [];
+        // foreach ($facebookFanRankingID as $rank) {
+        //     $ids[] = $rank->facebook_analytics_id;
+        // }      
+        // $facebookRankingEvolution = FacebookAnalytics::with('fans')->whereIn('facebook_analytics.id', $ids)->get();
+
+        $facebookTopFanRanking = \DB::select("select a.*, max(b.facebook_fans) as fans from facebook_analytics a inner join facebook_fans b on a.id = b.facebook_analytics_id group by a.id order by fans desc limit 10");
+        
+        return response()->json([
+            // 'facebookFanRanking' => $facebookRankingEvolution,
+            'facebookTopFanRanking' => $facebookTopFanRanking
+        ], 200);
+    }
+
     public function debug(LaravelFacebookSDK $laravelFacebookSDK, Request $request)
     {
         $user = User::where('type', '=', 2)->first();

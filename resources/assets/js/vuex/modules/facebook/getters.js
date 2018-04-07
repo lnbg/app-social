@@ -5,7 +5,8 @@ const facebookEvolutionOfInteractions = (state) => state.facebookEvolutionOfInte
 const facebookBestPost = (state) => state.post
 const facebookLastPosts = (state) => state.facebookLastPosts
 const facebookDistributionOfPostType = (state) => state.facebookDistributionOfPostType
-const facebookDistributionOfInteraction = (state) =>state.facebookDistributionOfInteraction
+const facebookDistributionOfInteraction = (state) => state.facebookDistributionOfInteraction
+const facebookTopFanRanking = (state) => state.facebookTopFanRanking
 
 export default {
     lstFacebookPageAnalytics,
@@ -15,5 +16,6 @@ export default {
     facebookEvolutionOfInteractions,
     facebookLastPosts,
     facebookDistributionOfPostType,
-    facebookDistributionOfInteraction
+    facebookDistributionOfInteraction,
+    facebookTopFanRanking
 }

@@ -8,4 +8,8 @@ class FacebookAnalytics extends Model
 {
     protected $table = 'facebook_analytics';
     protected $guarded = [];
+
+    public function fans() {
+        return $this->hasMany('App\Models\FacebookFan');
+    }
 }

@@ -43,5 +43,6 @@ export default {
         comments: 0,
         facebook_created_at: String.empty
     },
-    facebookLastPosts: []
+    facebookLastPosts: [],
+    facebookTopFanRanking: []
 }

@@ -1,4 +1,4 @@
-import DashboardIndexV1 from '../components/page/dashboard/index-v1'
+import DashboardIndex from '../components/page/dashboard/index'
 import FacebookPage from '../components/page/facebook/page'
 import FacebookOverview from '../components/page/facebook/overview'
 import Instagram from '../components/page/instagram/index'
@@ -21,7 +21,7 @@ const routes = [
         name: 'instagram_overview',
         component: InstagramOverview,
     },
-    { path: '*', component: FacebookPage }
+    { path: '*', component: DashboardIndex }
 ]
 
 export default routes
