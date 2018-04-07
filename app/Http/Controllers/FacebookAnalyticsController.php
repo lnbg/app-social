@@ -87,7 +87,7 @@ class FacebookAnalyticsController extends Controller
         $facebookAnalytics = FacebookAnalytics::find($id);
         // get since
         $now = date('Y-m-d');
-        $effectiveDate = date('Y-m-d', strtotime($now . "-1 years"));
+        $effectiveDate = date('Y-m-d', strtotime($now . "-2 days"));
         //retrive yesterday's date in the format 9999-99-99
         $facebookFanpageLink = explode('/', $facebookAnalytics->account_link);
         $facebookFanpageUserName = $facebookFanpageLink[3];

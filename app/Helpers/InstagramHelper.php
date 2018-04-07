@@ -22,8 +22,9 @@ class InstagramHelper {
     public function __construct(Crawler $instagramCrawler, InstagramScrapper $instagramScrapper)
     {
         $this->instagramCrawler = $instagramCrawler;
-        $this->instagramScrapper = $instagramScrapper;
-        // $this->instagramScrapper =  InstagramScrapper::withCredentials('ltnam2804@gmail.com', 'Hoaanhdao2804!', '/Users/deveio/Projects/bot-social/storage/logs/');
+        // $this->instagramScrapper = $instagramScrapper;
+        $this->instagramScrapper =  InstagramScrapper::withCredentials('yukign2804', 'Hoaanhdao2804!', '/Users/deveio/Projects/bot-social/storage/logs/');
+        $this->instagramScrapper->login();
     }
 
     /**
