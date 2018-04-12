@@ -67,7 +67,7 @@ class FacebookHelper {
                 }
             }
         } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            dd($e->getMessage());
+            
         }
     }
 
